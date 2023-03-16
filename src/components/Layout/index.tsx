@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
 import { PropsWithChildren, ReactNode } from "react";
-import useAuthContext from "../../context/AuthContext";
+import useAuthContext from "src/context/AuthContext";
 import FlexColumn from "../PageWrapper/FlexColumn";
 import Header from "./Header";
 
