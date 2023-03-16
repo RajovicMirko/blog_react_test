@@ -1,0 +1,95 @@
+import { Box, Button, Grid, styled, Typography } from "@mui/material";
+import { PaginationHookResponse } from "../../../server/hooks/usePagination";
+import PaperStyled from "../../PaperStyled";
+
+import GridOnIcon from "@mui/icons-material/GridOn";
+import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
+import { GRID_MAX_WIDTH } from "../constants";
+
+const HalfSide = styled(Grid)(() => ({}));
+HalfSide.defaultProps = {
+  container: true,
+  item: true,
+  xs: 6,
+  alignItems: "center",
+};
+
+const ViewButton = styled(Button)(() => ({
+  width: "34px",
+  minWidth: "34px",
+  height: "34px",
+}));
+ViewButton.defaultProps = {
+  variant: "text",
+};
+
+type GridPaginationControlProps = {
+  useSwitch: boolean;
+  pagination: PaginationHookResponse;
+  listView: boolean;
+  onLayoutViewClick: () => void;
+};
+
+const GridPaginationControl = ({
+  useSwitch,
+  pagination,
+  listView,
+  onLayoutViewClick,
+}: GridPaginationControlProps) => {
+  const { from, to, total, handleBack, handleNext, isFirstPage, isLastPage } =
+    pagination;
+
+  const paginationText = `Displaying: ${from}-${to}/${total}`;
+
+  return (
+    <PaperStyled
+      elevation={0}
+      sx={{ display: "flex", justifyContent: "center" }}
+    >
+      <Grid container p="10px 20px" maxWidth={`${GRID_MAX_WIDTH}px`}>
+        <HalfSide>
+          {useSwitch && (
+            <>
+              <Grid item>
+                <ViewButton disabled={!listView} onClick={onLayoutViewClick}>
+                  <GridOnIcon />
+                </ViewButton>
+              </Grid>
+              <Grid item>
+                <ViewButton disabled={listView} onClick={onLayoutViewClick}>
+                  <ViewHeadlineIcon fontSize="medium" />
+                </ViewButton>
+              </Grid>
+            </>
+          )}
+        </HalfSide>
+
+        <HalfSide spacing={3} justifyContent="flex-end">
+          <Grid item>
+            <Typography variant="body2">{paginationText}</Typography>
+          </Grid>
+          <Grid item>
+            <Box>
+              <Button
+                onClick={handleBack}
+                disabled={isFirstPage}
+                color="secondary"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleNext}
+                disabled={isLastPage}
+                color="secondary"
+              >
+                Next
+              </Button>
+            </Box>
+          </Grid>
+        </HalfSide>
+      </Grid>
+    </PaperStyled>
+  );
+};
+
+export default GridPaginationControl;
