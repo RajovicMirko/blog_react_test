@@ -122,7 +122,6 @@ const UserPage = () => {
       />
 
       <GridPagination
-        useSwitch
         data={userTabData}
         card={CardComponent}
         pagination={pagination}
