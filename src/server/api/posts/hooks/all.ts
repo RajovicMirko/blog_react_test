@@ -34,6 +34,7 @@ const useGetAll = () => {
     queryKey: queryKeys.all(paginationParams),
     options: {
       enabled: !!perPage,
+      staleTime: 5000,
     },
   });
 
