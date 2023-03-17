@@ -1,19 +1,19 @@
 import { Box, Grid, GridProps, styled } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { GRID_MAX_WIDTH, SCROLLABLE_CLASS } from "../constants";
+import {
+  GRID_MAX_WIDTH,
+  PAGINATION_HEIGHT,
+  SCROLLABLE_CLASS,
+} from "../constants";
 
 export const ScrollWrapper = styled(Box)(() => ({
-  height: "calc(100% - 56.50px)", // 56.50px is pagination height
-  display: "-webkit-flex",
+  height: `calc(100% - ${PAGINATION_HEIGHT}px)`,
+  display: "flex",
   WebkitFlexDirection: "column",
 }));
 
 const ListWrapper = styled(Box)(() => ({
-  minHeight: "0px",
-  WebkitFlex: "1 1 auto",
   overflowY: "auto",
-  display: "flex",
-  justifyContent: "center",
 }));
 
 const List = styled(Grid)(() => ({
