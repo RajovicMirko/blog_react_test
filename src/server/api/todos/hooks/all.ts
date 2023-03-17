@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useBreakpoints from "src/hooks/useBreakpoints";
-import usePagination from "../../../hooks/usePagination";
 import useFetch from "../../../hooks/useFetch";
+import usePagination from "../../../hooks/usePagination";
 import { getPerPageByBreakpoints } from "../../../helpers";
 import { PaginationParams } from "../../../types";
 import { AllResponse } from "../types";

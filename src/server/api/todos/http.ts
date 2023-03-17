@@ -1,61 +1,30 @@
-import API from "src/utils/axios";
-import { sleep } from "src/utils/sleep";
-import { generateUrlWithQueryString } from "../../helpers";
-import { PaginationParams } from "../../types";
+import fetchers from "src/server/fetchers";
 import {
   BASE_URL,
-  HttpAllResponse,
-  HttpOneResponse,
-  Todo,
-  OneProps,
-  OneDataProps,
+  OneRequest,
+  OneDataRequest,
+  AllResponse,
+  OneResponse,
+  AllRequest,
+  MutationRequest,
+  OneDataResponse,
 } from "./types";
 
-const getAll = async (props: PaginationParams): HttpAllResponse => {
-  const url = generateUrlWithQueryString(BASE_URL, props);
-  const data = await API.get(url);
-  await sleep();
-  return data;
-};
+const getAll = fetchers.getAll<AllRequest, AllResponse>(BASE_URL);
 
-const getOne = async ({ id }: OneProps): HttpOneResponse => {
-  const url = `/${BASE_URL}/${id}`;
-  await sleep();
-  return await API.get(url);
-};
+const getOne = fetchers.getOne<OneRequest, OneResponse>(BASE_URL);
 
-const getOneData = async ({
-  id,
-  entity,
-  ...pagination
-}: OneDataProps): HttpOneResponse => {
-  const url = generateUrlWithQueryString(
-    `/${BASE_URL}/${id}/${entity}`,
-    pagination
-  );
+const getOneData = fetchers.getOneData<OneDataRequest, OneDataResponse>(
+  BASE_URL
+);
 
-  const data = await API.get(url);
-  await sleep();
-  return data;
-};
+const createOne = fetchers.createOne<MutationRequest, OneResponse>(BASE_URL);
 
-const createOne = async (props: Todo): HttpOneResponse => {
-  const data = await API.post(BASE_URL, props);
-  await sleep();
-  return data;
-};
+const updateOne = fetchers.updateOne<MutationRequest, OneResponse>(BASE_URL);
 
-const updateOne = async ({ id, ...rest }: Todo): HttpOneResponse => {
-  const data = await API.patch(`${BASE_URL}/${id}`, rest);
-  await sleep();
-  return data;
-};
-
-const deleteOne = async ({ id }: OneProps): HttpOneResponse => {
-  const data = await API.delete(`${BASE_URL}/${id}`);
-  await sleep();
-  return data;
-};
+const deleteOne = fetchers.deleteOne<Pick<OneRequest, "id">, OneResponse>(
+  BASE_URL
+);
 
 export default {
   getAll,

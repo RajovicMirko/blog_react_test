@@ -1,6 +1,5 @@
 import { Post } from "./types";
-import * as posts from "./hooks";
-
 export type { Post };
 
+import * as posts from "./hooks";
 export default posts;

@@ -1,5 +1,5 @@
 import useFetch from "../../../hooks/useFetch";
-import { OneDataResponse, OneDataProps } from "../types";
+import { OneDataResponse, OneDataRequest } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
 import usePagination from "../../../hooks/usePagination";
@@ -12,7 +12,7 @@ const useGetOneData = ({
   id,
   entity,
   enabled,
-}: BaseHookParams<OneDataProps>) => {
+}: BaseHookParams<OneDataRequest>) => {
   const breakpoints = useBreakpoints();
 
   const {
@@ -33,7 +33,7 @@ const useGetOneData = ({
     }
   }, [breakpoints]);
 
-  const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataProps>({
+  const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataRequest>({
     queryFn: http.getOneData,
     queryKey: queryKeys.oneData({ id, entity, ...paginationParams }),
     options: {

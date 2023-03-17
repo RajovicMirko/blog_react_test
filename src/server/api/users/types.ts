@@ -1,5 +1,5 @@
 import { Post } from "../posts";
-import { BaseRequest, BaseResponse } from "../../types";
+import { BaseRequest, BaseResponse, PaginationParams } from "../../types";
 
 export const BASE_URL = "users";
 
@@ -21,21 +21,13 @@ export type User = {
   status: UserStatus;
 };
 
-export type OneProps = BaseRequest<{
-  id?: User["id"];
-}>;
-
-export type OneDataProps = BaseRequest<
-  OneProps & {
-    entity: Entity;
-  }
->;
-
+export type AllRequest = PaginationParams;
 export type AllResponse = BaseResponse<User[]>;
-export type HttpAllResponse = Promise<AllResponse>;
 
+export type OneRequest = BaseRequest<{ id?: User["id"] }>;
 export type OneResponse = BaseResponse<User>;
-export type HttpOneResponse = Promise<OneResponse>;
 
+export type OneDataRequest = OneRequest & { entity: Entity };
 export type OneDataResponse = BaseResponse<Post | any>;
-export type HttpOneDataResponse = Promise<OneDataResponse>;
+
+export type MutationRequest = User;

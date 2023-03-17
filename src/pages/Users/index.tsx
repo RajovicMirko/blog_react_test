@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fab, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UserForm from "src/components/AppComponents/user/UserForm";
@@ -24,6 +25,7 @@ const UsersPage = () => {
     isError,
     pagination,
     isDataEmpty,
+    refetch: refetchUsers,
   } = users.all();
 
   const { create, isLoadingCreate, updateQueryData } = users.one({});
@@ -33,7 +35,8 @@ const UsersPage = () => {
       onSuccess: (response) => {
         updateQueryData(response);
         toggleCreateUserModal();
-        navigate(`/${response.data.data.id}`);
+        refetchUsers();
+        // navigate(`/${response.data.data.id}`);
         toast.success("User successfully added");
       },
     });

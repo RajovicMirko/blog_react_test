@@ -7,6 +7,6 @@ export const getTodoColorByStatus = (status: TodoStatus) => {
     case TodoStatus.pending:
       return "warning.main";
     default:
-      return "error";
+      return "";
   }
 };

@@ -1,4 +1,4 @@
-import { BaseRequest, BaseResponse } from "../../types";
+import { BaseRequest, BaseResponse, PaginationParams } from "../../types";
 
 export const BASE_URL = "todos";
 
@@ -15,21 +15,13 @@ export type Todo = {
   status: TodoStatus;
 };
 
-export type OneProps = BaseRequest<{
-  id?: Todo["id"];
-}>;
-
-export type OneDataProps = BaseRequest<
-  OneProps & {
-    entity: TodoStatus;
-  }
->;
-
+export type AllRequest = PaginationParams;
 export type AllResponse = BaseResponse<Todo[]>;
-export type HttpAllResponse = Promise<AllResponse>;
 
+export type OneRequest = BaseRequest<{ id?: Todo["id"] }>;
 export type OneResponse = BaseResponse<Todo>;
-export type HttpOneResponse = Promise<OneResponse>;
 
+export type OneDataRequest = OneRequest;
 export type OneDataResponse = BaseResponse<any>;
-export type HttpOneDataResponse = Promise<OneDataResponse>;
+
+export type MutationRequest = Todo;

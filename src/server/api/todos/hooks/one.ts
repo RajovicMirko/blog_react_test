@@ -1,15 +1,15 @@
-import { OneResponse, OneProps, Todo } from "../types";
+import useFetch from "../../../hooks/useFetch";
+import { OneResponse, OneRequest, MutationRequest } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
-import useFetch from "../../../hooks/useFetch";
 import useMutation from "../../../hooks/useMutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { BaseHookParams } from "src/server/types";
 
-const useGetOne = ({ id, enabled }: BaseHookParams<OneProps>) => {
+const useGetOne = ({ id, enabled }: BaseHookParams<OneRequest>) => {
   const queryClient = useQueryClient();
 
-  const { axiosResponse, ...rest } = useFetch<OneResponse, OneProps>({
+  const { axiosResponse, ...rest } = useFetch<OneResponse, OneRequest>({
     queryFn: http.getOne,
     queryKey: queryKeys.one({ id }),
     options: {
@@ -19,17 +19,17 @@ const useGetOne = ({ id, enabled }: BaseHookParams<OneProps>) => {
 
   const { mutate: create, isLoading: isLoadingCreate } = useMutation<
     OneResponse,
-    Todo
+    MutationRequest
   >(http.createOne);
 
   const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
     OneResponse,
-    Todo
+    MutationRequest
   >(http.updateOne);
 
   const { mutate: remove, isLoading: isLoadingRemove } = useMutation<
     OneResponse,
-    OneProps
+    Pick<OneRequest, "id">
   >(http.deleteOne);
 
   const updateQueryData = (newData: OneResponse) => {

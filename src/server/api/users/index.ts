@@ -1,6 +1,5 @@
 import { User } from "./types";
-import * as users from "./hooks";
-
 export type { User };
 
+import * as users from "./hooks";
 export default users;

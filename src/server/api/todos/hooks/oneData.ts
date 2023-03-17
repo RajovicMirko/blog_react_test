@@ -1,18 +1,14 @@
-import useBreakpoints from "src/hooks/useBreakpoints";
 import useFetch from "../../../hooks/useFetch";
-import { OneDataResponse, OneDataProps } from "../types";
+import { OneDataResponse, OneDataRequest } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
 import usePagination from "../../../hooks/usePagination";
 import { getPerPageByBreakpoints } from "../../../helpers";
+import useBreakpoints from "../../../../hooks/useBreakpoints";
 import { useEffect } from "react";
 import { BaseHookParams } from "src/server/types";
 
-const useGetOneData = ({
-  id,
-  entity,
-  enabled,
-}: BaseHookParams<OneDataProps>) => {
+const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
   const breakpoints = useBreakpoints();
 
   const {
@@ -33,11 +29,11 @@ const useGetOneData = ({
     }
   }, [breakpoints]);
 
-  const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataProps>({
+  const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataRequest>({
     queryFn: http.getOneData,
-    queryKey: queryKeys.oneData({ id, entity, ...paginationParams }),
+    queryKey: queryKeys.oneData({ id, ...paginationParams }),
     options: {
-      enabled: !!id && !!entity && enabled,
+      enabled: !!id && enabled,
     },
   });
 
