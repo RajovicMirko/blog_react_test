@@ -1,7 +1,7 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import Card from "../../Card";
 import useToggle from "../../../hooks/useToggle";
-import posts, { Post } from "../../../server/posts";
+import posts, { Post } from "../../../server/api/posts";
 import ButtonLoading from "../../Button/ButtonLoading";
 import ConfirmModal from "../../Modal/ConfirmModal";
 

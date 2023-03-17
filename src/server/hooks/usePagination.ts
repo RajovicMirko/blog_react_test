@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { Pagination, PaginationParams } from "../types";
+import { PaginationResponse, PaginationParams } from "../types";
 
 export type PaginationDisplayData = {
   from: number;
@@ -18,7 +18,7 @@ export type PaginationHookResponse = {
   paginationParams: PaginationParams;
   handleNext: () => void;
   handleBack: () => void;
-  handleInit: (pagination: Pagination) => void;
+  handleInit: (pagination: PaginationResponse) => void;
   setPerPage: Dispatch<SetStateAction<number>>;
   setPage: Dispatch<SetStateAction<number>>;
 };
@@ -33,7 +33,7 @@ const usePagination = (props: PaginationParams): PaginationHookResponse => {
   const isFirstPage: boolean = useMemo(() => page === 1, [page]);
   const isLastPage: boolean = useMemo(() => page === pages, [page, pages]);
 
-  const handleInit = (pagination: Pagination) => {
+  const handleInit = (pagination: PaginationResponse) => {
     setPages(pagination?.pages || 0);
     setTotal(pagination?.total || 0);
     setPerPage(props.per_page ?? perPage);

@@ -1,4 +1,4 @@
-import { PaginationParams } from "../types";
+import { PaginationParams } from "../../types";
 import { BASE_URL, OneDataProps, OneProps } from "./types";
 
 const all = (props: PaginationParams) => [BASE_URL, "all", props];

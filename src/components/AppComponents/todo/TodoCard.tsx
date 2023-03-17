@@ -1,8 +1,8 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import useToggle from "../../../hooks/useToggle";
-import todos, { Todo } from "../../../server/todos";
-import { getTodoColorByStatus } from "../../../server/todos/helpers";
-import { OneResponse, TodoStatus } from "../../../server/todos/types";
+import todos, { Todo } from "src/server/api/todos";
+import { getTodoColorByStatus } from "src/server/api/todos/helpers";
+import { OneResponse, TodoStatus } from "src/server/api/todos/types";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
 import TodoForm from "./TodoForm";

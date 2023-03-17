@@ -8,7 +8,7 @@ import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { getRoute } from "src/router/routesMap";
-import users, { User } from "src/server/users";
+import users, { User } from "src/server/api/users";
 
 type UserDetailsProps = {
   user?: User;

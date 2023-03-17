@@ -1,32 +1,34 @@
-import { BaseRequest, BaseResponse } from "../types";
+import { BaseRequest, BaseResponse } from "../../types";
 
-export const BASE_URL = "posts";
+export const BASE_URL = "todos";
 
-export enum Entity {
-  comments = "comments",
+export enum TodoStatus {
+  completed = "completed",
+  pending = "pending",
 }
 
-export type Post = {
+export type Todo = {
   id: number;
   user_id: number;
   title: string;
-  body: string;
+  due_on: string;
+  status: TodoStatus;
 };
 
 export type OneProps = BaseRequest<{
-  id?: Post["id"];
+  id?: Todo["id"];
 }>;
 
 export type OneDataProps = BaseRequest<
   OneProps & {
-    entity: Entity;
+    entity: TodoStatus;
   }
 >;
 
-export type AllResponse = BaseResponse<Post[]>;
+export type AllResponse = BaseResponse<Todo[]>;
 export type HttpAllResponse = Promise<AllResponse>;
 
-export type OneResponse = BaseResponse<Post>;
+export type OneResponse = BaseResponse<Todo>;
 export type HttpOneResponse = Promise<OneResponse>;
 
 export type OneDataResponse = BaseResponse<any>;

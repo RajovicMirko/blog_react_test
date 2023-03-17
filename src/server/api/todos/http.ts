@@ -1,7 +1,7 @@
 import API from "src/utils/axios";
 import { sleep } from "src/utils/sleep";
-import { generateUrlWithQueryString } from "../helpers";
-import { PaginationParams } from "../types";
+import { generateUrlWithQueryString } from "../../helpers";
+import { PaginationParams } from "../../types";
 import {
   BASE_URL,
   HttpAllResponse,
@@ -24,8 +24,16 @@ const getOne = async ({ id }: OneProps): HttpOneResponse => {
   return await API.get(url);
 };
 
-const getOneData = async ({ id, entity }: OneDataProps): HttpOneResponse => {
-  const url = `/${BASE_URL}/${id}/${entity}`;
+const getOneData = async ({
+  id,
+  entity,
+  ...pagination
+}: OneDataProps): HttpOneResponse => {
+  const url = generateUrlWithQueryString(
+    `/${BASE_URL}/${id}/${entity}`,
+    pagination
+  );
+
   const data = await API.get(url);
   await sleep();
   return data;

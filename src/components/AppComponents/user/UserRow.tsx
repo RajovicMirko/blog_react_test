@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Avatar, Grid, Typography, useTheme } from "@mui/material";
 import Person2Icon from "@mui/icons-material/Person2";
-import { User } from "../../../server/users";
+import { User } from "src/server/api/users";
+import { getUserColorByStatus } from "src/server/api/users/helpers";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
-import { getUserColorByStatus } from "../../../server/users/helpers";
 
 type UserRowProps = {
   user: User;

@@ -6,7 +6,7 @@ import AppForm, {
   TextFieldSelect,
   TextFieldRadioGroup,
 } from "../../../Form";
-import { User } from "../../../../server/users";
+import { User } from "src/server/api/users";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import { statusOptions, genderOptions } from "./constants";
 import {

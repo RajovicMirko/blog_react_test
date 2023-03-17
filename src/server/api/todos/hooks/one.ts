@@ -1,11 +1,12 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { OneResponse, OneProps, Post } from "../types";
+import { OneResponse, OneProps, Todo } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
-import useFetch from "../../hooks/useFetch";
-import useMutation from "../../hooks/useMutation";
+import useFetch from "../../../hooks/useFetch";
+import useMutation from "../../../hooks/useMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import { BaseHookParams } from "src/server/types";
 
-const useGetOne = ({ id, enabled }: OneProps) => {
+const useGetOne = ({ id, enabled }: BaseHookParams<OneProps>) => {
   const queryClient = useQueryClient();
 
   const { axiosResponse, ...rest } = useFetch<OneResponse, OneProps>({
@@ -18,12 +19,12 @@ const useGetOne = ({ id, enabled }: OneProps) => {
 
   const { mutate: create, isLoading: isLoadingCreate } = useMutation<
     OneResponse,
-    Post
+    Todo
   >(http.createOne);
 
   const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
     OneResponse,
-    Post
+    Todo
   >(http.updateOne);
 
   const { mutate: remove, isLoading: isLoadingRemove } = useMutation<

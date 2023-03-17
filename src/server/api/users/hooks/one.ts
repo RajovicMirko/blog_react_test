@@ -1,11 +1,12 @@
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../../hooks/useFetch";
 import { OneResponse, OneProps, User } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
-import useMutation from "../../hooks/useMutation";
+import useMutation from "../../../hooks/useMutation";
 import { useQueryClient } from "@tanstack/react-query";
+import { BaseHookParams } from "src/server/types";
 
-const useGetOne = ({ id, enabled }: OneProps) => {
+const useGetOne = ({ id, enabled }: BaseHookParams<OneProps>) => {
   const queryClient = useQueryClient();
 
   const { axiosResponse, ...rest } = useFetch<OneResponse, OneProps>({

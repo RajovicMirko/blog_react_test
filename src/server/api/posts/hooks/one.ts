@@ -1,9 +1,9 @@
-import { OneResponse, OneProps, Todo } from "../types";
+import { useQueryClient } from "@tanstack/react-query";
+import { OneResponse, OneProps, Post } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
-import useFetch from "../../hooks/useFetch";
-import useMutation from "../../hooks/useMutation";
-import { useQueryClient } from "@tanstack/react-query";
+import useFetch from "../../../hooks/useFetch";
+import useMutation from "../../../hooks/useMutation";
 
 const useGetOne = ({ id, enabled }: OneProps) => {
   const queryClient = useQueryClient();
@@ -18,12 +18,12 @@ const useGetOne = ({ id, enabled }: OneProps) => {
 
   const { mutate: create, isLoading: isLoadingCreate } = useMutation<
     OneResponse,
-    Todo
+    Post
   >(http.createOne);
 
   const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
     OneResponse,
-    Todo
+    Post
   >(http.updateOne);
 
   const { mutate: remove, isLoading: isLoadingRemove } = useMutation<

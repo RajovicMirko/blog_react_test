@@ -3,7 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import UserForm from "src/components/AppComponents/user/UserForm";
 import GridPagination from "src/components/GridPagination";
 import useLoading from "src/context/LoadingContext";
-import users, { User } from "src/server/users";
+import users, { User } from "src/server/api/users";
 import Modal from "src/components/Modal";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

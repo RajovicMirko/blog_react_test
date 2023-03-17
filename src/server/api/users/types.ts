@@ -1,5 +1,5 @@
 import { Post } from "../posts";
-import { BaseRequest, BaseResponse } from "../types";
+import { BaseRequest, BaseResponse } from "../../types";
 
 export const BASE_URL = "users";
 

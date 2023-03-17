@@ -1,12 +1,12 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
-import { User } from "../../../../server/users";
+import { User } from "src/server/api/users";
 import AppForm from "../../../Form/AppForm";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import TextFieldInput from "../../../Form/components/TextFieldInput";
 import { isRequired, minLen, validation } from "../../../Form/validations";
-import { Post } from "../../../../server/posts";
+import { Post } from "../../../../server/api/posts";
 
 type PostFormProps = {
   onSubmit: (formData: Post) => void;

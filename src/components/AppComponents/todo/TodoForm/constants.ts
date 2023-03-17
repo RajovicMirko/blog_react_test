@@ -1,4 +1,4 @@
-import { TodoStatus } from "../../../../server/todos/types";
+import { TodoStatus } from "src/server/api/todos/types";
 
 export const statusOptions = [
   { id: TodoStatus.completed, label: "Completed" },
