@@ -19,8 +19,9 @@ function getOne<Props extends GenerateQueryStringProps, Response>(
 ) {
   return async ({ id }: Props): Promise<Response> => {
     const url = `/${baseUrl}/${id}`;
+    const data = await API.get(url);
     await sleep();
-    return (await API.get(url)) as Response;
+    return data as Response;
   };
 }
 
@@ -32,7 +33,6 @@ function getOneData<Props extends GenerateQueryStringProps, Response>(
       `/${baseUrl}/${id}/${entity}`,
       pagination
     );
-
     const data = await API.get(url);
     await sleep();
     return data as Response;

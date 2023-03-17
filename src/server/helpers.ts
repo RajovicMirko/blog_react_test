@@ -30,11 +30,8 @@ export const getPerPageByBreakpoints = ({
   isTablet,
   isSmallScreen,
   isMediumScreen,
-  isLargeScreen,
 }: UseBreakpointsResponse) => {
   switch (true) {
-    case isLargeScreen:
-      return 24;
     case isMediumScreen:
       return 15;
     case isSmallScreen:
@@ -43,6 +40,6 @@ export const getPerPageByBreakpoints = ({
     case isMobile:
       return 6;
     default:
-      return 0;
+      return 24; // large screen
   }
 };
