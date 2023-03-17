@@ -6,6 +6,22 @@ import { getRoute } from "src/router/routesMap";
 
 const LOGO_SIZE = 30;
 
+const useStyle = {
+  wrapper: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  logo_wrapper: {
+    flex: 1,
+    display: "flex",
+    columnGap: "10px",
+    alignItems: "center",
+    cursor: "pointer",
+  },
+};
+
 const Header = () => {
   const navigate = useNavigate();
   const handleLogoClick = () => {
@@ -15,14 +31,8 @@ const Header = () => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Box
-          onClick={handleLogoClick}
-          sx={{
-            ...wrapperStyle,
-            cursor: "pointer",
-          }}
-        >
-          <Box flex={1} display="flex" columnGap="10px" alignItems="center">
+        <Box sx={useStyle.wrapper}>
+          <Box sx={useStyle.logo_wrapper} onClick={handleLogoClick}>
             <img
               src={BlogLogo}
               alt="Blog logo"
@@ -46,13 +56,6 @@ const Header = () => {
       </Toolbar>
     </AppBar>
   );
-};
-
-const wrapperStyle = {
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
 };
 
 export default Header;

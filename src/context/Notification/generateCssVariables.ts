@@ -14,7 +14,7 @@ const generateCssVariables = (theme: Theme) => ({
   "--toastify-icon-color-warning": "var(--toastify-color-warning)",
   "--toastify-icon-color-error": "var(--toastify-color-error)",
 
-  "--toastify-toast-width": "calc(100vw - 20px)",
+  "--toastify-toast-width": "320px",
   "--toastify-toast-background": theme.palette.common.white,
   "--toastify-toast-min-height": "50px",
   "--toastify-toast-max-height": "800px",
