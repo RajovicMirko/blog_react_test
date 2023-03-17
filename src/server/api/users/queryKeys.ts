@@ -4,7 +4,12 @@ const all = (props: AllRequest) => [BASE_URL, "all", props];
 
 const one = (props: OneRequest) => [BASE_URL, "one", props];
 
-const oneData = (props: OneDataRequest) => [BASE_URL, "oneData", props];
+const oneData = (props: OneDataRequest) => [
+  BASE_URL,
+  "oneData",
+  props.entity,
+  props,
+];
 
 export default {
   all,
