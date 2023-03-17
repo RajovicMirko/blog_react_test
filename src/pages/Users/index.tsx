@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fab, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UserForm from "src/components/AppComponents/user/UserForm";
