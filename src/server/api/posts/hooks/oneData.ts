@@ -5,7 +5,7 @@ import queryKeys from "../queryKeys";
 import usePagination from "../../../hooks/usePagination";
 import { getPerPageByBreakpoints } from "../../../helpers";
 import useBreakpoints from "../../../../hooks/useBreakpoints";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { BaseHookParams } from "src/server/types";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -26,11 +26,9 @@ const useGetOneData = ({
     ...restPatination
   } = usePagination({ per_page: getPerPageByBreakpoints(breakpoints) });
 
-  const keepPreviousData = useMemo(() => {
-    return !!queryClient.getQueriesData(
-      queryKeys.oneData({ id, entity, page: 1 })
-    )?.length;
-  }, [entity]);
+  const prevQueryData = queryClient.getQueriesData(
+    queryKeys.oneData({ id, entity, page: 1 })
+  )[0]?.[1];
 
   useEffect(() => {
     const newPerPage = getPerPageByBreakpoints(breakpoints);
@@ -46,7 +44,7 @@ const useGetOneData = ({
     queryKey: queryKeys.oneData({ id, entity, ...paginationParams }),
     options: {
       enabled: !!id && !!entity && enabled,
-      keepPreviousData,
+      keepPreviousData: !!prevQueryData,
     },
   });
 
