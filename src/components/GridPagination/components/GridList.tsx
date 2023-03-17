@@ -12,6 +12,11 @@ export const ScrollWrapper = styled(Box)(() => ({
   WebkitFlexDirection: "column",
 }));
 
+const PositionWrapper = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "center",
+}));
+
 const ListWrapper = styled(Box)(() => ({
   overflowY: "auto",
 }));
@@ -35,9 +40,11 @@ function GridList({
   return (
     <ScrollWrapper>
       <ListWrapper className={SCROLLABLE_CLASS} {...rest}>
-        <List container spacing={spacing} pb="30px">
-          {children}
-        </List>
+        <PositionWrapper>
+          <List container spacing={spacing} pb="30px">
+            {children}
+          </List>
+        </PositionWrapper>
       </ListWrapper>
     </ScrollWrapper>
   );
