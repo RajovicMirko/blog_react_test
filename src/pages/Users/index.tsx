@@ -36,7 +36,7 @@ const UsersPage = () => {
         updateQueryData(response);
         toggleCreateUserModal();
         refetchUsers();
-        // navigate(`/${response.data.data.id}`);
+        navigate(`/${response.data.data.id}`);
         toast.success("User successfully added");
       },
     });
