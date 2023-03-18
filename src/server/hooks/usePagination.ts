@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useBreakpoints from "src/hooks/useBreakpoints";
 import { getPerPageByBreakpoints } from "../helpers";
 import { PaginationResponse, PaginationParams } from "../types";
@@ -19,12 +19,11 @@ export type PaginationHookResponse = {
   total: number;
   from: number;
   to: number;
+  isReady: boolean;
   paginationParams: PaginationParams;
   handleNext: () => void;
   handleBack: () => void;
   handleInit: (pagination: PaginationResponse) => void;
-  setPerPage: Dispatch<SetStateAction<number>>;
-  setPage: Dispatch<SetStateAction<number>>;
 };
 
 const usePagination = (props: PaginationParams): PaginationHookResponse => {
@@ -80,13 +79,12 @@ const usePagination = (props: PaginationParams): PaginationHookResponse => {
     isFirstPage,
     isLastPage,
     total,
+    isReady: !!perPage,
     ...displayData,
     paginationParams: { page, per_page: perPage, limit: perPage },
     handleNext,
     handleBack,
     handleInit,
-    setPerPage,
-    setPage,
   };
 };
 

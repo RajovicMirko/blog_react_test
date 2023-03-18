@@ -11,14 +11,14 @@ const useGetOneData = ({
   entity,
   enabled,
 }: BaseHookParams<OneDataRequest>) => {
-  const { perPage, handleInit, paginationParams, ...restPatination } =
+  const { isReady, perPage, handleInit, paginationParams, ...restPatination } =
     usePagination({ useBreakpoints: true });
 
   const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataRequest>({
     queryFn: http.getOneData,
     queryKey: queryKeys.oneData({ id, entity, ...paginationParams }),
     options: {
-      enabled: !!perPage && !!id && !!entity && enabled,
+      enabled: isReady && !!id && !!entity && enabled,
     },
   });
 

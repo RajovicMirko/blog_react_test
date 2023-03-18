@@ -7,20 +7,14 @@ import { useEffect } from "react";
 import { BaseHookParams } from "src/server/types";
 
 const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
-  const {
-    perPage,
-    handleInit,
-    setPerPage,
-    setPage,
-    paginationParams,
-    ...restPatination
-  } = usePagination({ useBreakpoints: true });
+  const { isReady, perPage, handleInit, paginationParams, ...restPatination } =
+    usePagination({ useBreakpoints: true });
 
   const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataRequest>({
     queryFn: http.getOneData,
     queryKey: queryKeys.oneData({ id, ...paginationParams }),
     options: {
-      enabled: !!id && enabled,
+      enabled: isReady && !!id && enabled,
     },
   });
 
@@ -35,8 +29,6 @@ const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
     pagination: {
       perPage,
       handleInit,
-      setPerPage,
-      setPage,
       paginationParams,
       ...restPatination,
     },

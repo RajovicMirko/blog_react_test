@@ -7,20 +7,14 @@ import http from "../http";
 import queryKeys from "../queryKeys";
 
 const useGetAll = () => {
-  const {
-    perPage,
-    handleInit,
-    setPerPage,
-    setPage,
-    paginationParams,
-    ...restPatination
-  } = usePagination({ useBreakpoints: true });
+  const { isReady, perPage, handleInit, paginationParams, ...restPatination } =
+    usePagination({ useBreakpoints: true });
 
   const { axiosResponse, ...rest } = useFetch<AllResponse, PaginationParams>({
     queryFn: http.getAll,
     queryKey: queryKeys.all(paginationParams),
     options: {
-      enabled: !!perPage,
+      enabled: isReady,
       staleTime: 5000,
     },
   });
@@ -36,8 +30,6 @@ const useGetAll = () => {
     pagination: {
       perPage,
       handleInit,
-      setPerPage,
-      setPage,
       paginationParams,
       ...restPatination,
     },
