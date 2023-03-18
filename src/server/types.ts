@@ -21,6 +21,7 @@ export type PaginationParams = {
   page?: number;
   per_page?: number;
   limit?: number;
+  useBreakpoints?: boolean;
 };
 
 export type BaseRequest<Props = void> = Props & PaginationParams;
