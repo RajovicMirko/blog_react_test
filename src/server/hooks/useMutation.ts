@@ -3,6 +3,8 @@ import {
   MutationOptions,
   useMutation as useMutationQuery,
 } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { getRoute } from "src/router/routesMap";
 import handleError, { throwQueryErrorIfExists } from "../error";
 import { BaseResponse } from "../types";
 
@@ -10,12 +12,19 @@ function useMutation<Response extends BaseResponse<any>, Props>(
   fn: MutationFunction<Response, Props>,
   options?: MutationOptions<Response>
 ) {
+  const navigate = useNavigate();
+
   const { mutate, ...rest } = useMutationQuery<Response, unknown, any, unknown>(
     fn,
     {
       ...options,
       onSuccess: (response) => {
-        throwQueryErrorIfExists(response);
+        try {
+          throwQueryErrorIfExists(response);
+        } catch (error) {
+          handleError(error);
+          setTimeout(() => navigate(getRoute.users()), 0);
+        }
       },
       onError: (error) => {
         handleError(error);

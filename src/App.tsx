@@ -7,25 +7,28 @@ import MaterialUiProvider from "./style";
 import { AuthProvider } from "./context/AuthContext";
 import { PageLoading } from "./components/Loading/PageLoading";
 import { NotificationProvider } from "./context/Notification";
+import ErrorBoundary from "./pages/ErrorBoundary";
 
 const queryClient = new QueryClient({});
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <MaterialUiProvider>
-        <NotificationProvider>
-          <LoadingProvider component={<PageLoading />}>
-            <BrowserRouter>
-              <AuthProvider>
-                <Layout>
-                  <RouterView />
-                </Layout>
-              </AuthProvider>
-            </BrowserRouter>
-          </LoadingProvider>
-        </NotificationProvider>
-      </MaterialUiProvider>
+      <BrowserRouter>
+        <ErrorBoundary>
+          <MaterialUiProvider>
+            <NotificationProvider>
+              <LoadingProvider component={<PageLoading />}>
+                <AuthProvider>
+                  <Layout>
+                    <RouterView />
+                  </Layout>
+                </AuthProvider>
+              </LoadingProvider>
+            </NotificationProvider>
+          </MaterialUiProvider>
+        </ErrorBoundary>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

@@ -6,6 +6,8 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { getRoute } from "src/router/routesMap";
 import handleError from "../error";
 import { throwQueryErrorIfExists } from "../error/helpers";
 import { BaseResponse } from "../types";
@@ -20,6 +22,7 @@ export default function useFetch<
   Response extends BaseResponse<any>,
   Props = void
 >({ queryKey, queryFn, options = {} }: UseFetchProps<Response, Props>) {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const queryFnWithProps: QueryFunction<any, any> = async () =>
@@ -43,7 +46,12 @@ export default function useFetch<
     refetchOnWindowFocus: false,
     keepPreviousData: true,
     onSuccess: (response) => {
-      throwQueryErrorIfExists(response);
+      try {
+        throwQueryErrorIfExists(response);
+      } catch (error) {
+        handleError(error);
+        setTimeout(() => navigate(getRoute.users()), 0);
+      }
     },
     onError: (error) => {
       handleError(error);
