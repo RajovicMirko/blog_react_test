@@ -1,5 +1,5 @@
-import all from "./all";
+import many from "./many";
 import one from "./one";
-import oneData from "./oneData";
+import oneEntity from "./oneEntity";
 
-export { all, one, oneData };
+export { many, one, oneEntity };

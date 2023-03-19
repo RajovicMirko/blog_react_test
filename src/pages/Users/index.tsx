@@ -25,7 +25,7 @@ const UsersPage = () => {
     pagination,
     isDataEmpty,
     refetch: refetchUsers,
-  } = users.all();
+  } = users.many();
 
   const { create, isLoadingCreate, updateQueryData } = users.one({});
 

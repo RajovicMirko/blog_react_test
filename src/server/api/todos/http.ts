@@ -1,22 +1,20 @@
 import fetchers from "src/server/fetchers";
 import {
   BASE_URL,
+  ManyRequest,
+  ManyResponse,
   OneRequest,
-  OneDataRequest,
-  AllResponse,
   OneResponse,
-  AllRequest,
+  EntityRequest,
+  EntityResponse,
   MutationRequest,
-  OneDataResponse,
 } from "./types";
 
-const getAll = fetchers.getAll<AllRequest, AllResponse>(BASE_URL);
+const getMany = fetchers.getMany<ManyRequest, ManyResponse>(BASE_URL);
 
 const getOne = fetchers.getOne<OneRequest, OneResponse>(BASE_URL);
 
-const getOneData = fetchers.getOneData<OneDataRequest, OneDataResponse>(
-  BASE_URL
-);
+const getEntity = fetchers.getEntity<EntityRequest, EntityResponse>(BASE_URL);
 
 const createOne = fetchers.createOne<MutationRequest, OneResponse>(BASE_URL);
 
@@ -27,9 +25,9 @@ const deleteOne = fetchers.deleteOne<Pick<OneRequest, "id">, OneResponse>(
 );
 
 export default {
-  getAll,
+  getMany,
   getOne,
-  getOneData,
+  getEntity,
   createOne,
   updateOne,
   deleteOne,

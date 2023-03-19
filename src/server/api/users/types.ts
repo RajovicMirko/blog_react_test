@@ -1,4 +1,5 @@
 import { Post } from "../posts";
+import { Todo } from "../todos";
 import { BaseRequest, BaseResponse, PaginationParams } from "../../types";
 
 export const BASE_URL = "users";
@@ -21,13 +22,13 @@ export type User = {
   status: UserStatus;
 };
 
-export type AllRequest = PaginationParams;
-export type AllResponse = BaseResponse<User[]>;
+export type ManyRequest = PaginationParams;
+export type ManyResponse = BaseResponse<User[]>;
 
 export type OneRequest = BaseRequest<{ id?: User["id"] }>;
 export type OneResponse = BaseResponse<User>;
 
-export type OneDataRequest = OneRequest & { entity: Entity };
-export type OneDataResponse = BaseResponse<Post | any>;
+export type EntityRequest = OneRequest & { entity: Entity };
+export type EntityResponse = BaseResponse<Post[] & Todo[]>;
 
 export type MutationRequest = User;

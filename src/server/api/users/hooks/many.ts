@@ -1,20 +1,21 @@
+import { useEffect } from "react";
 import useFetch from "../../../hooks/useFetch";
-import { OneDataResponse, OneDataRequest } from "../types";
+import usePagination from "../../../hooks/usePagination";
+import { PaginationParams } from "../../../types";
+import { ManyResponse } from "../types";
 import http from "../http";
 import queryKeys from "../queryKeys";
-import usePagination from "../../../hooks/usePagination";
-import { useEffect } from "react";
-import { BaseHookParams } from "src/server/types";
 
-const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
+const useGetAll = () => {
   const { isReady, perPage, handleInit, paginationParams, ...restPatination } =
     usePagination({ useBreakpoints: true });
 
-  const { axiosResponse, ...rest } = useFetch<OneDataResponse, OneDataRequest>({
-    queryFn: http.getOneData,
-    queryKey: queryKeys.oneData({ id, ...paginationParams }),
+  const { axiosResponse, ...rest } = useFetch<ManyResponse, PaginationParams>({
+    queryFn: http.getMany,
+    queryKey: queryKeys.many(paginationParams),
     options: {
-      enabled: isReady && !!id && enabled,
+      enabled: isReady,
+      staleTime: 5000,
     },
   });
 
@@ -27,6 +28,7 @@ const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
   return {
     data: axiosResponse?.data?.data,
     pagination: {
+      isReady,
       perPage,
       handleInit,
       paginationParams,
@@ -36,4 +38,4 @@ const useGetOneData = ({ id, enabled }: BaseHookParams<OneDataRequest>) => {
   };
 };
 
-export default useGetOneData;
+export default useGetAll;

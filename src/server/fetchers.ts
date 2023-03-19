@@ -1,22 +1,21 @@
 import API from "src/utils/axios";
 import { sleep } from "src/utils/sleep";
 import { generateUrlWithQueryString } from "./helpers";
-import { GenerateQueryStringProps } from "./types";
+import { GenerateQueryStringProps, BaseRequest } from "./types";
 
-function getAll<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function getMany<Props, Response>(baseUrl: string) {
   return async (props: Props): Promise<Response> => {
-    const url = generateUrlWithQueryString(baseUrl, props);
+    const url = generateUrlWithQueryString(
+      baseUrl,
+      props as GenerateQueryStringProps
+    );
     const data = await API.get(url);
     await sleep();
     return data as Response;
   };
 }
 
-function getOne<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function getOne<Props extends BaseRequest, Response>(baseUrl: string) {
   return async ({ id }: Props): Promise<Response> => {
     const url = `/${baseUrl}/${id}`;
     const data = await API.get(url);
@@ -25,13 +24,11 @@ function getOne<Props extends GenerateQueryStringProps, Response>(
   };
 }
 
-function getOneData<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function getEntity<Props extends BaseRequest, Response>(baseUrl: string) {
   return async ({ id, entity, ...pagination }: Props): Promise<Response> => {
     const url = generateUrlWithQueryString(
       `/${baseUrl}/${id}/${entity}`,
-      pagination
+      pagination as GenerateQueryStringProps
     );
     const data = await API.get(url);
     await sleep();
@@ -39,9 +36,7 @@ function getOneData<Props extends GenerateQueryStringProps, Response>(
   };
 }
 
-function createOne<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function createOne<Props extends BaseRequest, Response>(baseUrl: string) {
   return async (props: Props): Promise<Response> => {
     const data = await API.post(baseUrl, props);
     await sleep();
@@ -49,9 +44,7 @@ function createOne<Props extends GenerateQueryStringProps, Response>(
   };
 }
 
-function updateOne<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function updateOne<Props extends BaseRequest, Response>(baseUrl: string) {
   return async ({ id, ...rest }: Props): Promise<Response> => {
     const data = await API.patch(`${baseUrl}/${id}`, rest);
     await sleep();
@@ -59,9 +52,7 @@ function updateOne<Props extends GenerateQueryStringProps, Response>(
   };
 }
 
-function deleteOne<Props extends GenerateQueryStringProps, Response>(
-  baseUrl: string
-) {
+function deleteOne<Props extends BaseRequest, Response>(baseUrl: string) {
   return async ({ id }: Props): Promise<Response> => {
     const data = await API.delete(`${baseUrl}/${id}`);
     await sleep();
@@ -70,9 +61,9 @@ function deleteOne<Props extends GenerateQueryStringProps, Response>(
 }
 
 export default {
-  getAll,
+  getMany,
   getOne,
-  getOneData,
+  getEntity,
   createOne,
   updateOne,
   deleteOne,

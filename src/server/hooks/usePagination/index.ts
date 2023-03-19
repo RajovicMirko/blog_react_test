@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import useBreakpoints from "src/hooks/useBreakpoints";
-import { getPerPageByBreakpoints } from "../helpers";
-import { PaginationResponse, PaginationParams } from "../types";
+import { PaginationResponse, PaginationParams } from "../../types";
+import { getPerPageByBreakpoints } from "./getPerPageByBreakpoints";
 
 const DEFAULT_PER_PAGE = 24;
 
@@ -29,7 +29,7 @@ export type PaginationHookResponse = {
 const usePagination = (props: PaginationParams): PaginationHookResponse => {
   const breakpoints = useBreakpoints();
 
-  const [page, setPage] = useState<number>(props?.page ?? 0);
+  const [page, setPage] = useState<number>(props?.page ?? 1);
   const [perPage, setPerPage] = useState<number>(props?.per_page ?? 0);
   const [pages, setPages] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
@@ -37,9 +37,11 @@ const usePagination = (props: PaginationParams): PaginationHookResponse => {
   const isFirstPage: boolean = useMemo(() => page === 1, [page]);
   const isLastPage: boolean = useMemo(() => page === pages, [page, pages]);
 
-  const handleInit = (pagination: PaginationResponse) => {
-    setPages(pagination?.pages || 0);
-    setTotal(pagination?.total || 0);
+  const handleInit = ({ total }: PaginationResponse) => {
+    if (total) {
+      setTotal(total || 0);
+      setPages(Math.ceil(total / perPage) ?? 0);
+    }
   };
 
   const handleNext = () => {
@@ -61,14 +63,15 @@ const usePagination = (props: PaginationParams): PaginationHookResponse => {
 
   useEffect(() => {
     if (props.useBreakpoints) {
-      const newPerPage = getPerPageByBreakpoints(breakpoints, DEFAULT_PER_PAGE);
+      const breakpointPerPage = getPerPageByBreakpoints(
+        breakpoints,
+        DEFAULT_PER_PAGE
+      );
 
-      if (perPage !== newPerPage) {
+      if (perPage !== breakpointPerPage) {
         setPage(1);
-        setPerPage(newPerPage);
+        setPerPage(breakpointPerPage);
       }
-    } else {
-      setPerPage(DEFAULT_PER_PAGE);
     }
   }, [breakpoints, props.useBreakpoints]);
 
@@ -81,7 +84,7 @@ const usePagination = (props: PaginationParams): PaginationHookResponse => {
     total,
     isReady: !!perPage,
     ...displayData,
-    paginationParams: { page, per_page: perPage, limit: perPage },
+    paginationParams: { page, per_page: perPage },
     handleNext,
     handleBack,
     handleInit,

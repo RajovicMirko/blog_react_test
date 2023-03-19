@@ -24,7 +24,8 @@ export type PaginationParams = {
   useBreakpoints?: boolean;
 };
 
-export type BaseRequest<Props = void> = Props & PaginationParams;
+export type BaseRequest<Props = { [key: string]: any }> = Props &
+  PaginationParams;
 
 export type BaseApiMutationRequest = {
   token?: string;

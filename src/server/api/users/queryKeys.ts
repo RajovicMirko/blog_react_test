@@ -1,18 +1,18 @@
-import { AllRequest, BASE_URL, OneDataRequest, OneRequest } from "./types";
+import { BASE_URL, ManyRequest, OneRequest, EntityRequest } from "./types";
 
-const all = (props: AllRequest) => [BASE_URL, "all", props];
+const many = (props: ManyRequest) => [BASE_URL, "many", props];
 
 const one = (props: OneRequest) => [BASE_URL, "one", props];
 
-const oneData = (props: OneDataRequest) => [
+const entity = (props: EntityRequest) => [
   BASE_URL,
-  "oneData",
+  "oneEntity",
   props.entity,
   props,
 ];
 
 export default {
-  all,
+  many,
   one,
-  oneData,
+  entity,
 };

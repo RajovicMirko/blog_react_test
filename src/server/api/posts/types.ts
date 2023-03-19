@@ -13,13 +13,13 @@ export type Post = {
   body: string;
 };
 
-export type AllRequest = PaginationParams;
-export type AllResponse = BaseResponse<Post[]>;
+export type ManyRequest = PaginationParams;
+export type ManyResponse = BaseResponse<Post[]>;
 
 export type OneRequest = BaseRequest<{ id?: Post["id"] }>;
 export type OneResponse = BaseResponse<Post>;
 
-export type OneDataRequest = OneRequest & { entity: Entity };
-export type OneDataResponse = BaseResponse<any>;
+export type EntityRequest = OneRequest & { entity: Entity };
+export type EntityResponse = BaseResponse<Post | any>;
 
 export type MutationRequest = Post;

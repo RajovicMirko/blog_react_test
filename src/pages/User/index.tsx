@@ -42,7 +42,7 @@ const UserPage = () => {
     pagination: paginationPosts,
     isDataEmpty: isDataEmptyPosts,
     refetch: refetchPosts,
-  } = users.oneData({
+  } = users.oneEntity({
     id: Number(id),
     entity: Entity.posts,
     enabled: !!user?.id && entity === Entity.posts,
@@ -56,7 +56,7 @@ const UserPage = () => {
     pagination: paginationTodos,
     isDataEmpty: isDataEmptyTodos,
     refetch: refetchTodos,
-  } = users.oneData({
+  } = users.oneEntity({
     id: Number(id),
     entity: Entity.todos,
     enabled: !!user?.id && entity === Entity.todos,
@@ -109,11 +109,11 @@ const UserPage = () => {
     toast.success("Todo successfully deleted");
   };
 
-  const CardPost = (data: Post & Todo) => (
+  const CardPost = (data: Post) => (
     <PostCard post={data} onDeleteSuccess={handleDeletePost} />
   );
 
-  const CardTodo = (data: Post & Todo) => (
+  const CardTodo = (data: Todo) => (
     <TodoCard
       todo={data}
       onEditSuccess={handleEditTodo}
