@@ -16,6 +16,7 @@ import PostCard from "src/components/AppComponents/post/PostCard";
 import TodoForm from "src/components/AppComponents/todo/TodoForm";
 import TodoCard from "src/components/AppComponents/todo/TodoCard";
 import PostForm from "src/components/AppComponents/post/PostForm";
+import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 
 const UserPage = () => {
   const { id } = useParams();
@@ -126,7 +127,7 @@ const UserPage = () => {
   if (isAppLoading) return null;
 
   return (
-    <>
+    <ScrollWrapperPage>
       <UserDetails user={user} />
 
       <TabSwitcher
@@ -189,7 +190,7 @@ const UserPage = () => {
           isLoading={isLoadingCreateTodo}
         />
       </Modal>
-    </>
+    </ScrollWrapperPage>
   );
 };
 

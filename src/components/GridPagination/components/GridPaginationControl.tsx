@@ -46,8 +46,8 @@ const GridPaginationControl = ({
       elevation={0}
       sx={{ display: "flex", justifyContent: "center" }}
     >
-      <Grid container p="10px 20px" maxWidth={`${GRID_MAX_WIDTH}px`}>
-        <HalfSide>
+      <Grid container p="10px 20px" xs={12} maxWidth={`${GRID_MAX_WIDTH}px`}>
+        <HalfSide xs={3}>
           {useSwitch && (
             <>
               <Grid item>
@@ -64,7 +64,7 @@ const GridPaginationControl = ({
           )}
         </HalfSide>
 
-        <HalfSide spacing={3} justifyContent="flex-end">
+        <HalfSide spacing={3} xs={9} justifyContent="flex-end">
           <Grid item>
             <Typography variant="body2">{paginationText}</Typography>
           </Grid>

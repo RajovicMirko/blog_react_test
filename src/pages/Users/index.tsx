@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "src/hooks/useToggle";
 import UserCard from "src/components/AppComponents/user/UserCard";
 import UserRow from "src/components/AppComponents/user/UserRow";
+import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 
 const UsersPage = () => {
   const theme = useTheme();
@@ -49,7 +50,7 @@ const UsersPage = () => {
   if (!usersData && !isError) return null;
 
   return (
-    <>
+    <ScrollWrapperPage>
       <GridPagination
         data={usersData}
         card={CardComponent}
@@ -77,7 +78,7 @@ const UsersPage = () => {
       >
         <AddIcon />
       </Fab>
-    </>
+    </ScrollWrapperPage>
   );
 };
 

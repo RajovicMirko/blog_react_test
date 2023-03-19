@@ -1,7 +1,6 @@
 import { Paper } from "@mui/material";
 import { PropsWithChildren, ReactNode } from "react";
 import useAuthContext from "src/context/AuthContext";
-import FlexColumn from "../PageWrapper/FlexColumn";
 import Header from "./Header";
 
 const Layout = ({ children }: PropsWithChildren<ReactNode>) => {
@@ -11,10 +10,8 @@ const Layout = ({ children }: PropsWithChildren<ReactNode>) => {
 
   return (
     <Paper elevation={0}>
-      <FlexColumn>
-        <Header />
-        {children}
-      </FlexColumn>
+      <Header />
+      {children}
     </Paper>
   );
 };

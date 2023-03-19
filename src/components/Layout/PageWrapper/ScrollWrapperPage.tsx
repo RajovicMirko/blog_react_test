@@ -1,10 +1,10 @@
 import { Box, styled } from "@mui/material";
 
-const FlexColumn = styled(Box)(() => ({
-  height: "100vh",
+const ScrollWrapperPage = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
+  ...theme.mixins.pageHeight,
 }));
 
-export default FlexColumn;
+export default ScrollWrapperPage;
