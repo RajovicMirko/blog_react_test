@@ -35,40 +35,64 @@ const UserPage = () => {
     todos.one({});
 
   const {
-    data: userTabData,
-    isInitialLoading: isInitialLoadingUserData,
-    isLoading: isLoadingUserData,
-    isError: isErrorUserData,
-    pagination,
-    isDataEmpty,
-    refetch: refetchUserEntityData,
-  } = users.oneData({ id: Number(id), entity, enabled: !!user?.id });
+    data: userPosts,
+    isInitialLoading: isInitialLoadingPosts,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+    pagination: paginationPosts,
+    isDataEmpty: isDataEmptyPosts,
+    refetch: refetchPosts,
+  } = users.oneData({
+    id: Number(id),
+    entity: Entity.posts,
+    enabled: !!user?.id && entity === Entity.posts,
+  });
+
+  const {
+    data: userTodos,
+    isInitialLoading: isInitialLoadingTodos,
+    isLoading: isLoadingTodos,
+    isError: isErrorTodos,
+    pagination: paginationTodos,
+    isDataEmpty: isDataEmptyTodos,
+    refetch: refetchTodos,
+  } = users.oneData({
+    id: Number(id),
+    entity: Entity.todos,
+    enabled: !!user?.id && entity === Entity.todos,
+  });
 
   const handleTabChange = (id: Entity) => setEntity(id);
-
-  const handleAction = (id: Entity) => setDisplayModalKey(id);
+  const handleSpeedDialActionClick = (id: Entity) => setDisplayModalKey(id);
   const handleModalClose = () => setDisplayModalKey("");
 
+  // POST HANDLERS
   const handleCreatePost = (formData: Post) => {
     createPost(formData, {
       onSuccess: () => {
         if (entity !== Entity.posts) {
           handleTabChange(Entity.posts);
         }
-        refetchUserEntityData();
+        refetchPosts();
         handleModalClose();
         toast.success("Post successfully added");
       },
     });
   };
 
+  const handleDeletePost = () => {
+    refetchPosts();
+    toast.success("Post successfully deleted");
+  };
+
+  // TODO HANDLERS
   const handleCreateTodo = (formData: Todo) => {
     createTodo(formData, {
       onSuccess: () => {
         if (entity !== Entity.todos) {
           handleTabChange(Entity.todos);
         }
-        refetchUserEntityData();
+        refetchTodos();
         handleModalClose();
         toast.success("Todo successfully added");
       },
@@ -76,17 +100,12 @@ const UserPage = () => {
   };
 
   const handleEditTodo = () => {
-    refetchUserEntityData();
+    refetchTodos();
     toast.success("Todo successfully updated");
   };
 
-  const handleDeletePost = () => {
-    refetchUserEntityData();
-    toast.success("Post successfully deleted");
-  };
-
   const handleDeleteTodo = () => {
-    refetchUserEntityData();
+    refetchTodos();
     toast.success("Todo successfully deleted");
   };
 
@@ -121,20 +140,31 @@ const UserPage = () => {
         onChange={handleTabChange}
       />
 
-      <GridPagination
-        data={userTabData}
-        card={CardComponent}
-        pagination={pagination}
-        isLoading={
-          (isInitialLoadingUserData || isLoadingUserData) && !isErrorUserData
-        }
-        isDataEmpty={isDataEmpty || !userTabData?.length}
-        emptyDataText={`No ${entity} data`}
-      />
+      {entity === Entity.posts && (
+        <GridPagination
+          data={userPosts}
+          card={CardComponent}
+          pagination={paginationPosts}
+          isLoading={(isInitialLoadingPosts || isLoadingPosts) && !isErrorPosts}
+          isDataEmpty={isDataEmptyPosts || !userPosts?.length}
+          emptyDataText={`No ${entity} data`}
+        />
+      )}
+
+      {entity === Entity.todos && (
+        <GridPagination
+          data={userTodos}
+          card={CardComponent}
+          pagination={paginationTodos}
+          isLoading={(isInitialLoadingTodos || isLoadingTodos) && !isErrorTodos}
+          isDataEmpty={isDataEmptyTodos || !userTodos?.length}
+          emptyDataText={`No ${entity} data`}
+        />
+      )}
 
       <SpeedDialTooltip
         actions={actions}
-        onClick={handleAction}
+        onClick={handleSpeedDialActionClick}
         ariaLabel="Blog tab actions"
         tooltipWidth={160}
       />

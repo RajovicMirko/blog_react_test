@@ -31,6 +31,7 @@ const useGetOneData = ({
   return {
     data: axiosResponse?.data?.data,
     pagination: {
+      isReady,
       perPage,
       handleInit,
       paginationParams,
