@@ -109,24 +109,19 @@ const UserPage = () => {
     toast.success("Todo successfully deleted");
   };
 
-  handleLoading("user-page", !user && !isErrorUser);
+  const CardPost = (data: Post & Todo) => (
+    <PostCard post={data} onDeleteSuccess={handleDeletePost} />
+  );
 
-  const CardComponent = (data: Post & Todo) => {
-    switch (entity) {
-      case Entity.posts:
-        return <PostCard post={data} onDeleteSuccess={handleDeletePost} />;
-      case Entity.todos:
-        return (
-          <TodoCard
-            todo={data}
-            onEditSuccess={handleEditTodo}
-            onDeleteSuccess={handleDeleteTodo}
-          />
-        );
-      default:
-        return <div />;
-    }
-  };
+  const CardTodo = (data: Post & Todo) => (
+    <TodoCard
+      todo={data}
+      onEditSuccess={handleEditTodo}
+      onDeleteSuccess={handleDeleteTodo}
+    />
+  );
+
+  handleLoading("user-page", !user && !isErrorUser);
 
   if (isAppLoading) return null;
 
@@ -143,7 +138,7 @@ const UserPage = () => {
       {entity === Entity.posts && (
         <GridPagination
           data={userPosts}
-          card={CardComponent}
+          card={CardPost}
           pagination={paginationPosts}
           isLoading={(isInitialLoadingPosts || isLoadingPosts) && !isErrorPosts}
           isDataEmpty={isDataEmptyPosts || !userPosts?.length}
@@ -154,7 +149,7 @@ const UserPage = () => {
       {entity === Entity.todos && (
         <GridPagination
           data={userTodos}
-          card={CardComponent}
+          card={CardTodo}
           pagination={paginationTodos}
           isLoading={(isInitialLoadingTodos || isLoadingTodos) && !isErrorTodos}
           isDataEmpty={isDataEmptyTodos || !userTodos?.length}
