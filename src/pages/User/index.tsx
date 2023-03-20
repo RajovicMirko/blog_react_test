@@ -31,10 +31,10 @@ const UserPage = () => {
   });
 
   const { create: createPost, isLoadingCreate: isLoadingCreatePost } =
-    posts.one({});
+    posts.one();
 
   const { create: createTodo, isLoadingCreate: isLoadingCreateTodo } =
-    todos.one({});
+    todos.one();
 
   const {
     data: userPosts,
@@ -47,7 +47,9 @@ const UserPage = () => {
   } = users.oneEntity({
     id: Number(id),
     entity: UserEntity.posts,
-    enabled: !!user?.id && entity === UserEntity.posts,
+    options: {
+      enabled: !!user?.id && entity === UserEntity.posts,
+    },
   });
 
   const {
@@ -61,7 +63,9 @@ const UserPage = () => {
   } = users.oneEntity({
     id: Number(id),
     entity: UserEntity.todos,
-    enabled: !!user?.id && entity === UserEntity.todos,
+    options: {
+      enabled: !!user?.id && entity === UserEntity.todos,
+    },
   });
 
   const handleTabChange = (id: UserEntity) => setEntity(id);

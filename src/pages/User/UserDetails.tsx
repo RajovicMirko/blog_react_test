@@ -41,7 +41,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
 
   const handleSubmitDeleteUser = () => {
     remove(
-      { id: user?.id, enabled: !!user?.id },
+      { id: user?.id },
       {
         onSuccess: () => {
           toast.success("User successfully deleted");
