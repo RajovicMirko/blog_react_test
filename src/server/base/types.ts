@@ -12,6 +12,7 @@ export type BaseHookParams<Response, Props = void> = Props & {
 export type BaseRequest<Props = void> = Props & PaginationRequestParams;
 
 type OneRequestParams = { id?: string | number };
+
 export type BaseOneRequest = BaseRequest<OneRequestParams>;
 
 export type BaseOneEntityRequest<EntityType = any> = BaseRequest<
@@ -21,10 +22,6 @@ export type BaseOneEntityRequest<EntityType = any> = BaseRequest<
     }
   >
 >;
-
-export type BaseApiMutationRequest = {
-  token?: string;
-};
 
 export type MetaResponse = {
   pagination: PaginationResponse;

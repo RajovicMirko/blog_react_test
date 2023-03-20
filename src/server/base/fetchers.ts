@@ -15,6 +15,7 @@ function getMany<
 >(baseUrl: string) {
   return async (props: Props): Promise<Response> => {
     const url = generateUrlWithQueryString(baseUrl, props as any);
+
     const data = await API.get(url);
     await sleep();
     return data as Response;
@@ -24,6 +25,7 @@ function getMany<
 function getOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
   return async ({ id }: Props): Promise<Response> => {
     const url = `/${baseUrl}/${id}`;
+
     const data = await API.get(url);
     await sleep();
     return data as Response;
@@ -40,6 +42,7 @@ function getEntity<Response, EntityType>(baseUrl: string) {
       `/${baseUrl}/${id}/${entity}`,
       pagination as GenerateQueryStringProps
     );
+
     const data = await API.get(url);
     await sleep();
     return data as Response;
@@ -56,7 +59,9 @@ function createOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
 
 function updateOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
   return async ({ id, ...body }: Props): Promise<Response> => {
-    const data = await API.patch(`${baseUrl}/${id}`, body);
+    const url = `${baseUrl}/${id}`;
+
+    const data = await API.patch(url, body);
     await sleep();
     return data as Response;
   };
@@ -64,7 +69,9 @@ function updateOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
 
 function deleteOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
   return async ({ id }: Props): Promise<Response> => {
-    const data = await API.delete(`${baseUrl}/${id}`);
+    const url = `${baseUrl}/${id}`;
+
+    const data = await API.delete(url);
     await sleep();
     return data as Response;
   };

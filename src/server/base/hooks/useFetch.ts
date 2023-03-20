@@ -2,7 +2,6 @@ import {
   QueryFunction,
   QueryKey,
   useQuery,
-  useQueryClient,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
@@ -32,7 +31,6 @@ export default function useFetch<
   Response extends BaseResponse<any>
 >({ queryKey, queryFn, options = {} }: UseFetchProps<Props, Response>) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const queryFnWithProps: QueryFunction<any, any> = async () =>
     await queryFn(queryKey[queryKey.length - 1] as Props);
@@ -68,23 +66,12 @@ export default function useFetch<
     ...options,
   });
 
-  const handleRefetch = () => {
-    queryClient.invalidateQueries(queryKey);
-  };
-
-  // TODO: find a way to initialize isInitialLoading
-  const handleRefetchAll = () => {
-    queryClient.invalidateQueries(queryKey);
-  };
-
   const isLoading =
     (rest.isLoading || rest.isFetching) && !rest.isInitialLoading;
 
   return {
     ...rest,
     axiosResponse: axiosData,
-    refetch: handleRefetch,
-    refetchAll: handleRefetchAll,
     isLoading,
     isDataEmpty: !axiosData && (rest.isSuccess || rest.isError),
   };
