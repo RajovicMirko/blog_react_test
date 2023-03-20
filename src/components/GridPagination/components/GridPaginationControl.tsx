@@ -7,9 +7,8 @@ import { PaginationHookReturn } from "src/server/base/hooks/usePagination/types"
 
 const HalfSide = styled(Grid)(() => ({}));
 HalfSide.defaultProps = {
-  container: true,
   item: true,
-  xs: 6,
+  display: "flex",
   alignItems: "center",
 };
 
@@ -52,63 +51,59 @@ const GridPaginationControl = ({
       elevation={0}
       sx={{ display: "flex", justifyContent: "center" }}
     >
-      <Grid
-        container
-        item
-        p="10px 20px"
-        xs={12}
-        maxWidth={`${GRID_MAX_WIDTH}px`}
-      >
-        <HalfSide item xs={3}>
-          {useSwitch && (
-            <>
-              <Grid item>
-                <ViewButton
-                  aria-label="Grid"
-                  disabled={!listView}
-                  onClick={onLayoutViewClick}
-                >
-                  <GridOnIcon />
-                </ViewButton>
-              </Grid>
-              <Grid item>
-                <ViewButton
-                  aria-label="List"
-                  disabled={listView}
-                  onClick={onLayoutViewClick}
-                >
-                  <ViewHeadlineIcon fontSize="medium" />
-                </ViewButton>
-              </Grid>
-            </>
-          )}
-        </HalfSide>
+      <Grid container maxWidth={`${GRID_MAX_WIDTH}px`}>
+        <Grid container item p="10px 20px" xs={12}>
+          <HalfSide xs={1}>
+            {useSwitch && (
+              <>
+                <Grid item>
+                  <ViewButton
+                    aria-label="Grid"
+                    disabled={!listView}
+                    onClick={onLayoutViewClick}
+                  >
+                    <GridOnIcon />
+                  </ViewButton>
+                </Grid>
+                <Grid item>
+                  <ViewButton
+                    aria-label="List"
+                    disabled={listView}
+                    onClick={onLayoutViewClick}
+                  >
+                    <ViewHeadlineIcon fontSize="medium" />
+                  </ViewButton>
+                </Grid>
+              </>
+            )}
+          </HalfSide>
 
-        <HalfSide item spacing={3} xs={9} justifyContent="flex-end">
-          <Grid item>
-            <Typography variant="body2">{paginationText}</Typography>
-          </Grid>
-          <Grid item>
-            <Box>
-              <Button
-                onClick={handleBack}
-                disabled={isFirstPage}
-                color="secondary"
-                aria-label="Back"
-              >
-                Back
-              </Button>
-              <Button
-                onClick={handleNext}
-                disabled={isLastPage}
-                color="secondary"
-                aria-label="Next"
-              >
-                Next
-              </Button>
-            </Box>
-          </Grid>
-        </HalfSide>
+          <HalfSide xs={11} justifyContent="flex-end">
+            <Grid item>
+              <Typography variant="body2">{paginationText}</Typography>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Button
+                  onClick={handleBack}
+                  disabled={isFirstPage}
+                  color="secondary"
+                  aria-label="Back"
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={handleNext}
+                  disabled={isLastPage}
+                  color="secondary"
+                  aria-label="Next"
+                >
+                  Next
+                </Button>
+              </Box>
+            </Grid>
+          </HalfSide>
+        </Grid>
       </Grid>
     </PaperStyled>
   );
