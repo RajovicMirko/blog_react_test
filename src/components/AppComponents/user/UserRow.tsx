@@ -30,13 +30,13 @@ const UserRow = ({ user, isLoading }: UserRowProps) => {
           <Avatar src={""} sx={{ width: "25px", height: "25px" }}>
             <Person2Icon color="primary" fontSize="small" />
           </Avatar>
-          <Grid item>
+          <Grid item width="300px" overflow="hidden">
             <Card.Title title={user.name} sx={theme.mixins.textEllipsis} />
           </Grid>
         </Grid>
 
-        <Grid item xs={3}>
-          <Typography>{user.email}</Typography>
+        <Grid item xs={3} width="300px">
+          <Typography sx={theme.mixins.textEllipsis}>{user.email}</Typography>
         </Grid>
 
         <Grid item xs={1}>
