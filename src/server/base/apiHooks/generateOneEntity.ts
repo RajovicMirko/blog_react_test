@@ -13,7 +13,7 @@ function generateOneEntity<Response, EntityType>(baseUrl: string) {
       options,
     }: BaseHookParams<
       BaseResponse<Response>,
-      Required<BaseOneEntityRequest<any, EntityType>>
+      BaseOneEntityRequest<EntityType>
     > = {} as any
   ) => {
     const {
@@ -28,7 +28,7 @@ function generateOneEntity<Response, EntityType>(baseUrl: string) {
       BaseResponse<Response>
     >({
       queryFn: fetchers.getEntity(baseUrl),
-      queryKey: queryKeys.entity(baseUrl, {
+      queryKey: queryKeys.entity<EntityType>(baseUrl, {
         id,
         entity,
         ...getPaginationRequestParams(),

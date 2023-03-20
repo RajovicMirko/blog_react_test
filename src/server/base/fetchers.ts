@@ -30,11 +30,12 @@ function getOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
   };
 }
 
-function getEntity<
-  Props extends BaseOneEntityRequest<GenerateQueryStringProps, any>,
-  Response
->(baseUrl: string) {
-  return async ({ id, entity, ...pagination }: Props): Promise<Response> => {
+function getEntity<Response, EntityType>(baseUrl: string) {
+  return async ({
+    id,
+    entity,
+    ...pagination
+  }: BaseOneEntityRequest<EntityType>): Promise<Response> => {
     const url = generateUrlWithQueryString(
       `/${baseUrl}/${id}/${entity}`,
       pagination as GenerateQueryStringProps

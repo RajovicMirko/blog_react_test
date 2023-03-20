@@ -5,16 +5,13 @@ function many<Request>(baseUrl: string, props: BaseRequest<Request>): QueryKey {
   return [baseUrl, "many", props];
 }
 
-function one<Request>(
-  baseUrl: string,
-  props: BaseOneRequest<Request>
-): QueryKey {
+function one(baseUrl: string, props: BaseOneRequest): QueryKey {
   return [baseUrl, "one", props];
 }
 
-function entity<Request>(
+function entity<EntityType>(
   baseUrl: string,
-  props: BaseOneEntityRequest<Request>
+  props: BaseOneEntityRequest<EntityType>
 ): QueryKey {
   return [baseUrl, "oneEntity", props.entity, props];
 }
