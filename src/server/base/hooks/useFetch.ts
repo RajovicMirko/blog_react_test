@@ -35,36 +35,32 @@ export default function useFetch<
   const queryFnWithProps: QueryFunction<any, any> = async () =>
     await queryFn(queryKey[queryKey.length - 1] as Props);
 
-  const {
-    data: axiosData,
-    refetch,
-    ...rest
-  }: UseQueryResult<Response, unknown> = useQuery<
-    Response,
-    unknown,
-    Response,
-    QueryKey
-  >(queryKey, queryFnWithProps, {
-    staleTime: Infinity,
-    refetchInterval: false,
-    refetchIntervalInBackground: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    keepPreviousData: true,
-    onSuccess: (response) => {
-      try {
-        throwQueryErrorIfExists(response);
-      } catch (error) {
-        handleError(error);
-        setTimeout(() => navigate(getRoute.users()), 0);
+  const { data: axiosData, ...rest }: UseQueryResult<Response, unknown> =
+    useQuery<Response, unknown, Response, QueryKey>(
+      queryKey,
+      queryFnWithProps,
+      {
+        staleTime: Infinity,
+        refetchInterval: false,
+        refetchIntervalInBackground: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+        keepPreviousData: true,
+        onSuccess: (response) => {
+          try {
+            throwQueryErrorIfExists(response);
+          } catch (error) {
+            handleError(error);
+            setTimeout(() => navigate(getRoute.users()), 0);
+          }
+        },
+        onError: (error) => {
+          handleError(error);
+        },
+        ...options,
       }
-    },
-    onError: (error) => {
-      handleError(error);
-    },
-    ...options,
-  });
+    );
 
   const isLoading =
     (rest.isLoading || rest.isFetching) && !rest.isInitialLoading;
