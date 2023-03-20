@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import users, { UserEntity } from "src/server/api/users";
+import posts, { Post } from "src/server/api/posts";
+import todos, { Todo } from "src/server/api/todos";
+import { actions, TAB_VIEW_OPTIONS } from "./constants";
+
 import Modal from "src/components/Modal";
 import GridPagination from "src/components/GridPagination";
 import SpeedDialTooltip from "src/components/SpeedDialTooltip";
 import TabSwitcher from "src/components/TabSwitcher";
 import useLoading from "src/context/LoadingContext";
-import users from "src/server/api/users";
-import posts, { Post } from "src/server/api/posts";
-import todos, { Todo } from "src/server/api/todos";
-import { Entity } from "src/server/api/users/types";
-import { actions, TAB_VIEW_OPTIONS } from "./constants";
 import UserDetails from "./UserDetails";
-import { toast } from "react-toastify";
 import PostCard from "src/components/AppComponents/post/PostCard";
 import TodoForm from "src/components/AppComponents/todo/TodoForm";
 import TodoCard from "src/components/AppComponents/todo/TodoCard";
@@ -22,7 +23,7 @@ const UserPage = () => {
   const { id } = useParams();
   const { isAppLoading, handleLoading } = useLoading();
 
-  const [entity, setEntity] = useState(Entity.posts);
+  const [entity, setEntity] = useState(UserEntity.posts);
   const [displayModalKey, setDisplayModalKey] = useState("");
 
   const { data: user, isError: isErrorUser } = users.one({
@@ -45,8 +46,8 @@ const UserPage = () => {
     refetch: refetchPosts,
   } = users.oneEntity({
     id: Number(id),
-    entity: Entity.posts,
-    enabled: !!user?.id && entity === Entity.posts,
+    entity: UserEntity.posts,
+    enabled: !!user?.id && entity === UserEntity.posts,
   });
 
   const {
@@ -59,20 +60,20 @@ const UserPage = () => {
     refetch: refetchTodos,
   } = users.oneEntity({
     id: Number(id),
-    entity: Entity.todos,
-    enabled: !!user?.id && entity === Entity.todos,
+    entity: UserEntity.todos,
+    enabled: !!user?.id && entity === UserEntity.todos,
   });
 
-  const handleTabChange = (id: Entity) => setEntity(id);
-  const handleSpeedDialActionClick = (id: Entity) => setDisplayModalKey(id);
+  const handleTabChange = (id: UserEntity) => setEntity(id);
+  const handleSpeedDialActionClick = (id: UserEntity) => setDisplayModalKey(id);
   const handleModalClose = () => setDisplayModalKey("");
 
   // POST HANDLERS
   const handleCreatePost = (formData: Post) => {
     createPost(formData, {
       onSuccess: () => {
-        if (entity !== Entity.posts) {
-          handleTabChange(Entity.posts);
+        if (entity !== UserEntity.posts) {
+          handleTabChange(UserEntity.posts);
         }
         refetchPosts();
         handleModalClose();
@@ -90,8 +91,8 @@ const UserPage = () => {
   const handleCreateTodo = (formData: Todo) => {
     createTodo(formData, {
       onSuccess: () => {
-        if (entity !== Entity.todos) {
-          handleTabChange(Entity.todos);
+        if (entity !== UserEntity.todos) {
+          handleTabChange(UserEntity.todos);
         }
         refetchTodos();
         handleModalClose();
@@ -136,7 +137,7 @@ const UserPage = () => {
         onChange={handleTabChange}
       />
 
-      {entity === Entity.posts && (
+      {entity === UserEntity.posts && (
         <GridPagination
           data={userPosts}
           card={CardPost}
@@ -147,7 +148,7 @@ const UserPage = () => {
         />
       )}
 
-      {entity === Entity.todos && (
+      {entity === UserEntity.todos && (
         <GridPagination
           data={userTodos}
           card={CardTodo}
@@ -167,7 +168,7 @@ const UserPage = () => {
 
       <Modal
         title="Create new post"
-        open={displayModalKey === Entity.posts}
+        open={displayModalKey === UserEntity.posts}
         onClose={handleModalClose}
         persistent={isLoadingCreatePost}
       >
@@ -180,7 +181,7 @@ const UserPage = () => {
 
       <Modal
         title="Add new todo"
-        open={displayModalKey === Entity.todos}
+        open={displayModalKey === UserEntity.todos}
         onClose={handleModalClose}
         persistent={isLoadingCreateTodo}
       >

@@ -6,7 +6,6 @@ import AppForm, {
   TextFieldSelect,
   TextFieldRadioGroup,
 } from "../../../Form";
-import { User } from "src/server/api/users";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import { statusOptions, genderOptions } from "./constants";
 import {
@@ -15,6 +14,7 @@ import {
   minLen,
   validation,
 } from "../../../Form/validations";
+import { User } from "src/server/api/users";
 
 type UserFormProps = {
   onSubmit: (formData: User) => void;

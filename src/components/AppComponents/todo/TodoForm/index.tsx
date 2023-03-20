@@ -1,11 +1,13 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
+
 import { User } from "src/server/api/users";
+import { Todo } from "src/server/api/todos";
+
 import AppForm, { TextFieldInput, TextFieldRadioGroup } from "../../../Form";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import { isRequired, minLen, validation } from "../../../Form/validations";
-import { Todo } from "src/server/api/todos";
 import { statusOptions } from "./constants";
 
 type TodoFormProps = {

@@ -1,6 +1,6 @@
+import { PaginationHookReturn } from "src/server/base/hooks/usePagination/types";
 import useScroll from "../../hooks/useScroll";
 import useToggle from "../../hooks/useToggle";
-import { PaginationHookResponse } from "../../server/hooks/usePagination";
 import { LinearLoading } from "../Loading/LinearLoading";
 import GridList from "./components/GridList";
 import GridListItem from "./components/GridListItem";
@@ -12,7 +12,7 @@ import { CardFunction } from "./types";
 
 type GridPaginationProps<DataType = void> = {
   data?: DataType[];
-  pagination: PaginationHookResponse;
+  pagination: PaginationHookReturn;
   card: CardFunction<DataType>;
   isLoading: boolean;
   isDataEmpty?: boolean;

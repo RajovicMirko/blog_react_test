@@ -3,7 +3,6 @@ import AddIcon from "@mui/icons-material/Add";
 import UserForm from "src/components/AppComponents/user/UserForm";
 import GridPagination from "src/components/GridPagination";
 import useLoading from "src/context/LoadingContext";
-import users, { User } from "src/server/api/users";
 import Modal from "src/components/Modal";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ import useToggle from "src/hooks/useToggle";
 import UserCard from "src/components/AppComponents/user/UserCard";
 import UserRow from "src/components/AppComponents/user/UserRow";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
+import users, { User } from "src/server/api/users";
 
 const UsersPage = () => {
   const theme = useTheme();
@@ -28,7 +28,7 @@ const UsersPage = () => {
     refetch: refetchUsers,
   } = users.many();
 
-  const { create, isLoadingCreate, updateQueryData } = users.one({});
+  const { create, isLoadingCreate, updateQueryData } = users.one();
 
   const handleCreateUser = (userData: User) => {
     create(userData, {

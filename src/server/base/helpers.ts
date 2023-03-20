@@ -1,4 +1,4 @@
-import { GenerateQueryStringProps } from "src/server/types";
+import { GenerateQueryStringProps } from "./types";
 
 export const generateQueryString = (props: GenerateQueryStringProps) => {
   const stringResult = Object.entries(props).reduce(

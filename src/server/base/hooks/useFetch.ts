@@ -10,18 +10,27 @@ import { useNavigate } from "react-router-dom";
 import { getRoute } from "src/router/routesMap";
 import handleError from "../error";
 import { throwQueryErrorIfExists } from "../error/helpers";
-import { BaseResponse } from "../types";
+import {
+  BaseOneEntityRequest,
+  BaseOneRequest,
+  BaseRequest,
+  BaseResponse,
+  GenerateQueryStringProps,
+} from "../types";
 
-type UseFetchProps<Response, Props = void> = {
+type UseFetchProps<Props, Response> = {
   queryKey: readonly unknown[];
   queryFn: (props: Props) => Promise<Response>;
   options?: UseQueryOptions<Response, unknown, Response, QueryKey>;
 };
 
 export default function useFetch<
-  Response extends BaseResponse<any>,
-  Props = void
->({ queryKey, queryFn, options = {} }: UseFetchProps<Response, Props>) {
+  Props extends
+    | BaseRequest<GenerateQueryStringProps>
+    | BaseOneRequest
+    | BaseOneEntityRequest,
+  Response extends BaseResponse<any>
+>({ queryKey, queryFn, options = {} }: UseFetchProps<Props, Response>) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

@@ -1,4 +1,4 @@
-import { toProperCase } from "../../utils/toProperCase";
+import { toProperCase } from "../../../utils/toProperCase";
 import { BaseResponse } from "../types";
 import { queryErrors } from "./constants";
 

@@ -8,7 +8,7 @@ import { getRoute } from "src/router/routesMap";
 import handleError, { throwQueryErrorIfExists } from "../error";
 import { BaseResponse } from "../types";
 
-function useMutation<Response extends BaseResponse<any>, Props>(
+function useMutation<Props, Response extends BaseResponse<any>>(
   fn: MutationFunction<Response, Props>,
   options?: MutationOptions<Response>
 ) {

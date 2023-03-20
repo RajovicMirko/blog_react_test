@@ -1,17 +1,19 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import useToggle from "../../../hooks/useToggle";
-import todos, { Todo } from "src/server/api/todos";
-import { getTodoColorByStatus } from "src/server/api/todos/helpers";
-import { OneResponse, TodoStatus } from "src/server/api/todos/types";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
 import TodoForm from "./TodoForm";
 import Modal from "../../Modal";
 import ConfirmModal from "../../Modal/ConfirmModal";
+import todos, {
+  getTodoColorByStatus,
+  Todo,
+  TodoStatus,
+} from "src/server/api/todos";
 
 type TodoCardProps = {
   todo: Todo;
-  onEditSuccess: (response?: OneResponse) => void;
+  onEditSuccess: (response?: any) => void;
   onDeleteSuccess: (id: Todo["id"]) => void;
   isLoadingDelete?: boolean;
   isLoading?: boolean;

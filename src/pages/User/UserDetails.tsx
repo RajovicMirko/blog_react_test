@@ -24,7 +24,9 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
     users.one({
       id: user?.id,
-      enabled: !!user?.id,
+      options: {
+        enabled: !!user?.id,
+      },
     });
 
   const handleSubmitEditUser = (formUser: User) => {
