@@ -63,12 +63,20 @@ const GridPaginationControl = ({
           {useSwitch && (
             <>
               <Grid item>
-                <ViewButton disabled={!listView} onClick={onLayoutViewClick}>
+                <ViewButton
+                  aria-label="Grid"
+                  disabled={!listView}
+                  onClick={onLayoutViewClick}
+                >
                   <GridOnIcon />
                 </ViewButton>
               </Grid>
               <Grid item>
-                <ViewButton disabled={listView} onClick={onLayoutViewClick}>
+                <ViewButton
+                  aria-label="List"
+                  disabled={listView}
+                  onClick={onLayoutViewClick}
+                >
                   <ViewHeadlineIcon fontSize="medium" />
                 </ViewButton>
               </Grid>
@@ -86,6 +94,7 @@ const GridPaginationControl = ({
                 onClick={handleBack}
                 disabled={isFirstPage}
                 color="secondary"
+                aria-label="Back"
               >
                 Back
               </Button>
@@ -93,6 +102,7 @@ const GridPaginationControl = ({
                 onClick={handleNext}
                 disabled={isLastPage}
                 color="secondary"
+                aria-label="Next"
               >
                 Next
               </Button>

@@ -61,7 +61,11 @@ const UserRow = ({ user, isLoading }: UserRowProps) => {
           justifyContent="flex-end"
           flex="auto"
         >
-          <ButtonLoading label="Details" onClick={handleDetailsClick} />
+          <ButtonLoading
+            label="Details"
+            onClick={handleDetailsClick}
+            aria-label="Details"
+          />
         </Grid>
       </Grid>
     </Card>

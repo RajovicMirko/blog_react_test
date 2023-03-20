@@ -5,7 +5,7 @@ type TitleProps = TypographyProps & {
 };
 
 const Title = ({ title, ...rest }: TitleProps) => (
-  <Typography variant="h6" {...rest}>
+  <Typography fontSize="22px" {...rest}>
     {title}
   </Typography>
 );

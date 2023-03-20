@@ -75,6 +75,7 @@ const UsersPage = () => {
         color="primary"
         sx={theme.mixins.floatButtonPosition}
         onClick={toggleCreateUserModal}
+        aria-label="Add new user"
       >
         <AddIcon />
       </Fab>

@@ -14,7 +14,7 @@ export type BaseRequest<Props = void> = Props & PaginationRequestParams;
 type OneRequestParams = { id?: string | number };
 export type BaseOneRequest = BaseRequest<OneRequestParams>;
 
-export type BaseOneEntityRequest<EntityType> = BaseRequest<
+export type BaseOneEntityRequest<EntityType = any> = BaseRequest<
   Required<
     OneRequestParams & {
       entity: EntityType;

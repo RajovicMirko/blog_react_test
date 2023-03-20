@@ -29,6 +29,7 @@ const TodoCard = ({
   const [isEditModalOpen, toggleEditModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
   const isPending = todo.status === TodoStatus.pending;
+  const isCompleted = todo.status === TodoStatus.completed;
 
   const { update, isLoadingUpdate, remove, isLoadingRemove } = todos.one({});
 
@@ -82,11 +83,14 @@ const TodoCard = ({
       {!!onDeleteSuccess && (
         <Card.Actions>
           <ButtonLoading label="Edit" color="info" onClick={toggleEditModal} />
-          <ButtonLoading
-            label="Delete"
-            color="error"
-            onClick={toggleDeleteConfirmation}
-          />
+
+          {isCompleted && (
+            <ButtonLoading
+              label="Delete"
+              color="error"
+              onClick={toggleDeleteConfirmation}
+            />
+          )}
         </Card.Actions>
       )}
 

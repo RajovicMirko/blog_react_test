@@ -45,7 +45,11 @@ const UserCard = ({ user, isLoading }: UserCardProps) => {
       </Grid>
 
       <Card.Actions>
-        <ButtonLoading label="Details" onClick={handleDetailsClick} />
+        <ButtonLoading
+          label="Details"
+          onClick={handleDetailsClick}
+          aria-label="Details"
+        />
         <Typography
           variant="body2"
           color={getUserColorByStatus(user.status)}
