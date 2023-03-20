@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import users, { UserEntity } from "src/server/api/users";
@@ -20,7 +20,10 @@ import PostForm from "src/components/AppComponents/post/PostForm";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 
 const UserPage = () => {
-  const { id } = useParams();
+  const {
+    state: { id },
+  } = useLocation();
+
   const { isAppLoading, handleLoading } = useLoading();
 
   const [entity, setEntity] = useState(UserEntity.posts);

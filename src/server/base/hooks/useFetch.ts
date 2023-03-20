@@ -6,7 +6,7 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { getRoute } from "src/router/routesMap";
+import { RoutePath } from "src/router/routesMap";
 import handleError from "../error";
 import { throwQueryErrorIfExists } from "../error/helpers";
 import {
@@ -52,7 +52,7 @@ export default function useFetch<
             throwQueryErrorIfExists(response);
           } catch (error) {
             handleError(error);
-            setTimeout(() => navigate(getRoute.users()), 0);
+            setTimeout(() => navigate(RoutePath.users), 0);
           }
         },
         onError: (error) => {

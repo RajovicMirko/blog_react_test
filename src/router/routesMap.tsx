@@ -1,4 +1,5 @@
 import { RouteProps } from "react-router-dom";
+import PostPage from "src/pages/Post";
 import UserPage from "src/pages/User";
 import UsersPage from "src/pages/Users";
 
@@ -8,23 +9,14 @@ type RouteCustomProps = RouteProps & {
 
 export enum RoutePath {
   users = "/",
-  user = "/:id",
+  user = "/user",
+  post = "/user/post",
 }
 
 const routesMap: RouteCustomProps[] = [
   { path: RoutePath.users, element: <UsersPage /> },
   { path: RoutePath.user, element: <UserPage /> },
+  { path: RoutePath.post, element: <PostPage /> },
 ];
-
-export const pageDataMap = {
-  [RoutePath.users]: { name: "Users" },
-  [RoutePath.user]: { name: "User" },
-};
-
-type GetRoute = { [key in keyof typeof RoutePath]: (props?: any) => string };
-export const getRoute: GetRoute = {
-  users: () => RoutePath.users as string,
-  user: ({ id }) => RoutePath.user.replace(":id", id),
-};
 
 export default routesMap;

@@ -3,73 +3,67 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ButtonLoading from "src/components/Button/ButtonLoading";
 import Card from "src/components/Card";
-import UserForm from "src/components/AppComponents/user/UserForm";
 import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import users, { User } from "src/server/api/users";
+import posts, { Post } from "src/server/api/posts";
+import PostForm from "src/components/AppComponents/post/PostForm";
 
-type UserDetailsProps = {
-  user?: User;
+type PostDetailsProps = {
+  post?: Post;
 };
 
-const UserDetails = ({ user }: UserDetailsProps) => {
+const PostDetails = ({ post }: PostDetailsProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [isOpenEditUserModal, toggleEditUserModal] = useToggle();
+  const [isOpenEditModal, toggleEditModal] = useToggle();
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
   const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
-    users.one({
-      id: user?.id,
+    posts.one({
+      id: post?.id,
       options: {
-        enabled: !!user?.id,
+        enabled: !!post?.id,
       },
     });
 
-  const handleSubmitEditUser = (formUser: User) => {
-    update(formUser, {
+  const handleSubmitEditUser = (formData: Post) => {
+    update(formData, {
       onSuccess: (response) => {
-        toggleEditUserModal();
+        toggleEditModal();
         updateQueryData(response);
-        toast.success("User successfully updated");
+        toast.success("Post successfully updated");
       },
     });
   };
 
   const handleSubmitDeleteUser = () => {
     remove(
-      { id: user?.id },
+      { id: post?.id },
       {
         onSuccess: () => {
-          toast.success("User successfully deleted");
+          toast.success("Post successfully deleted");
           navigate(RoutePath.users);
         },
       }
     );
   };
 
-  if (!user?.id) return null;
+  if (!post?.id) return null;
 
   return (
     <Grid container padding="30px 40px">
       <Grid container item xs={12} md={6}>
         <Grid item flex={1}>
           <Typography variant="h4" mb="30px" sx={theme.mixins.textEllipsis}>
-            ({user?.id}) {user?.name}
+            ({post?.id}) {post?.title}
           </Typography>
 
           <Grid maxWidth={500}>
             <Card.Description inline label="Email">
-              {user?.email}
-            </Card.Description>
-            <Card.Description inline label="Status">
-              {user?.status}
-            </Card.Description>
-            <Card.Description inline label="Gender">
-              {user?.gender}
+              {post?.body}
             </Card.Description>
           </Grid>
         </Grid>
@@ -90,7 +84,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
             variant="contained"
             label="Edit"
             color="info"
-            onClick={toggleEditUserModal}
+            onClick={toggleEditModal}
           />
         </Grid>
         <Grid item xs={12} md={3}>
@@ -104,24 +98,20 @@ const UserDetails = ({ user }: UserDetailsProps) => {
         </Grid>
       </Grid>
 
-      <Modal
-        title="Edit User"
-        open={isOpenEditUserModal}
-        onClose={toggleEditUserModal}
-      >
-        <UserForm
-          user={user}
+      <Modal title="Edit User" open={isOpenEditModal} onClose={toggleEditModal}>
+        <PostForm
+          post={post}
           onSubmit={handleSubmitEditUser}
           isLoading={isLoadingUpdate}
         />
       </Modal>
 
       <ConfirmModal
-        title="Delete User"
-        description={`You are about to delete user: ${user?.name}`}
+        title="Delete Post"
+        description={`You are about to delete post`}
         open={isOpenDeleteConfirmation}
         onClose={toggleDeleteConfirmation}
-        okText="Yes, delete user"
+        okText="Yes, delete Post"
         onOk={handleSubmitDeleteUser}
         isLoading={isLoadingRemove}
       />
@@ -129,4 +119,4 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   );
 };
 
-export default UserDetails;
+export default PostDetails;

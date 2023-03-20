@@ -6,6 +6,8 @@ import Card from "../../Card";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import ConfirmModal from "../../Modal/ConfirmModal";
+import { useNavigate } from "react-router-dom";
+import { RoutePath } from "src/router/routesMap";
 
 type PostCardProps = {
   post: Post;
@@ -16,9 +18,17 @@ type PostCardProps = {
 
 const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
   const { remove, isLoadingRemove } = posts.one({});
+
+  const handleEditClick = () =>
+    navigate(RoutePath.post, {
+      state: {
+        id: post.id,
+      },
+    });
 
   const handleRemovePost = () => {
     remove(
@@ -44,6 +54,7 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
 
       {!!onDeleteSuccess && (
         <Card.Actions>
+          <ButtonLoading label="Edit" color="info" onClick={handleEditClick} />
           <ButtonLoading
             label="Delete"
             color="error"

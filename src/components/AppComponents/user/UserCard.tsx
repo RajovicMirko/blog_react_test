@@ -4,6 +4,7 @@ import Person2Icon from "@mui/icons-material/Person2";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
 import { getUserColorByStatus, User } from "src/server/api/users";
+import { RoutePath } from "src/router/routesMap";
 
 type UserCardProps = {
   user: User;
@@ -15,7 +16,12 @@ const UserCard = ({ user, isLoading }: UserCardProps) => {
 
   const navigate = useNavigate();
 
-  const handleDetailsClick = () => navigate(`/${user.id}`);
+  const handleDetailsClick = () =>
+    navigate(RoutePath.user, {
+      state: {
+        id: user.id,
+      },
+    });
 
   return (
     <Card isLoading={isLoading} sx={{ minHeight: "250px" }}>

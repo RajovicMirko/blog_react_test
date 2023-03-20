@@ -2,7 +2,7 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import ButtonColorMode from "src/components/Button/ButtonColorMode";
 import BlogLogo from "src/assets/favicon.svg";
 import { useNavigate } from "react-router-dom";
-import { getRoute } from "src/router/routesMap";
+import { RoutePath } from "src/router/routesMap";
 
 const LOGO_SIZE = 30;
 
@@ -25,7 +25,7 @@ const useStyle = {
 const Header = () => {
   const navigate = useNavigate();
   const handleLogoClick = () => {
-    navigate(getRoute["users"]());
+    navigate(RoutePath.users);
   };
 
   return (
