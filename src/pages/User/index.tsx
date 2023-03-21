@@ -2,28 +2,30 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import users, { UserEntity } from "src/server/api/users";
 import posts, { Post } from "src/server/api/posts";
 import todos, { Todo } from "src/server/api/todos";
+import users, { UserEntity } from "src/server/api/users";
 import { actions, TAB_VIEW_OPTIONS } from "./constants";
 
-import Modal from "src/components/Modal";
+import PostCard from "src/components/AppComponents/post/PostCard";
+import PostForm from "src/components/AppComponents/post/PostForm";
+import TodoCard from "src/components/AppComponents/todo/TodoCard";
+import TodoForm from "src/components/AppComponents/todo/TodoForm";
 import GridPagination from "src/components/GridPagination";
+import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
+import Modal from "src/components/Modal";
 import SpeedDialTooltip from "src/components/SpeedDialTooltip";
 import TabSwitcher from "src/components/TabSwitcher";
+import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
 import UserDetails from "./UserDetails";
-import PostCard from "src/components/AppComponents/post/PostCard";
-import TodoForm from "src/components/AppComponents/todo/TodoForm";
-import TodoCard from "src/components/AppComponents/todo/TodoCard";
-import PostForm from "src/components/AppComponents/post/PostForm";
-import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 
 const UserPage = () => {
   const {
     state: { id },
   } = useLocation();
 
+  const { isAuthenticated } = useAuthContext();
   const { isAppLoading, handleLoading } = useLoading();
 
   const [entity, setEntity] = useState(UserEntity.posts);
@@ -31,6 +33,9 @@ const UserPage = () => {
 
   const { data: user, isError: isErrorUser } = users.one({
     id: Number(id),
+    options: {
+      enabled: isAuthenticated,
+    },
   });
 
   const { create: createPost, isLoadingCreate: isLoadingCreatePost } =

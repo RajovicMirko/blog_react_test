@@ -16,6 +16,7 @@ import users, { User } from "src/server/api/users";
 
 const UsersPage = () => {
   const { isAuthenticated } = useAuthContext();
+
   const theme = useTheme();
   const navigate = useNavigate();
   const { handleLoading } = useLoading();
@@ -31,7 +32,7 @@ const UsersPage = () => {
     refetch: refetchUsers,
   } = users.many({
     options: {
-      enabled: !!isAuthenticated,
+      enabled: isAuthenticated,
     },
   });
 
