@@ -135,7 +135,10 @@ const UserPage = () => {
     />
   );
 
-  handleLoading("user-page", !user && !isErrorUser);
+  handleLoading(
+    "user-page",
+    (!user && !isErrorUser) || (!userPosts && !userPosts)
+  );
 
   if (isAppLoading) return null;
 
