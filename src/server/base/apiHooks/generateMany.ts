@@ -1,8 +1,8 @@
-import usePagination from "../hooks/usePagination";
-import useFetch from "../hooks/useFetch";
-import fetchers from "../fetchers";
-import queryKeys from "../queryKeys";
 import { useEffect } from "react";
+import fetchers from "../fetchers";
+import useFetch from "../hooks/useFetch";
+import usePagination from "../hooks/usePagination";
+import queryKeys from "../queryKeys";
 import {
   BaseHookParams,
   BaseRequest,

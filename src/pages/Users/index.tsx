@@ -1,19 +1,21 @@
-import { Fab, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import UserForm from "src/components/AppComponents/user/UserForm";
-import GridPagination from "src/components/GridPagination";
-import useLoading from "src/context/LoadingContext";
-import Modal from "src/components/Modal";
-import { toast } from "react-toastify";
+import { Fab, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useToggle from "src/hooks/useToggle";
+import { toast } from "react-toastify";
 import UserCard from "src/components/AppComponents/user/UserCard";
+import UserForm from "src/components/AppComponents/user/UserForm";
 import UserRow from "src/components/AppComponents/user/UserRow";
+import GridPagination from "src/components/GridPagination";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
-import users, { User } from "src/server/api/users";
+import Modal from "src/components/Modal";
+import useAuthContext from "src/context/AuthContext";
+import useLoading from "src/context/LoadingContext";
+import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
+import users, { User } from "src/server/api/users";
 
 const UsersPage = () => {
+  const { isAuthenticated } = useAuthContext();
   const theme = useTheme();
   const navigate = useNavigate();
   const { handleLoading } = useLoading();
@@ -27,7 +29,11 @@ const UsersPage = () => {
     pagination,
     isDataEmpty,
     refetch: refetchUsers,
-  } = users.many();
+  } = users.many({
+    options: {
+      enabled: !!isAuthenticated,
+    },
+  });
 
   const { create, isLoadingCreate, updateQueryData } = users.one();
 

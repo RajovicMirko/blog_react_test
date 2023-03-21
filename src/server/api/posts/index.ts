@@ -1,10 +1,15 @@
-import { generateOne, generateOneEntity } from "src/server/base/apiHooks";
+import {
+  generateMany,
+  generateOne,
+  generateOneEntity,
+} from "src/server/base/apiHooks";
 import { Comment } from "../comments";
 import { Entity, Post } from "./types";
 
 const BASE_URL = "posts";
 
 const posts = {
+  many: generateMany<Post[]>(BASE_URL),
   one: generateOne<Post>(BASE_URL),
   oneEntity: generateOneEntity<Comment[], Entity>(BASE_URL),
 };
