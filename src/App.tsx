@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { LoadingProvider } from "./context/LoadingContext";
+import { PageLoading } from "src/components/Loading/PageLoading";
+import { AuthProvider } from "src/context/AuthContext";
+import { LoadingProvider } from "src/context/LoadingContext";
+import { NotificationProvider } from "src/context/Notification";
+import ErrorBoundary from "src/pages/ErrorBoundary";
+import MaterialUiProvider from "src/style";
 import Layout from "./components/Layout";
 import RouterView from "./router";
-import MaterialUiProvider from "./style";
-import { AuthProvider } from "./context/AuthContext";
-import { PageLoading } from "./components/Loading/PageLoading";
-import { NotificationProvider } from "./context/Notification";
-import ErrorBoundary from "./pages/ErrorBoundary";
 
 const queryClient = new QueryClient({});
 
