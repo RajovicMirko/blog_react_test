@@ -1,7 +1,7 @@
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
-import ButtonColorMode from "src/components/Button/ButtonColorMode";
-import BlogLogo from "src/assets/favicon.svg";
 import { useNavigate } from "react-router-dom";
+import BlogLogo from "src/assets/favicon.svg";
+import ButtonColorMode from "src/components/Button/ButtonColorMode";
 import { RoutePath } from "src/router/routesMap";
 
 const LOGO_SIZE = 30;
