@@ -23,7 +23,7 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
 
   const { remove, isLoadingRemove } = posts.one({});
 
-  const handleEditClick = () =>
+  const handleDetailsClick = () =>
     navigate(RoutePath.post, {
       state: {
         id: post.id,
@@ -54,7 +54,11 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
 
       {!!onDeleteSuccess && (
         <Card.Actions>
-          <ButtonLoading label="Edit" color="info" onClick={handleEditClick} />
+          <ButtonLoading
+            label="Details"
+            color="info"
+            onClick={handleDetailsClick}
+          />
           <ButtonLoading
             label="Delete"
             color="error"

@@ -29,7 +29,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
       },
     });
 
-  const handleSubmitEditUser = (formData: Post) => {
+  const handleSubmitEdit = (formData: Post) => {
     update(formData, {
       onSuccess: (response) => {
         toggleEditModal();
@@ -62,7 +62,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
           </Typography>
 
           <Grid maxWidth={500}>
-            <Card.Description inline label="Email">
+            <Card.Description inline label="Description">
               {post?.body}
             </Card.Description>
           </Grid>
@@ -98,10 +98,10 @@ const PostDetails = ({ post }: PostDetailsProps) => {
         </Grid>
       </Grid>
 
-      <Modal title="Edit User" open={isOpenEditModal} onClose={toggleEditModal}>
+      <Modal title="Edit Post" open={isOpenEditModal} onClose={toggleEditModal}>
         <PostForm
           post={post}
-          onSubmit={handleSubmitEditUser}
+          onSubmit={handleSubmitEdit}
           isLoading={isLoadingUpdate}
         />
       </Modal>

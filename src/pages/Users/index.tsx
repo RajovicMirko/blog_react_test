@@ -11,6 +11,7 @@ import UserCard from "src/components/AppComponents/user/UserCard";
 import UserRow from "src/components/AppComponents/user/UserRow";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 import users, { User } from "src/server/api/users";
+import { RoutePath } from "src/router/routesMap";
 
 const UsersPage = () => {
   const theme = useTheme();
@@ -36,7 +37,7 @@ const UsersPage = () => {
         updateQueryData(response);
         toggleCreateUserModal();
         refetchUsers();
-        navigate(`/${response.data.data.id}`);
+        navigate(RoutePath.user, { state: { id: response.data.data.id } });
         toast.success("User successfully added");
       },
     });

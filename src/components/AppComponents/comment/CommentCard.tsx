@@ -53,7 +53,7 @@ const CommentCard = ({
   };
 
   return (
-    <Card isLoading={isLoading} sx={{ minHeight: "250px" }}>
+    <Card isLoading={isLoading} sx={{ minHeight: "150px" }}>
       <Grid container rowGap="10px">
         <Card.Title title={comment.name} sx={theme.mixins.textEllipsis} />
 
