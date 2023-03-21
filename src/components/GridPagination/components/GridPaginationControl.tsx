@@ -1,9 +1,9 @@
-import { Box, Button, Grid, styled, Typography } from "@mui/material";
-import PaperStyled from "../../PaperStyled";
 import GridOnIcon from "@mui/icons-material/GridOn";
-import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
-import { GRID_MAX_WIDTH } from "../constants";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import { Box, Button, Grid, styled, Typography } from "@mui/material";
 import { PaginationHookReturn } from "src/server/base/hooks/usePagination/types";
+import PaperStyled from "../../PaperStyled";
+import { GRID_MAX_WIDTH } from "../constants";
 
 const HalfSide = styled(Grid)(() => ({}));
 HalfSide.defaultProps = {
@@ -12,10 +12,14 @@ HalfSide.defaultProps = {
   alignItems: "center",
 };
 
-const ViewButton = styled(Button)(() => ({
+const ViewButton = styled(Button)(({ theme }) => ({
   width: "34px",
   minWidth: "34px",
   height: "34px",
+  color: theme.palette.action.disabled,
+  "&:disabled": {
+    color: theme.palette.primary.main,
+  },
 }));
 ViewButton.defaultProps = {
   variant: "text",
@@ -71,7 +75,7 @@ const GridPaginationControl = ({
                     disabled={listView}
                     onClick={onLayoutViewClick}
                   >
-                    <ViewHeadlineIcon fontSize="medium" />
+                    <TableRowsIcon />
                   </ViewButton>
                 </Grid>
               </>
