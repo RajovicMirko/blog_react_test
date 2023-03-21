@@ -1,10 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import {
-  createContext,
-  KeyboardEventHandler,
-  PropsWithChildren,
-  useContext,
-} from "react";
+import { createContext, PropsWithChildren, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 type FormContextProps = UseFormReturn<any, any> & {
@@ -27,19 +22,9 @@ const AppForm = ({
     isLoading,
   };
 
-  const handleKeyDown: KeyboardEventHandler<HTMLFormElement> = (event) => {
-    const disabledKeysCodes = [13];
-
-    if (disabledKeysCodes.includes(event.keyCode)) {
-      event.preventDefault();
-    }
-  };
-
   return (
     <FormContext.Provider value={provide}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
-        {children}
-      </form>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
     </FormContext.Provider>
   );
 };
