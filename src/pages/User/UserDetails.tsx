@@ -26,7 +26,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
     isLoadingUpdate,
     remove,
     isLoadingRemove,
-    updateQueryData,
+    updateQuery,
     invalidateBaseQuery,
   } = useUser({
     id: user?.id,
@@ -39,7 +39,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
     update(formUser, {
       onSuccess: (response) => {
         toggleEditUserModal();
-        updateQueryData(response);
+        updateQuery(response);
         invalidateBaseQuery();
         toast.success("User successfully updated");
       },

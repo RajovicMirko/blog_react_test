@@ -21,7 +21,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
   const [isOpenEditModal, toggleEditModal] = useToggle();
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
+  const { update, isLoadingUpdate, remove, isLoadingRemove, updateQuery } =
     usePost({
       id: post?.id,
       options: {
@@ -33,7 +33,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
     update(formData, {
       onSuccess: (response) => {
         toggleEditModal();
-        updateQueryData(response);
+        updateQuery(response);
         toast.success("Post successfully updated");
       },
     });
