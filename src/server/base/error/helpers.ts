@@ -2,7 +2,7 @@ import { toProperCase } from "../../../utils/toProperCase";
 import { BaseResponse } from "../types";
 import { queryErrors } from "./constants";
 
-export function throwQueryErrorIfExists(response?: BaseResponse<any>) {
+export function throwQueryErrorIfExists(response?: BaseResponse) {
   if (response?.data?.code) {
     let message = "";
 

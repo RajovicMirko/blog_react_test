@@ -6,14 +6,14 @@ import {
   replaceUrlParams,
 } from "./helpers";
 import {
-  BaseOneRequest,
-  BaseRequest,
+  BaseOneProps,
+  BaseProps,
   BaseResponse,
   ObjectBaseParams,
 } from "./types";
 
 function getMany<
-  Props extends BaseRequest<ObjectBaseParams>,
+  Props extends BaseProps<ObjectBaseParams>,
   Response extends BaseResponse<any>
 >(url: string) {
   return async ({
@@ -36,7 +36,7 @@ function getMany<
   };
 }
 
-function getOne<Props extends BaseOneRequest<object>, Response>(url: string) {
+function getOne<Props extends BaseOneProps, Response>(url: string) {
   return async (props: Props): Promise<Response> => {
     const resultUrl = replaceUrlParams(
       `${url}/${generateUrlParamPattern("id")}`,
@@ -57,9 +57,7 @@ function createOne<Props extends object, Response>(url: string) {
   };
 }
 
-function updateOne<Props extends BaseOneRequest<object>, Response>(
-  url: string
-) {
+function updateOne<Props extends BaseOneProps, Response>(url: string) {
   return async (props: Props): Promise<Response> => {
     const resultUrl = replaceUrlParams(
       `${url}/${generateUrlParamPattern("id")}`,
@@ -72,9 +70,7 @@ function updateOne<Props extends BaseOneRequest<object>, Response>(
   };
 }
 
-function deleteOne<Props extends BaseOneRequest<object>, Response>(
-  url: string
-) {
+function deleteOne<Props extends BaseOneProps, Response>(url: string) {
   return async (props: Props): Promise<Response> => {
     const resultUrl = replaceUrlParams(
       `${url}/${generateUrlParamPattern("id")}`,

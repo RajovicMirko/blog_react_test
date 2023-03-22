@@ -10,7 +10,7 @@ type Options<Response> = UseQueryOptions<Response, unknown, Response, QueryKey>;
 
 export type ObjectBaseParams = { [key: string]: string | number };
 
-export type BaseProps<Props = void> = Props & PaginationRequestParams;
+export type BaseProps<Props = object> = Props & PaginationRequestParams;
 
 export type BasePropsHookParams<Response, Props = void> = Props & {
   pagination?: PaginationProps;
@@ -28,7 +28,7 @@ export type MetaResponse = {
   pagination: PaginationResponse;
 };
 
-export type BaseResponse<DataResponse> = AxiosResponse<{
+export type BaseResponse<DataResponse = object> = AxiosResponse<{
   code: number;
   data: DataResponse;
   meta: MetaResponse;

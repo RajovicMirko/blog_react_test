@@ -1,11 +1,11 @@
 import { QueryKey } from "@tanstack/react-query";
-import { BaseOneRequest, BaseRequest } from "./types";
+import { BaseOneProps, BaseProps } from "./types";
 
-function many<Request>(baseUrl: string, props: BaseRequest<Request>): QueryKey {
+function many<Request>(baseUrl: string, props: BaseProps<Request>): QueryKey {
   return [baseUrl, "many", props];
 }
 
-function one(baseUrl: string, props: BaseOneRequest<object>): QueryKey {
+function one(baseUrl: string, props: BaseOneProps): QueryKey {
   return [baseUrl, "one", props?.id, props];
 }
 

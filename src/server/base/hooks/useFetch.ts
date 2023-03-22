@@ -9,12 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { RoutePath } from "src/router/routesMap";
 import handleError from "../error";
 import { throwQueryErrorIfExists } from "../error/helpers";
-import {
-  BaseOneRequest,
-  BaseRequest,
-  BaseResponse,
-  ObjectBaseParams,
-} from "../types";
+import { BaseResponse } from "../types";
 
 type UseFetchProps<Props, Response> = {
   queryKey: readonly unknown[];
@@ -22,10 +17,11 @@ type UseFetchProps<Props, Response> = {
   options?: UseQueryOptions<Response, unknown, Response, QueryKey>;
 };
 
-export default function useFetch<
-  Props extends BaseRequest<ObjectBaseParams> | BaseOneRequest,
-  Response extends BaseResponse<any>
->({ queryKey, queryFn, options = {} }: UseFetchProps<Props, Response>) {
+export default function useFetch<Props, Response extends BaseResponse>({
+  queryKey,
+  queryFn,
+  options = {},
+}: UseFetchProps<Props, Response>) {
   const navigate = useNavigate();
 
   const queryFnWithProps: QueryFunction<any, any> = async () =>

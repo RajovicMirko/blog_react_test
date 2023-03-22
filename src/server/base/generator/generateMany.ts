@@ -10,7 +10,7 @@ import {
   ObjectBaseParams,
 } from "../types";
 
-function generateMany<Response, Props = object>(url: string) {
+function generateMany<Response extends object, Props = object>(url: string) {
   return (
     props: BasePropsHookParams<BaseResponse<Response>, Partial<Props>> = {}
   ) => {
