@@ -5,18 +5,19 @@ import {
   PaginationResponse,
 } from "./hooks/usePagination/types";
 
+export type ObjectBaseParams = { [key: string]: string | number };
+
+// HOOK PARAMS
 export type BaseHookParams<Response, Props = void> = Props & {
   options?: UseQueryOptions<Response, unknown, Response, QueryKey>;
 };
 
+// REQUEST
 export type BaseRequest<Props = void> = Props & PaginationRequestParams;
 
-export type OneRequestParams = { id?: string | number };
+export type BaseOneRequest<Props = void> = Props & { id?: string | number };
 
-export type BaseOneRequest<Props = void> = BaseRequest<
-  Props & OneRequestParams
->;
-
+// RESPONSE
 export type MetaResponse = {
   pagination: PaginationResponse;
 };
@@ -26,5 +27,3 @@ export type BaseResponse<DataResponse> = AxiosResponse<{
   data: DataResponse;
   meta: MetaResponse;
 }>;
-
-export type GenerateQueryStringProps = { [key: string]: string | number };

@@ -9,11 +9,11 @@ import {
   BaseOneRequest,
   BaseRequest,
   BaseResponse,
-  GenerateQueryStringProps,
+  ObjectBaseParams,
 } from "./types";
 
 function getMany<
-  Props extends BaseRequest<GenerateQueryStringProps>,
+  Props extends BaseRequest<ObjectBaseParams>,
   Response extends BaseResponse<any>
 >(url: string) {
   return async ({

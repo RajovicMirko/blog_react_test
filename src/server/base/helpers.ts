@@ -1,10 +1,10 @@
-import { GenerateQueryStringProps } from "./types";
+import { ObjectBaseParams } from "./types";
 
 export const generateUrlParamPattern = (str: string) => `{${str}}`;
 
 export const replaceUrlParams = (
   url: string,
-  params?: { [key: string]: string | number }
+  params?: ObjectBaseParams
 ): string => {
   if (!params) return url;
 
@@ -15,7 +15,7 @@ export const replaceUrlParams = (
   );
 };
 
-export const generateQueryString = (props: GenerateQueryStringProps) => {
+export const generateQueryString = (props: ObjectBaseParams) => {
   const stringResult = Object.entries(props).reduce(
     (acc: string, [key, val]: any, i: number) => {
       if (val) {
@@ -32,7 +32,7 @@ export const generateQueryString = (props: GenerateQueryStringProps) => {
 
 export const generateUrlWithQueryString = (
   url: string,
-  props: GenerateQueryStringProps
+  props: ObjectBaseParams
 ) => {
   const params = generateQueryString(props);
   const tmpUrl = [url, params].join("");

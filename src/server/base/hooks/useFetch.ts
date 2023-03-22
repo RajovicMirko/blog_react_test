@@ -10,11 +10,10 @@ import { RoutePath } from "src/router/routesMap";
 import handleError from "../error";
 import { throwQueryErrorIfExists } from "../error/helpers";
 import {
-  BaseOneEntityRequest,
   BaseOneRequest,
   BaseRequest,
   BaseResponse,
-  GenerateQueryStringProps,
+  ObjectBaseParams,
 } from "../types";
 
 type UseFetchProps<Props, Response> = {
@@ -24,10 +23,7 @@ type UseFetchProps<Props, Response> = {
 };
 
 export default function useFetch<
-  Props extends
-    | BaseRequest<GenerateQueryStringProps>
-    | BaseOneRequest
-    | BaseOneEntityRequest,
+  Props extends BaseRequest<ObjectBaseParams> | BaseOneRequest,
   Response extends BaseResponse<any>
 >({ queryKey, queryFn, options = {} }: UseFetchProps<Props, Response>) {
   const navigate = useNavigate();

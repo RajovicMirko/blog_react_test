@@ -32,6 +32,9 @@ const UsersPage = () => {
     isDataEmpty,
     refetch: refetchUsers,
   } = useUsers({
+    pagination: {
+      useBreakpoints: true,
+    },
     options: {
       enabled: isAuthenticated,
     },
