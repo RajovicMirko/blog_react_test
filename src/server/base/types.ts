@@ -6,19 +6,21 @@ import {
   PaginationResponse,
 } from "./hooks/usePagination/types";
 
+type Options<Response> = UseQueryOptions<Response, unknown, Response, QueryKey>;
+
 export type ObjectBaseParams = { [key: string]: string | number };
 
 export type BaseProps<Props = void> = Props & PaginationRequestParams;
 
 export type BasePropsHookParams<Response, Props = void> = Props & {
   pagination?: PaginationProps;
-  options?: UseQueryOptions<Response, unknown, Response, QueryKey>;
+  options?: Options<Response>;
 };
 
 export type BaseOneProps = { id?: string | number };
 
 export type BaseOnePropsHookParams<Response, Props = void> = Props & {
-  options?: UseQueryOptions<Response, unknown, Response, QueryKey>;
+  options?: Options<Response>;
 };
 
 // RESPONSE
