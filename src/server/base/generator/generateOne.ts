@@ -3,13 +3,16 @@ import fetchers from "../fetchers";
 import useFetch from "../hooks/useFetch";
 import useMutation from "../hooks/useMutation";
 import queryKeys from "../queryKeys";
-import { BaseHookParams, BaseOneProps, BaseResponse } from "../types";
+import { BaseOneProps, BaseOnePropsHookParams, BaseResponse } from "../types";
 
 function generateOne<Response extends BaseOneProps>(url: string) {
   return ({
     options,
     ...restProps
-  }: BaseHookParams<BaseResponse<Response>, Partial<Response>>) => {
+  }: BaseOnePropsHookParams<
+    BaseResponse<Response>,
+    Partial<Response>
+  > = {}) => {
     const queryClient = useQueryClient();
 
     const { axiosResponse, ...restFetch } = useFetch<

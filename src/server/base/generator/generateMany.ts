@@ -2,21 +2,17 @@ import { useEffect } from "react";
 import fetchers from "../fetchers";
 import useFetch from "../hooks/useFetch";
 import usePagination from "../hooks/usePagination";
-import { PaginationProps } from "../hooks/usePagination/types";
 import queryKeys from "../queryKeys";
 import {
-  BaseHookParams,
-  BaseRequest,
+  BaseProps,
+  BasePropsHookParams,
   BaseResponse,
   ObjectBaseParams,
 } from "../types";
 
 function generateMany<Response, Props = object>(url: string) {
   return (
-    props: BaseHookParams<
-      BaseResponse<Response>,
-      Props & { pagination?: PaginationProps }
-    >
+    props: BasePropsHookParams<BaseResponse<Response>, Partial<Props>> = {}
   ) => {
     const { options, pagination, ...restProps } = props ?? {};
     const { enabled, ...restOptions } = options ?? {};
@@ -32,7 +28,7 @@ function generateMany<Response, Props = object>(url: string) {
     });
 
     const { axiosResponse, ...rest } = useFetch<
-      BaseRequest<ObjectBaseParams>,
+      BaseProps<ObjectBaseParams>,
       BaseResponse<Response>
     >({
       queryFn: fetchers.getMany(url),

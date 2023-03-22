@@ -40,7 +40,7 @@ const UsersPage = () => {
     },
   });
 
-  const { create, isLoadingCreate, updateQueryData } = useUser({});
+  const { create, isLoadingCreate, updateQueryData } = useUser();
 
   const handleCreateUser = (userData: User) => {
     create(userData, {
