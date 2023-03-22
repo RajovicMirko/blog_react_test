@@ -10,9 +10,12 @@ export enum Entity {
   todos = "todos",
 }
 
-export const USER_ID_KEY = "userId";
+export enum EntityHttpPropsKeys {
+  "userId" = "userId",
+}
+
 export type EntityHttpProps = {
-  [USER_ID_KEY]: number | string;
+  userId: number | string;
 };
 
 export type User = {

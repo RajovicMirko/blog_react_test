@@ -4,9 +4,12 @@ export enum Entity {
   comments = "comments",
 }
 
-export const POST_ID_KEY = "postId";
+export enum EntityHttpPropsKeys {
+  "postId" = "postId",
+}
+
 export type EntityHttpProps = {
-  [POST_ID_KEY]: number | string;
+  postId: number | string;
 };
 
 export type OneHttpProps = { id: number };
