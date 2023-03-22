@@ -29,7 +29,7 @@ function generateOne<Response extends BaseOneProps>(url: string) {
 
     const { mutate: create, isLoading: isLoadingCreate } = useMutation<
       BaseResponse<Response>,
-      Response
+      Omit<Response, "id">
     >(fetchers.createOne(url));
 
     const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
@@ -39,7 +39,7 @@ function generateOne<Response extends BaseOneProps>(url: string) {
 
     const { mutate: remove, isLoading: isLoadingRemove } = useMutation<
       BaseResponse<Response>,
-      Required<BaseOneProps>
+      BaseOneProps
     >(fetchers.deleteOne(url));
 
     const updateQueryData = (axiosResponse: BaseResponse<Response>) => {
