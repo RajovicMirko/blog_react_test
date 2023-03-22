@@ -22,7 +22,7 @@ function generateOne<
       queryFn: fetchers.getOne(url),
       queryKey: queryKeys.one(url, restProps),
       options: {
-        enabled: !!Object.keys(restProps)?.length && options?.enabled,
+        enabled: !!restProps?.id && options?.enabled,
         ...options,
       },
     });
