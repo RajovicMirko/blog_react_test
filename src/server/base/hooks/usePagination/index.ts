@@ -3,8 +3,8 @@ import useBreakpoints from "src/hooks/useBreakpoints";
 import { getPerPageByBreakpoints } from "./getPerPageByBreakpoints";
 import {
   PaginationDisplayData,
-  PaginationProps,
   PaginationHookReturn,
+  PaginationProps,
   PaginationResponse,
 } from "./types";
 
@@ -13,8 +13,11 @@ const DEFAULT_PER_PAGE = 24;
 const usePagination = (props: PaginationProps): PaginationHookReturn => {
   const breakpoints = useBreakpoints();
 
+  const [isReady, setIsReady] = useState<boolean>(!props.useBreakpoints);
   const [page, setPage] = useState<number>(props?.page ?? 1);
-  const [perPage, setPerPage] = useState<number>(props?.per_page ?? 0);
+  const [perPage, setPerPage] = useState<number>(
+    props?.per_page ?? DEFAULT_PER_PAGE
+  );
   const [pages, setPages] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
@@ -59,17 +62,19 @@ const usePagination = (props: PaginationProps): PaginationHookReturn => {
         DEFAULT_PER_PAGE
       );
 
-      if (perPage !== breakpointPerPage) {
+      if (!!breakpointPerPage && perPage !== breakpointPerPage) {
         setPage(1);
         setPerPage(breakpointPerPage);
       }
+
+      if (breakpointPerPage) setIsReady(true);
     }
   }, [breakpoints, props.useBreakpoints]);
 
   return {
     isFirstPage,
     isLastPage,
-    isReady: !!perPage,
+    isReady,
     handleInitTotal,
     handleNext,
     handleBack,

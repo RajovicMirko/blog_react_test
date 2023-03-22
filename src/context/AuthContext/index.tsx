@@ -5,7 +5,7 @@ import {
   useContext,
   useState,
 } from "react";
-import comments from "src/server/api/comments";
+import { useComments } from "src/server/api/comments";
 import { axiosAddAuthToConfig } from "../../utils/axios";
 import useLoading from "../LoadingContext";
 import usePrepareInfo from "./usePrepareInfo";
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<ReactNode>) => {
   const [token, setToken] = useState<string>("");
 
   // auth like http
-  comments.many({
+  useComments({
     options: {
       onSuccess: async () => {
         const tmpToken = import.meta.env.VITE_TOKEN;

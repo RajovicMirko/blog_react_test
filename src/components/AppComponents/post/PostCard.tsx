@@ -1,13 +1,13 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 
-import posts, { Post } from "src/server/api/posts";
+import { Post, usePost } from "src/server/api/posts";
 
-import Card from "../../Card";
-import useToggle from "../../../hooks/useToggle";
-import ButtonLoading from "../../Button/ButtonLoading";
-import ConfirmModal from "../../Modal/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { RoutePath } from "src/router/routesMap";
+import useToggle from "../../../hooks/useToggle";
+import ButtonLoading from "../../Button/ButtonLoading";
+import Card from "../../Card";
+import ConfirmModal from "../../Modal/ConfirmModal";
 
 type PostCardProps = {
   post: Post;
@@ -21,7 +21,7 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
   const navigate = useNavigate();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
-  const { remove, isLoadingRemove } = posts.one({});
+  const { remove, isLoadingRemove } = usePost({});
 
   const handleDetailsClick = () =>
     navigate(RoutePath.post, {

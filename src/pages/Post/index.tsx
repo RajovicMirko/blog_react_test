@@ -1,19 +1,19 @@
+import AddIcon from "@mui/icons-material/Add";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import AddIcon from "@mui/icons-material/Add";
 
-import posts, { PostEntity } from "src/server/api/posts";
-import comments, { Comment } from "src/server/api/comments";
+import { Comment, useComment } from "src/server/api/comments";
+import { PostEntity, usePost, usePostComments } from "src/server/api/posts";
 
-import useLoading from "src/context/LoadingContext";
-import PostDetails from "./PostDetails";
-import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
-import GridPagination from "src/components/GridPagination";
-import Modal from "src/components/Modal";
-import useToggle from "src/hooks/useToggle";
-import CommentForm from "src/components/AppComponents/comment/CommentForm";
-import CommentCard from "src/components/AppComponents/comment/CommentCard";
 import { Fab, useTheme } from "@mui/material";
+import CommentCard from "src/components/AppComponents/comment/CommentCard";
+import CommentForm from "src/components/AppComponents/comment/CommentForm";
+import GridPagination from "src/components/GridPagination";
+import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
+import Modal from "src/components/Modal";
+import useLoading from "src/context/LoadingContext";
+import useToggle from "src/hooks/useToggle";
+import PostDetails from "./PostDetails";
 
 const PostPage = () => {
   const {
@@ -25,8 +25,8 @@ const PostPage = () => {
 
   const [isCommentModalOpen, toggleCommentModalOpen] = useToggle();
 
-  const { data: post, isError: isErrorPost } = posts.one({
-    id: Number(id),
+  const { data: post, isError: isErrorPost } = usePost({
+    id,
   });
 
   const {
@@ -37,13 +37,12 @@ const PostPage = () => {
     pagination: paginationPostsComments,
     isDataEmpty: isDataEmptyPostsComments,
     refetch: refetchPostComments,
-  } = posts.oneEntity({
-    id: Number(id),
-    entity: PostEntity.comments,
+  } = usePostComments({
+    postId: id,
   });
 
   const { create: createComment, isLoadingCreate: isLoadingCreatePost } =
-    comments.one();
+    useComment({});
 
   const handleEditComment = () => {
     refetchPostComments();

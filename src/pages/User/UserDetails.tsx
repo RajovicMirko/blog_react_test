@@ -1,14 +1,14 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import UserForm from "src/components/AppComponents/user/UserForm";
 import ButtonLoading from "src/components/Button/ButtonLoading";
 import Card from "src/components/Card";
-import UserForm from "src/components/AppComponents/user/UserForm";
 import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import users, { User } from "src/server/api/users";
+import { User, useUser } from "src/server/api/users";
 
 type UserDetailsProps = {
   user?: User;
@@ -22,7 +22,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
   const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
-    users.one({
+    useUser({
       id: user?.id,
       options: {
         enabled: !!user?.id,

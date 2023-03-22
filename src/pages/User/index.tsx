@@ -2,9 +2,14 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import posts, { Post } from "src/server/api/posts";
-import todos, { Todo } from "src/server/api/todos";
-import users, { UserEntity } from "src/server/api/users";
+import { Post, usePost } from "src/server/api/posts";
+import { Todo, useTodo } from "src/server/api/todos";
+import {
+  UserEntity,
+  useUser,
+  useUserPosts,
+  useUserTodos,
+} from "src/server/api/users";
 import { actions, TAB_VIEW_OPTIONS } from "./constants";
 
 import PostCard from "src/components/AppComponents/post/PostCard";
@@ -31,18 +36,20 @@ const UserPage = () => {
   const [entity, setEntity] = useState(UserEntity.posts);
   const [displayModalKey, setDisplayModalKey] = useState("");
 
-  const { data: user, isError: isErrorUser } = users.one({
+  const { data: user, isError: isErrorUser } = useUser({
     id: Number(id),
     options: {
       enabled: isAuthenticated,
     },
   });
 
-  const { create: createPost, isLoadingCreate: isLoadingCreatePost } =
-    posts.one();
+  const { create: createPost, isLoadingCreate: isLoadingCreatePost } = usePost(
+    {}
+  );
 
-  const { create: createTodo, isLoadingCreate: isLoadingCreateTodo } =
-    todos.one();
+  const { create: createTodo, isLoadingCreate: isLoadingCreateTodo } = useTodo(
+    {}
+  );
 
   const {
     data: userPosts,
@@ -52,9 +59,8 @@ const UserPage = () => {
     pagination: paginationPosts,
     isDataEmpty: isDataEmptyPosts,
     refetch: refetchPosts,
-  } = users.oneEntity({
-    id: Number(id),
-    entity: UserEntity.posts,
+  } = useUserPosts({
+    userId: id,
     options: {
       enabled: !!user?.id && entity === UserEntity.posts,
     },
@@ -68,9 +74,8 @@ const UserPage = () => {
     pagination: paginationTodos,
     isDataEmpty: isDataEmptyTodos,
     refetch: refetchTodos,
-  } = users.oneEntity({
-    id: Number(id),
-    entity: UserEntity.todos,
+  } = useUserTodos({
+    userId: id,
     options: {
       enabled: !!user?.id && entity === UserEntity.todos,
     },

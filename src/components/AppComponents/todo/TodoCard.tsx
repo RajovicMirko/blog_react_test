@@ -1,15 +1,16 @@
 import { Grid, Typography, useTheme } from "@mui/material";
-import useToggle from "../../../hooks/useToggle";
-import ButtonLoading from "../../Button/ButtonLoading";
-import Card from "../../Card";
-import TodoForm from "./TodoForm";
-import Modal from "../../Modal";
-import ConfirmModal from "../../Modal/ConfirmModal";
-import todos, {
+import {
   getTodoColorByStatus,
   Todo,
   TodoStatus,
+  useTodo,
 } from "src/server/api/todos";
+import useToggle from "../../../hooks/useToggle";
+import ButtonLoading from "../../Button/ButtonLoading";
+import Card from "../../Card";
+import Modal from "../../Modal";
+import ConfirmModal from "../../Modal/ConfirmModal";
+import TodoForm from "./TodoForm";
 
 type TodoCardProps = {
   todo: Todo;
@@ -31,7 +32,7 @@ const TodoCard = ({
   const isPending = todo.status === TodoStatus.pending;
   const isCompleted = todo.status === TodoStatus.completed;
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove } = todos.one({});
+  const { update, isLoadingUpdate, remove, isLoadingRemove } = useTodo({});
 
   const handleEditTodo = (formData: Todo) => {
     update(formData, {

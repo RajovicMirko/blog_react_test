@@ -1,14 +1,14 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 
-import comments, { Comment } from "src/server/api/comments";
+import { Comment, useComment } from "src/server/api/comments";
 
-import Card from "../../Card";
+import { toast } from "react-toastify";
+import Modal from "src/components/Modal";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
+import Card from "../../Card";
 import ConfirmModal from "../../Modal/ConfirmModal";
-import Modal from "src/components/Modal";
 import CommentForm from "./CommentForm";
-import { toast } from "react-toastify";
 
 type CommentCardProps = {
   comment: Comment;
@@ -28,7 +28,7 @@ const CommentCard = ({
   const [isCommentModalOpen, toggleEditCommentModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove } = comments.one({});
+  const { update, isLoadingUpdate, remove, isLoadingRemove } = useComment({});
 
   const handleEditModal = (formData: Comment) => {
     update(formData, {

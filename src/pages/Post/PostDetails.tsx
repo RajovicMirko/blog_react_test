@@ -1,14 +1,14 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PostForm from "src/components/AppComponents/post/PostForm";
 import ButtonLoading from "src/components/Button/ButtonLoading";
 import Card from "src/components/Card";
 import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import posts, { Post } from "src/server/api/posts";
-import PostForm from "src/components/AppComponents/post/PostForm";
+import { Post, usePost } from "src/server/api/posts";
 
 type PostDetailsProps = {
   post?: Post;
@@ -22,7 +22,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
   const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
-    posts.one({
+    usePost({
       id: post?.id,
       options: {
         enabled: !!post?.id,

@@ -1,27 +1,28 @@
 import { useQueryClient } from "@tanstack/react-query";
+import fetchers from "../fetchers";
 import useFetch from "../hooks/useFetch";
 import useMutation from "../hooks/useMutation";
-import fetchers from "../fetchers";
 import queryKeys from "../queryKeys";
 import { BaseHookParams, BaseOneRequest, BaseResponse } from "../types";
 
-function generateOne<Response extends Required<Pick<BaseOneRequest, "id">>>(
-  baseUrl: string
-) {
+function generateOne<
+  Response extends Required<Pick<BaseOneRequest, "id">>,
+  Props = object
+>(url: string) {
   return ({
-    id,
     options,
-  }: BaseHookParams<BaseResponse<Response>, BaseOneRequest> = {}) => {
+    ...restProps
+  }: BaseHookParams<BaseResponse<Response>, BaseOneRequest<Props>>) => {
     const queryClient = useQueryClient();
 
-    const { axiosResponse, ...rest } = useFetch<
+    const { axiosResponse, ...restFetch } = useFetch<
       BaseOneRequest,
       BaseResponse<Response>
     >({
-      queryFn: fetchers.getOne(baseUrl),
-      queryKey: queryKeys.one(baseUrl, { id }),
+      queryFn: fetchers.getOne(url),
+      queryKey: queryKeys.one(url, restProps),
       options: {
-        enabled: !!id && options?.enabled,
+        enabled: !!restProps?.id && options?.enabled,
         ...options,
       },
     });
@@ -29,28 +30,28 @@ function generateOne<Response extends Required<Pick<BaseOneRequest, "id">>>(
     const { mutate: create, isLoading: isLoadingCreate } = useMutation<
       BaseOneRequest,
       BaseResponse<Response>
-    >(fetchers.createOne(baseUrl));
+    >(fetchers.createOne(url));
 
     const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
       BaseOneRequest,
       BaseResponse<Response>
-    >(fetchers.updateOne(baseUrl));
+    >(fetchers.updateOne(url));
 
     const { mutate: remove, isLoading: isLoadingRemove } = useMutation<
       BaseOneRequest,
       BaseResponse<Response>
-    >(fetchers.deleteOne(baseUrl));
+    >(fetchers.deleteOne(url));
 
     const updateQueryData = (axiosResponse: BaseResponse<Response>) => {
       queryClient.setQueryData(
-        queryKeys.one(baseUrl, { id: axiosResponse?.data?.data?.id }),
+        queryKeys.one(url, { id: axiosResponse?.data?.data?.id }),
         axiosResponse
       );
     };
 
     return {
       data: axiosResponse?.data?.data,
-      ...rest,
+      ...restFetch,
       create,
       isLoadingCreate,
       update,
