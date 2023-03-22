@@ -49,9 +49,7 @@ function getOne<Props extends BaseOneRequest<object>, Response>(url: string) {
   };
 }
 
-function createOne<Props extends BaseOneRequest<object>, Response>(
-  url: string
-) {
+function createOne<Props extends object, Response>(url: string) {
   return async (body: Props): Promise<Response> => {
     const data = await API.post(url, body);
     await sleep();
@@ -62,10 +60,13 @@ function createOne<Props extends BaseOneRequest<object>, Response>(
 function updateOne<Props extends BaseOneRequest<object>, Response>(
   url: string
 ) {
-  return async ({ id, ...body }: Props): Promise<Response> => {
-    const resultUrl = `${url}/${id}`;
+  return async (props: Props): Promise<Response> => {
+    const resultUrl = replaceUrlParams(
+      `${url}/${generateUrlParamPattern("id")}`,
+      props
+    );
 
-    const data = await API.patch(resultUrl, body);
+    const data = await API.patch(resultUrl, props);
     await sleep();
     return data as Response;
   };
@@ -74,8 +75,11 @@ function updateOne<Props extends BaseOneRequest<object>, Response>(
 function deleteOne<Props extends BaseOneRequest<object>, Response>(
   url: string
 ) {
-  return async ({ id }: Props): Promise<Response> => {
-    const resultUrl = `${url}/${id}`;
+  return async (props: Props): Promise<Response> => {
+    const resultUrl = replaceUrlParams(
+      `${url}/${generateUrlParamPattern("id")}`,
+      props
+    );
 
     const data = await API.delete(resultUrl);
     await sleep();
