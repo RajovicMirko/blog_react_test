@@ -30,7 +30,6 @@ const UsersPage = () => {
     isError,
     pagination,
     isDataEmpty,
-    refetch: refetchUsers,
   } = useUsers({
     pagination: {
       useBreakpoints: true,
@@ -40,14 +39,15 @@ const UsersPage = () => {
     },
   });
 
-  const { create, isLoadingCreate, updateQueryData } = useUser();
+  const { create, isLoadingCreate, updateQueryData, invalidateBaseQuery } =
+    useUser();
 
   const handleCreateUser = (userData: User) => {
     create(userData, {
       onSuccess: (response) => {
         updateQueryData(response);
+        invalidateBaseQuery();
         toggleCreateUserModal();
-        refetchUsers();
         navigate(RoutePath.user, { state: { id: response.data.data.id } });
         toast.success("User successfully added");
       },

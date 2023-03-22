@@ -49,6 +49,10 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       );
     };
 
+    const invalidateBaseQuery = () => {
+      queryClient.invalidateQueries(queryKeys.many(url, {}));
+    };
+
     return {
       data: axiosResponse?.data?.data,
       ...restFetch,
@@ -59,6 +63,7 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       remove,
       isLoadingRemove,
       updateQueryData,
+      invalidateBaseQuery,
     };
   };
 }

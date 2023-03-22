@@ -21,19 +21,26 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const [isOpenEditUserModal, toggleEditUserModal] = useToggle();
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove, updateQueryData } =
-    useUser({
-      id: user?.id,
-      options: {
-        enabled: !!user?.id,
-      },
-    });
+  const {
+    update,
+    isLoadingUpdate,
+    remove,
+    isLoadingRemove,
+    updateQueryData,
+    invalidateBaseQuery,
+  } = useUser({
+    id: user?.id,
+    options: {
+      enabled: !!user?.id,
+    },
+  });
 
   const handleSubmitEditUser = (formUser: User) => {
     update(formUser, {
       onSuccess: (response) => {
         toggleEditUserModal();
         updateQueryData(response);
+        invalidateBaseQuery();
         toast.success("User successfully updated");
       },
     });

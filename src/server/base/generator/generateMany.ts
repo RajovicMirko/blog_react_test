@@ -38,7 +38,6 @@ function generateMany<Response extends object, Props = object>(url: string) {
       }),
       options: {
         enabled: isReady && enabled,
-        staleTime: 5000,
         ...restOptions,
       },
     });

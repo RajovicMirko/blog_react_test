@@ -45,7 +45,7 @@ const PostDetails = ({ post }: PostDetailsProps) => {
       {
         onSuccess: () => {
           toast.success("Post successfully deleted");
-          navigate(RoutePath.users);
+          navigate(RoutePath.user, { state: { id: post?.user_id } });
         },
       }
     );
