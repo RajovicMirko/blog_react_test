@@ -3,20 +3,17 @@ import fetchers from "../fetchers";
 import useFetch from "../hooks/useFetch";
 import useMutation from "../hooks/useMutation";
 import queryKeys from "../queryKeys";
-import { BaseHookParams, BaseOneRequest, BaseResponse } from "../types";
+import { BaseHookParams, BaseOneProps, BaseResponse } from "../types";
 
-function generateOne<
-  Response extends Required<Pick<BaseOneRequest, "id">>,
-  Props = object
->(url: string) {
+function generateOne<Response extends BaseOneProps>(url: string) {
   return ({
     options,
     ...restProps
-  }: BaseHookParams<BaseResponse<Response>, BaseOneRequest<Props>>) => {
+  }: BaseHookParams<BaseResponse<Response>, Partial<Response>>) => {
     const queryClient = useQueryClient();
 
     const { axiosResponse, ...restFetch } = useFetch<
-      BaseOneRequest,
+      BaseOneProps,
       BaseResponse<Response>
     >({
       queryFn: fetchers.getOne(url),
@@ -28,18 +25,18 @@ function generateOne<
     });
 
     const { mutate: create, isLoading: isLoadingCreate } = useMutation<
-      BaseOneRequest,
-      BaseResponse<Response>
+      BaseResponse<Response>,
+      Response
     >(fetchers.createOne(url));
 
     const { mutate: update, isLoading: isLoadingUpdate } = useMutation<
-      BaseOneRequest,
-      BaseResponse<Response>
+      BaseResponse<Response>,
+      Partial<Response>
     >(fetchers.updateOne(url));
 
     const { mutate: remove, isLoading: isLoadingRemove } = useMutation<
-      BaseOneRequest,
-      BaseResponse<Response>
+      BaseResponse<Response>,
+      Required<BaseOneProps>
     >(fetchers.deleteOne(url));
 
     const updateQueryData = (axiosResponse: BaseResponse<Response>) => {

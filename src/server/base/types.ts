@@ -15,7 +15,7 @@ export type BaseHookParams<Response, Props = void> = Props & {
 // REQUEST
 export type BaseRequest<Props = void> = Props & PaginationRequestParams;
 
-export type BaseOneRequest<Props = void> = Props & { id?: string | number };
+export type BaseOneProps = { id?: string | number };
 
 // RESPONSE
 export type MetaResponse = {
