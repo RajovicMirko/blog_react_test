@@ -19,6 +19,7 @@ function generateMany<Response, Props = object>(url: string) {
     >
   ) => {
     const { options, pagination, ...restProps } = props ?? {};
+    const { enabled, ...restOptions } = options ?? {};
 
     const {
       isReady,
@@ -40,9 +41,9 @@ function generateMany<Response, Props = object>(url: string) {
         ...restProps,
       }),
       options: {
-        enabled: isReady && options?.enabled,
+        enabled: isReady && enabled,
         staleTime: 5000,
-        ...options,
+        ...restOptions,
       },
     });
 
