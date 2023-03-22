@@ -1,21 +1,29 @@
-import {
-  generateMany,
-  generateOne,
-  generateOneEntity,
-} from "src/server/base/apiHooks";
+import { generateMany, generateOne } from "src/server/base/generator";
+import { generateUrlParamPattern } from "src/server/base/helpers";
 import { Post } from "../posts";
 import { Todo } from "../todos";
-import { User, Entity, UserStatus } from "./types";
 import { getUserColorByStatus } from "./helpers";
+import {
+  BASE_URL,
+  Entity,
+  EntityHttpProps,
+  User,
+  UserStatus,
+  USER_ID_KEY,
+} from "./types";
 
-const BASE_URL = "users";
+const useUsers = generateMany<User[]>(BASE_URL);
 
-const users = {
-  many: generateMany<User[]>(BASE_URL),
-  one: generateOne<User>(BASE_URL),
-  oneEntity: generateOneEntity<(Post & Todo)[], Entity>(BASE_URL),
-};
+const useUser = generateOne<User>(BASE_URL);
+
+const useUserPosts = generateMany<Post[], EntityHttpProps>(
+  `${BASE_URL}/${generateUrlParamPattern(USER_ID_KEY)}/${Entity.posts}`
+);
+
+const useUserTodos = generateMany<Todo[], EntityHttpProps>(
+  `${BASE_URL}/${generateUrlParamPattern(USER_ID_KEY)}/${Entity.todos}`
+);
 
 export type { User };
 export { Entity as UserEntity, UserStatus, getUserColorByStatus };
-export default users;
+export { useUsers, useUser, useUserPosts, useUserTodos };

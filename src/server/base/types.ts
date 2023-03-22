@@ -11,16 +11,10 @@ export type BaseHookParams<Response, Props = void> = Props & {
 
 export type BaseRequest<Props = void> = Props & PaginationRequestParams;
 
-type OneRequestParams = { id?: string | number };
+export type OneRequestParams = { id?: string | number };
 
-export type BaseOneRequest = BaseRequest<OneRequestParams>;
-
-export type BaseOneEntityRequest<EntityType = any> = BaseRequest<
-  Required<
-    OneRequestParams & {
-      entity: EntityType;
-    }
-  >
+export type BaseOneRequest<Props = void> = BaseRequest<
+  Props & OneRequestParams
 >;
 
 export type MetaResponse = {

@@ -1,19 +1,16 @@
-import {
-  generateMany,
-  generateOne,
-  generateOneEntity,
-} from "src/server/base/apiHooks";
+import { generateMany, generateOne } from "src/server/base/generator";
+import { generateUrlParamPattern } from "src/server/base/helpers";
 import { Comment } from "../comments";
-import { Entity, Post } from "./types";
+import { BASE_URL, Entity, EntityHttpProps, Post, POST_ID_KEY } from "./types";
 
-const BASE_URL = "posts";
+const usePosts = generateMany<Post[]>(BASE_URL);
 
-const posts = {
-  many: generateMany<Post[]>(BASE_URL),
-  one: generateOne<Post>(BASE_URL),
-  oneEntity: generateOneEntity<Comment[], Entity>(BASE_URL),
-};
+const usePost = generateOne<Post>(BASE_URL);
+
+const usePostComments = generateMany<Comment[], EntityHttpProps>(
+  `${BASE_URL}/${generateUrlParamPattern(POST_ID_KEY)}/${Entity.comments}`
+);
 
 export type { Post };
 export { Entity as PostEntity };
-export default posts;
+export { usePosts, usePost, usePostComments };

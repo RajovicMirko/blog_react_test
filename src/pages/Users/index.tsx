@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import AddIcon from "@mui/icons-material/Add";
 import { Fab, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import users, { User } from "src/server/api/users";
+import { User, useUser, useUsers } from "src/server/api/users";
 
 const UsersPage = () => {
   const { isAuthenticated } = useAuthContext();
@@ -30,13 +31,13 @@ const UsersPage = () => {
     pagination,
     isDataEmpty,
     refetch: refetchUsers,
-  } = users.many({
+  } = useUsers({
     options: {
       enabled: isAuthenticated,
     },
   });
 
-  const { create, isLoadingCreate, updateQueryData } = users.one();
+  const { create, isLoadingCreate, updateQueryData } = useUser({});
 
   const handleCreateUser = (userData: User) => {
     create(userData, {

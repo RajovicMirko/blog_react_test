@@ -1,77 +1,83 @@
 import API from "src/utils/axios";
 import { sleep } from "src/utils/sleep";
-import { generateUrlWithQueryString } from "./helpers";
 import {
-  GenerateQueryStringProps,
-  BaseRequest,
+  generateUrlParamPattern,
+  generateUrlWithQueryString,
+  replaceUrlParams,
+} from "./helpers";
+import {
   BaseOneRequest,
-  BaseOneEntityRequest,
+  BaseRequest,
   BaseResponse,
+  GenerateQueryStringProps,
 } from "./types";
 
 function getMany<
   Props extends BaseRequest<GenerateQueryStringProps>,
   Response extends BaseResponse<any>
->(baseUrl: string) {
-  return async (props: Props): Promise<Response> => {
-    const url = generateUrlWithQueryString(baseUrl, props as any);
-
-    const data = await API.get(url);
-    await sleep();
-    return data as Response;
-  };
-}
-
-function getOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
-  return async ({ id }: Props): Promise<Response> => {
-    const url = `/${baseUrl}/${id}`;
-
-    const data = await API.get(url);
-    await sleep();
-    return data as Response;
-  };
-}
-
-function getEntity<Response, EntityType>(baseUrl: string) {
+>(url: string) {
   return async ({
-    id,
-    entity,
-    ...pagination
-  }: BaseOneEntityRequest<EntityType>): Promise<Response> => {
-    const url = generateUrlWithQueryString(
-      `/${baseUrl}/${id}/${entity}`,
-      pagination as GenerateQueryStringProps
+    page,
+    per_page,
+    limit,
+    ...restProps
+  }: Props): Promise<Response> => {
+    const replacedUrlParams = replaceUrlParams(url, restProps);
+
+    const resultUrl = generateUrlWithQueryString(replacedUrlParams, {
+      page,
+      per_page,
+      limit,
+    } as any);
+
+    const data = await API.get(resultUrl);
+    await sleep();
+    return data as Response;
+  };
+}
+
+function getOne<Props extends BaseOneRequest<object>, Response>(url: string) {
+  return async (props: Props): Promise<Response> => {
+    const resultUrl = replaceUrlParams(
+      `${url}/${generateUrlParamPattern("id")}`,
+      props
     );
 
-    const data = await API.get(url);
+    const data = await API.get(resultUrl);
     await sleep();
     return data as Response;
   };
 }
 
-function createOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
+function createOne<Props extends BaseOneRequest<object>, Response>(
+  url: string
+) {
   return async (body: Props): Promise<Response> => {
-    const data = await API.post(baseUrl, body);
+    const data = await API.post(url, body);
     await sleep();
     return data as Response;
   };
 }
 
-function updateOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
+function updateOne<Props extends BaseOneRequest<object>, Response>(
+  url: string
+) {
   return async ({ id, ...body }: Props): Promise<Response> => {
-    const url = `${baseUrl}/${id}`;
+    const resultUrl = `${url}/${id}`;
 
-    const data = await API.patch(url, body);
+    const data = await API.patch(resultUrl, body);
     await sleep();
     return data as Response;
   };
 }
 
-function deleteOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
+function deleteOne<Props extends BaseOneRequest<object>, Response>(
+  url: string
+) {
   return async ({ id }: Props): Promise<Response> => {
-    const url = `${baseUrl}/${id}`;
+    const resultUrl = `${url}/${id}`;
 
-    const data = await API.delete(url);
+    const data = await API.delete(resultUrl);
     await sleep();
     return data as Response;
   };
@@ -80,7 +86,6 @@ function deleteOne<Props extends BaseOneRequest, Response>(baseUrl: string) {
 export default {
   getMany,
   getOne,
-  getEntity,
   createOne,
   updateOne,
   deleteOne,

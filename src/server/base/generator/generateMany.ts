@@ -1,21 +1,19 @@
-import usePagination from "../hooks/usePagination";
-import useFetch from "../hooks/useFetch";
-import fetchers from "../fetchers";
-import queryKeys from "../queryKeys";
 import { useEffect } from "react";
-import { BaseHookParams, BaseOneEntityRequest, BaseResponse } from "../types";
+import fetchers from "../fetchers";
+import useFetch from "../hooks/useFetch";
+import usePagination from "../hooks/usePagination";
+import queryKeys from "../queryKeys";
+import {
+  BaseHookParams,
+  BaseRequest,
+  BaseResponse,
+  GenerateQueryStringProps,
+} from "../types";
 
-function generateOneEntity<Response, EntityType>(baseUrl: string) {
-  return (
-    {
-      id,
-      entity,
-      options,
-    }: BaseHookParams<
-      BaseResponse<Response>,
-      BaseOneEntityRequest<EntityType>
-    > = {} as any
-  ) => {
+function generateMany<Response, Props = object>(url: string) {
+  return (props: BaseHookParams<BaseResponse<Response>, Props>) => {
+    const { options, ...restProps } = props ?? {};
+
     const {
       isReady,
       getPaginationRequestParams,
@@ -24,14 +22,13 @@ function generateOneEntity<Response, EntityType>(baseUrl: string) {
     } = usePagination({ useBreakpoints: true });
 
     const { axiosResponse, ...rest } = useFetch<
-      BaseOneEntityRequest<EntityType>,
+      BaseRequest<GenerateQueryStringProps>,
       BaseResponse<Response>
     >({
-      queryFn: fetchers.getEntity(baseUrl),
-      queryKey: queryKeys.entity<EntityType>(baseUrl, {
-        id,
-        entity,
+      queryFn: fetchers.getMany(url),
+      queryKey: queryKeys.many(url, {
         ...getPaginationRequestParams(),
+        ...restProps,
       }),
       options: {
         enabled: isReady && options?.enabled,
@@ -59,4 +56,4 @@ function generateOneEntity<Response, EntityType>(baseUrl: string) {
   };
 }
 
-export default generateOneEntity;
+export default generateMany;

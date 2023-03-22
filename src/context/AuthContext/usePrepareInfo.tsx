@@ -1,7 +1,7 @@
-import posts from "src/server/api/posts";
+import { usePosts } from "src/server/api/posts";
 
 const usePrepareInfo = (token: string) => {
-  const { data: info } = posts.many({
+  const { data: info } = usePosts({
     options: {
       enabled: !!token,
     },
