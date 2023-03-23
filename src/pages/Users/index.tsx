@@ -39,14 +39,13 @@ const UsersPage = () => {
     },
   });
 
-  const { create, isLoadingCreate, updateQuery, invalidateBaseQuery } =
-    useUser();
+  const { create, isLoadingCreate, updateQuery, invalidateMany } = useUser();
 
   const handleCreateUser = (userData: User) => {
     create(userData, {
       onSuccess: (response) => {
         updateQuery(response);
-        invalidateBaseQuery();
+        invalidateMany();
         toggleCreateUserModal();
         navigate(RoutePath.user, { state: { id: response.data.data.id } });
         toast.success("User successfully added");

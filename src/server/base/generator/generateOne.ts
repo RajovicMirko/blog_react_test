@@ -49,17 +49,17 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       );
     };
 
-    const invalidateQuery = () => {
+    const invalidateOne = () => {
       queryClient.invalidateQueries(queryKeys.one(url, restProps));
     };
 
-    const invalidateBaseQuery = () => {
+    const invalidateMany = () => {
       queryClient.invalidateQueries(queryKeys.many(url, {}));
     };
 
     const invalidateAll = () => {
-      invalidateBaseQuery();
-      invalidateQuery();
+      invalidateOne();
+      invalidateMany();
     };
 
     return {
@@ -72,8 +72,8 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       remove,
       isLoadingRemove,
       updateQuery,
-      invalidateQuery,
-      invalidateBaseQuery,
+      invalidateOne,
+      invalidateMany,
       invalidateAll,
     };
   };

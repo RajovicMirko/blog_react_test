@@ -27,7 +27,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
     remove,
     isLoadingRemove,
     updateQuery,
-    invalidateBaseQuery,
+    invalidateMany,
   } = useUser({
     id: user?.id,
     options: {
@@ -38,10 +38,10 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const handleSubmitEditUser = (formUser: User) => {
     update(formUser, {
       onSuccess: (response) => {
-        toggleEditUserModal();
         updateQuery(response);
-        invalidateBaseQuery();
+        invalidateMany();
         toast.success("User successfully updated");
+        toggleEditUserModal();
       },
     });
   };
@@ -51,6 +51,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
       { id: user?.id },
       {
         onSuccess: () => {
+          invalidateMany();
           toast.success("User successfully deleted");
           navigate(RoutePath.users);
         },
