@@ -16,17 +16,8 @@ function generateMany<Response extends object, Props = object>(url: string) {
     pagination,
     ...restProps
   }: BasePropsHookParams<BaseResponse<Response>, Partial<Props>> = {}) => {
-    const { enabled, ...restOptions } = options ?? {};
-
-    const {
-      isReady,
-      getPaginationRequestParams,
-      handleInitTotal,
-      ...restPatination
-    } = usePagination({
-      ...pagination,
-      useBreakpoints: pagination?.useBreakpoints && !pagination?.per_page,
-    });
+    const { getPaginationRequestParams, handleInitTotal, ...restPatination } =
+      usePagination({ ...pagination });
 
     const { axiosResponse, ...rest } = useFetch<
       BaseProps<ObjectBaseParams>,
@@ -37,10 +28,7 @@ function generateMany<Response extends object, Props = object>(url: string) {
         ...getPaginationRequestParams(),
         ...restProps,
       }),
-      options: {
-        enabled: isReady && enabled,
-        ...restOptions,
-      },
+      options,
     });
 
     useEffect(() => {
@@ -52,7 +40,6 @@ function generateMany<Response extends object, Props = object>(url: string) {
     return {
       data: axiosResponse?.data?.data,
       pagination: {
-        isReady,
         getPaginationRequestParams,
         handleInitTotal,
         ...restPatination,

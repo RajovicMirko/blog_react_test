@@ -11,9 +11,7 @@ export type PaginationRequestParams = {
   limit?: number;
 };
 
-export type PaginationProps = PaginationRequestParams & {
-  useBreakpoints?: boolean;
-};
+export type PaginationProps = PaginationRequestParams;
 
 export type PaginationResponse = {
   total: number;
@@ -25,7 +23,6 @@ export type PaginationResponse = {
 export type PaginationHookReturn = {
   isFirstPage: boolean;
   isLastPage: boolean;
-  isReady: boolean;
   handleNext: () => void;
   handleBack: () => void;
   handleInitTotal: (pagination: PaginationResponse) => void;

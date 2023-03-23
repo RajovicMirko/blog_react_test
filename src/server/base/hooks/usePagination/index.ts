@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import useBreakpoints from "src/hooks/useBreakpoints";
-import { getPerPageByBreakpoints } from "./getPerPageByBreakpoints";
+import { useMemo, useState } from "react";
 import {
   PaginationDisplayData,
   PaginationHookReturn,
@@ -11,13 +9,8 @@ import {
 const DEFAULT_PER_PAGE = 24;
 
 const usePagination = (props: PaginationProps): PaginationHookReturn => {
-  const breakpoints = useBreakpoints();
-
-  const [isReady, setIsReady] = useState<boolean>(!props.useBreakpoints);
   const [page, setPage] = useState<number>(props?.page ?? 1);
-  const [perPage, setPerPage] = useState<number>(
-    props?.per_page ?? DEFAULT_PER_PAGE
-  );
+  const [perPage] = useState<number>(props?.per_page ?? DEFAULT_PER_PAGE);
   const [pages, setPages] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
@@ -55,26 +48,9 @@ const usePagination = (props: PaginationProps): PaginationHookReturn => {
     per_page: perPage,
   });
 
-  useEffect(() => {
-    if (props.useBreakpoints) {
-      const breakpointPerPage = getPerPageByBreakpoints(
-        breakpoints,
-        DEFAULT_PER_PAGE
-      );
-
-      if (!!breakpointPerPage && perPage !== breakpointPerPage) {
-        setPage(1);
-        setPerPage(breakpointPerPage);
-      }
-
-      if (breakpointPerPage) setIsReady(true);
-    }
-  }, [breakpoints, props.useBreakpoints]);
-
   return {
     isFirstPage,
     isLastPage,
-    isReady,
     handleInitTotal,
     handleNext,
     handleBack,
