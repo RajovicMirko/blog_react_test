@@ -1,6 +1,9 @@
 import { Grid, Typography, useTheme } from "@mui/material";
+import { toast } from "react-toastify";
 
 import { Comment, useComment } from "src/server/api/comments";
+import { updaterFunctionRemove } from "src/server/api/helpers";
+import { postsHttpUrls } from "src/server/api/posts/types";
 
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
@@ -17,14 +20,19 @@ const CommentCard = ({ comment }: CommentCardProps) => {
   const [isCommentModalOpen, toggleEditCommentModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
-  const { remove, isLoadingRemove } = useComment({});
+  const { remove, isLoadingRemove, updateMany } = useComment({});
 
   const handleRemoveComment = () => {
     remove(
       { id: comment?.id },
       {
         onSuccess: () => {
+          updateMany(
+            postsHttpUrls.usePostComments,
+            updaterFunctionRemove<Comment>(comment?.id as number)
+          );
           toggleDeleteConfirmation();
+          toast.success("Comment successfully deleted");
         },
       }
     );

@@ -76,7 +76,7 @@ const TodoForm = ({
           usersHttpUrls.useUserTodos,
           updaterFunctionUpdate<Todo>(response)
         );
-        toast.success("User successfully updated");
+        toast.success("Todo successfully updated");
         onSuccess?.(todoData);
       },
       onSettled: () => onPostSubmit?.(),

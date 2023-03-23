@@ -63,7 +63,7 @@ const CommentForm = ({
           postsHttpUrls.usePostComments,
           updaterFunctionCreate<Comment>(response)
         );
-        toast.success("Todo successfully added");
+        toast.success("Comment successfully added");
         onSuccess?.(commentData);
       },
       onSettled: () => onPostSubmit?.(),
@@ -78,7 +78,7 @@ const CommentForm = ({
           postsHttpUrls.usePostComments,
           updaterFunctionUpdate<Comment>(response)
         );
-        toast.success("User successfully updated");
+        toast.success("Comment successfully updated");
         onSuccess?.(commentData);
       },
       onSettled: () => onPostSubmit?.(),
