@@ -1,17 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { Avatar, Grid, Typography, useTheme } from "@mui/material";
 import Person2Icon from "@mui/icons-material/Person2";
+import { Avatar, Grid, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { RoutePath } from "src/router/routesMap";
+import { getUserColorByStatus, User } from "src/server/api/users";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
-import { getUserColorByStatus, User } from "src/server/api/users";
-import { RoutePath } from "src/router/routesMap";
 
 type UserCardProps = {
   user: User;
-  isLoading?: boolean;
 };
 
-const UserCard = ({ user, isLoading }: UserCardProps) => {
+const UserCard = ({ user }: UserCardProps) => {
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ const UserCard = ({ user, isLoading }: UserCardProps) => {
     });
 
   return (
-    <Card isLoading={isLoading} sx={{ minHeight: "250px" }}>
+    <Card sx={{ minHeight: "250px" }}>
       <Grid container rowGap="10px">
         <Grid
           display="flex"

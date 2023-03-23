@@ -1,8 +1,16 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
-import AppForm from "../../../Form/AppForm";
+import { toast } from "react-toastify";
+import { Comment, useComment } from "src/server/api/comments";
+import {
+  updaterFunctionCreate,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
+import { Post } from "src/server/api/posts";
+import { postsHttpUrls } from "src/server/api/posts/types";
 import ButtonLoading from "../../../Button/ButtonLoading";
+import AppForm from "../../../Form/AppForm";
 import TextFieldInput from "../../../Form/components/TextFieldInput";
 import {
   email,
@@ -10,12 +18,11 @@ import {
   minLen,
   validation,
 } from "../../../Form/validations";
-import { Post } from "src/server/api/posts";
-import { Comment } from "src/server/api/comments";
 
-type CommentFormProps = {
-  onSubmit: (formData: Comment) => void;
-  isLoading: boolean;
+export type CommentFormProps = {
+  onSuccess: (formData: Comment) => void;
+  onPreSubmit?: () => void;
+  onPostSubmit?: () => void;
   postId?: Post["id"];
   comment?: Comment;
 };
@@ -23,9 +30,21 @@ type CommentFormProps = {
 const CommentForm = ({
   comment,
   postId,
-  onSubmit,
-  isLoading,
+  onSuccess,
+  onPreSubmit,
+  onPostSubmit,
 }: CommentFormProps) => {
+  const {
+    create,
+    isLoadingCreate,
+    update,
+    isLoadingUpdate,
+    updateOne,
+    updateMany,
+  } = useComment();
+
+  const isLoading = isLoadingCreate || isLoadingUpdate;
+
   const methods = useForm<Comment>({
     mode: "onChange",
     defaultValues: {
@@ -36,10 +55,42 @@ const CommentForm = ({
       body: comment?.body ?? "",
     },
   });
+  const handleCreate = (commentData: Comment) => {
+    create(commentData, {
+      onSuccess: (response) => {
+        updateOne(response, response?.data?.data?.id as number);
+        updateMany(
+          postsHttpUrls.usePostComments,
+          updaterFunctionCreate<Comment>(response)
+        );
+        toast.success("Todo successfully added");
+        onSuccess?.(commentData);
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
+  const handleEdit = (commentData: Comment) => {
+    update(commentData, {
+      onSuccess: (response) => {
+        updateOne(response, comment?.id as number);
+        updateMany(
+          postsHttpUrls.usePostComments,
+          updaterFunctionUpdate<Comment>(response)
+        );
+        toast.success("User successfully updated");
+        onSuccess?.(commentData);
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
 
   const handleOnSubmit = (formData: Comment) => {
-    const payload = omitBy(formData, (value: any) => !value);
-    onSubmit(payload as Comment);
+    onPreSubmit?.();
+    const payload = omitBy(formData, (value: any) => !value) as Comment;
+    const fn = comment?.id ? handleEdit : handleCreate;
+
+    fn(payload);
   };
 
   return (

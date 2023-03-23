@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 
-import { Post, usePost } from "src/server/api/posts";
-import { Todo, useTodo } from "src/server/api/todos";
+import { Post } from "src/server/api/posts";
+import { Todo } from "src/server/api/todos";
 import {
   UserEntity,
   useUser,
@@ -13,18 +12,15 @@ import {
 import { actions, TAB_VIEW_OPTIONS } from "./constants";
 
 import PostCard from "src/components/AppComponents/post/PostCard";
-import PostForm from "src/components/AppComponents/post/PostForm";
+import PostModalForm from "src/components/AppComponents/post/PostModalForm";
 import TodoCard from "src/components/AppComponents/todo/TodoCard";
-import TodoForm from "src/components/AppComponents/todo/TodoForm";
+import TodoModalForm from "src/components/AppComponents/todo/TodoModalForm";
 import GridPagination from "src/components/GridPagination";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
-import Modal from "src/components/Modal";
 import SpeedDialTooltip from "src/components/SpeedDialTooltip";
 import TabSwitcher from "src/components/TabSwitcher";
 import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
-import { updaterFunctionCreate } from "src/server/api/helpers";
-import { usersHttpUrls } from "src/server/api/users/types";
 import UserDetails from "./UserDetails";
 
 const UserPage = () => {
@@ -44,18 +40,6 @@ const UserPage = () => {
       enabled: isAuthenticated,
     },
   });
-
-  const {
-    create: createPost,
-    isLoadingCreate: isLoadingCreatePost,
-    updateMany: updateManyPost,
-  } = usePost({});
-
-  const {
-    create: createTodo,
-    isLoadingCreate: isLoadingCreateTodo,
-    updateMany: updateManyTodo,
-  } = useTodo({});
 
   const {
     data: userPosts,
@@ -89,36 +73,16 @@ const UserPage = () => {
   const handleSpeedDialActionClick = (id: UserEntity) => setDisplayModalKey(id);
   const handleModalClose = () => setDisplayModalKey("");
 
-  const handleCreatePost = (formData: Post) => {
-    createPost(formData, {
-      onSuccess: (response) => {
-        if (entity !== UserEntity.posts) {
-          handleTabChange(UserEntity.posts);
-        }
-        updateManyPost(
-          usersHttpUrls.useUserPosts,
-          updaterFunctionCreate<Post>(response)
-        );
-        handleModalClose();
-        toast.success("Post successfully added");
-      },
-    });
+  const onPostSuccess = () => {
+    if (entity !== UserEntity.posts) {
+      handleTabChange(UserEntity.posts);
+    }
   };
 
-  const handleCreateTodo = (formData: Todo) => {
-    createTodo(formData, {
-      onSuccess: (response) => {
-        if (entity !== UserEntity.todos) {
-          handleTabChange(UserEntity.todos);
-        }
-        updateManyTodo(
-          usersHttpUrls.useUserTodos,
-          updaterFunctionCreate<Todo>(response)
-        );
-        handleModalClose();
-        toast.success("Todo successfully added");
-      },
-    });
+  const onTodoSuccess = () => {
+    if (entity !== UserEntity.todos) {
+      handleTabChange(UserEntity.todos);
+    }
   };
 
   const CardPost = (data: Post) => <PostCard post={data} />;
@@ -170,31 +134,19 @@ const UserPage = () => {
         tooltipWidth={160}
       />
 
-      <Modal
-        title="Create new post"
+      <PostModalForm
+        userId={user?.id}
         open={displayModalKey === UserEntity.posts}
         onClose={handleModalClose}
-        persistent={isLoadingCreatePost}
-      >
-        <PostForm
-          userId={user?.id}
-          onSubmit={handleCreatePost}
-          isLoading={isLoadingCreatePost}
-        />
-      </Modal>
+        onSuccess={onPostSuccess}
+      />
 
-      <Modal
-        title="Add new todo"
+      <TodoModalForm
+        userId={user?.id}
         open={displayModalKey === UserEntity.todos}
         onClose={handleModalClose}
-        persistent={isLoadingCreateTodo}
-      >
-        <TodoForm
-          userId={user?.id}
-          onSubmit={handleCreateTodo}
-          isLoading={isLoadingCreateTodo}
-        />
-      </Modal>
+        onSuccess={onTodoSuccess}
+      />
     </ScrollWrapperPage>
   );
 };

@@ -1,9 +1,6 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { toast } from "react-toastify";
-import {
-  updaterFunctionRemove,
-  updaterFunctionUpdate,
-} from "src/server/api/helpers";
+import { updaterFunctionRemove } from "src/server/api/helpers";
 import {
   getTodoColorByStatus,
   Todo,
@@ -14,39 +11,23 @@ import { usersHttpUrls } from "src/server/api/users/types";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
-import Modal from "../../Modal";
 import ConfirmModal from "../../Modal/ConfirmModal";
-import TodoForm from "./TodoForm";
+import TodoModalForm from "./TodoModalForm";
 
 type TodoCardProps = {
   todo: Todo;
-  isLoadingDelete?: boolean;
-  isLoading?: boolean;
 };
 
-const TodoCard = ({ todo, isLoading }: TodoCardProps) => {
+const TodoCard = ({ todo }: TodoCardProps) => {
   const theme = useTheme();
   const [isEditModalOpen, toggleEditModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
   const isPending = todo.status === TodoStatus.pending;
   const isCompleted = todo.status === TodoStatus.completed;
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove, updateMany } =
-    useTodo({});
+  const { remove, isLoadingRemove, updateMany } = useTodo({});
 
-  const handleEditTodo = (formData: Todo) => {
-    update(formData, {
-      onSuccess: (response) => {
-        updateMany(
-          usersHttpUrls.useUserTodos,
-          updaterFunctionUpdate<Todo>(response)
-        );
-
-        toggleEditModal();
-        toast.success("Todo successfully updated");
-      },
-    });
-  };
+  const isLoading = isLoadingRemove;
 
   const handleRemoveTodo = () => {
     remove(
@@ -103,19 +84,12 @@ const TodoCard = ({ todo, isLoading }: TodoCardProps) => {
         )}
       </Card.Actions>
 
-      <Modal
-        title="Edit todo"
+      <TodoModalForm
+        todo={todo}
+        userId={todo?.user_id}
         open={isEditModalOpen}
         onClose={toggleEditModal}
-        persistent={isLoadingUpdate}
-      >
-        <TodoForm
-          userId={todo?.user_id}
-          todo={todo}
-          onSubmit={handleEditTodo}
-          isLoading={isLoadingUpdate}
-        />
-      </Modal>
+      />
 
       <ConfirmModal
         title="Delete Todo"

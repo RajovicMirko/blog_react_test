@@ -14,16 +14,16 @@ import ConfirmModal from "../../Modal/ConfirmModal";
 
 type PostCardProps = {
   post: Post;
-  isLoadingDelete?: boolean;
-  isLoading?: boolean;
 };
 
-const PostCard = ({ post, isLoading }: PostCardProps) => {
+const PostCard = ({ post }: PostCardProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
   const { remove, isLoadingRemove, updateMany } = usePost({});
+
+  const isLoading = isLoadingRemove;
 
   const handleDetailsClick = () =>
     navigate(RoutePath.post, {

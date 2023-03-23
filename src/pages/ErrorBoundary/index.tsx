@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Typography } from "@mui/material";
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 
 interface Props {
   children?: ReactNode;
@@ -20,9 +19,9 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // custom loger
-  }
+  // public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  //   // custom loger
+  // }
 
   public render() {
     if (this.state.hasError) {

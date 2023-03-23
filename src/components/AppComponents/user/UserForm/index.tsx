@@ -1,28 +1,54 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { RoutePath } from "src/router/routesMap";
+import {
+  updaterFunctionCreate,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
+import { User, useUser } from "src/server/api/users";
+import { usersHttpUrls } from "src/server/api/users/types";
+import ButtonLoading from "../../../Button/ButtonLoading";
 import AppForm, {
   TextFieldInput,
-  TextFieldSelect,
   TextFieldRadioGroup,
+  TextFieldSelect,
 } from "../../../Form";
-import ButtonLoading from "../../../Button/ButtonLoading";
-import { statusOptions, genderOptions } from "./constants";
 import {
   email,
   isRequired,
   minLen,
   validation,
 } from "../../../Form/validations";
-import { User } from "src/server/api/users";
+import { genderOptions, statusOptions } from "./constants";
 
-type UserFormProps = {
-  onSubmit: (formData: User) => void;
-  isLoading: boolean;
+export type UserFormProps = {
+  onSuccess: (formData: User) => void;
+  onPreSubmit?: () => void;
+  onPostSubmit?: () => void;
   user?: User;
 };
 
-const UserForm = ({ user, onSubmit, isLoading }: UserFormProps) => {
+const UserForm = ({
+  user,
+  onSuccess,
+  onPreSubmit,
+  onPostSubmit,
+}: UserFormProps) => {
+  const navigate = useNavigate();
+  const {
+    create,
+    isLoadingCreate,
+    update,
+    isLoadingUpdate,
+    updateOne,
+    updateMany,
+  } = useUser();
+
+  const isLoading = isLoadingCreate || isLoadingUpdate;
+
   const methods = useForm<User>({
     mode: "onChange",
     defaultValues: {
@@ -34,9 +60,43 @@ const UserForm = ({ user, onSubmit, isLoading }: UserFormProps) => {
     },
   });
 
+  const handleCreate = (userData: User) => {
+    create(userData, {
+      onSuccess: (response) => {
+        updateOne(response, response?.data?.data?.id as number);
+        updateMany(
+          usersHttpUrls.useUsers,
+          updaterFunctionCreate<User>(response)
+        );
+        toast.success("User successfully added");
+        onSuccess(userData);
+        navigate(RoutePath.user, { state: { id: response.data.data.id } });
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
+  const handleEdit = (userData: User) => {
+    update(userData, {
+      onSuccess: (response) => {
+        updateOne(response, user?.id as number);
+        updateMany(
+          usersHttpUrls.useUsers,
+          updaterFunctionUpdate<User>(response)
+        );
+        toast.success("User successfully updated");
+        onSuccess(userData);
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
   const handleOnSubmit = (formData: User) => {
-    const payload = omitBy(formData, (value: any) => !value);
-    onSubmit(payload as User);
+    onPreSubmit?.();
+    const payload = omitBy(formData, (value: any) => !value) as User;
+    const fn = user?.id ? handleEdit : handleCreate;
+
+    fn(payload);
   };
 
   return (

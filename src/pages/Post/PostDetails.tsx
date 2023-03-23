@@ -1,17 +1,13 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import PostForm from "src/components/AppComponents/post/PostForm";
+import PostModalForm from "src/components/AppComponents/post/PostModalForm";
 import ButtonLoading from "src/components/Button/ButtonLoading";
 import Card from "src/components/Card";
-import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import {
-  updaterFunctionRemove,
-  updaterFunctionUpdate,
-} from "src/server/api/helpers";
+import { updaterFunctionRemove } from "src/server/api/helpers";
 import { Post, usePost } from "src/server/api/posts";
 import { usersHttpUrls } from "src/server/api/users/types";
 
@@ -26,33 +22,12 @@ const PostDetails = ({ post }: PostDetailsProps) => {
   const [isOpenEditModal, toggleEditModal] = useToggle();
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
-  const {
-    update,
-    isLoadingUpdate,
-    remove,
-    isLoadingRemove,
-    updateOne,
-    updateMany,
-  } = usePost({
+  const { remove, isLoadingRemove, updateMany } = usePost({
     id: post?.id,
     options: {
       enabled: !!post?.id,
     },
   });
-
-  const handleSubmitEdit = (formData: Post) => {
-    update(formData, {
-      onSuccess: (response) => {
-        toggleEditModal();
-        updateOne(response, post?.id as number);
-        updateMany(
-          usersHttpUrls.useUserPosts,
-          updaterFunctionUpdate<Post>(response)
-        );
-        toast.success("Post successfully updated");
-      },
-    });
-  };
 
   const handleSubmitDeleteUser = () => {
     remove(
@@ -117,13 +92,12 @@ const PostDetails = ({ post }: PostDetailsProps) => {
         </Grid>
       </Grid>
 
-      <Modal title="Edit Post" open={isOpenEditModal} onClose={toggleEditModal}>
-        <PostForm
-          post={post}
-          onSubmit={handleSubmitEdit}
-          isLoading={isLoadingUpdate}
-        />
-      </Modal>
+      <PostModalForm
+        post={post}
+        userId={post.user_id}
+        open={isOpenEditModal}
+        onClose={toggleEditModal}
+      />
 
       <ConfirmModal
         title="Delete Post"

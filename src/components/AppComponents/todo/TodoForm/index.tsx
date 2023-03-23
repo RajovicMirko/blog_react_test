@@ -1,23 +1,47 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import {
+  updaterFunctionCreate,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
 
+import { Todo, useTodo } from "src/server/api/todos";
 import { User } from "src/server/api/users";
-import { Todo } from "src/server/api/todos";
+import { usersHttpUrls } from "src/server/api/users/types";
 
-import AppForm, { TextFieldInput, TextFieldRadioGroup } from "../../../Form";
 import ButtonLoading from "../../../Button/ButtonLoading";
+import AppForm, { TextFieldInput, TextFieldRadioGroup } from "../../../Form";
 import { isRequired, minLen, validation } from "../../../Form/validations";
 import { statusOptions } from "./constants";
 
-type TodoFormProps = {
-  onSubmit: (formData: Todo) => void;
-  isLoading: boolean;
+export type TodoFormProps = {
+  onSuccess: (formData: Todo) => void;
+  onPreSubmit?: () => void;
+  onPostSubmit?: () => void;
   userId?: User["id"];
   todo?: Todo;
 };
 
-const TodoForm = ({ todo, userId, onSubmit, isLoading }: TodoFormProps) => {
+const TodoForm = ({
+  todo,
+  userId,
+  onSuccess,
+  onPreSubmit,
+  onPostSubmit,
+}: TodoFormProps) => {
+  const {
+    create,
+    isLoadingCreate,
+    update,
+    isLoadingUpdate,
+    updateOne,
+    updateMany,
+  } = useTodo();
+
+  const isLoading = isLoadingCreate || isLoadingUpdate;
+
   const methods = useForm<Todo>({
     mode: "onChange",
     defaultValues: {
@@ -29,9 +53,42 @@ const TodoForm = ({ todo, userId, onSubmit, isLoading }: TodoFormProps) => {
     },
   });
 
-  const handleOnSubmit = (formData: Todo) => {
-    const payload = omitBy(formData, (value: any) => !value);
-    onSubmit(payload as Todo);
+  const handleCreate = (todoData: Todo) => {
+    create(todoData, {
+      onSuccess: (response) => {
+        updateOne(response, response?.data?.data?.id as number);
+        updateMany(
+          usersHttpUrls.useUserTodos,
+          updaterFunctionCreate<Todo>(response)
+        );
+        toast.success("Todo successfully added");
+        onSuccess?.(todoData);
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
+  const handleEdit = (todoData: Todo) => {
+    update(todoData, {
+      onSuccess: (response) => {
+        updateOne(response, todo?.id as number);
+        updateMany(
+          usersHttpUrls.useUserTodos,
+          updaterFunctionUpdate<Todo>(response)
+        );
+        toast.success("User successfully updated");
+        onSuccess?.(todoData);
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
+  const handleOnSubmit = (formData: User) => {
+    onPreSubmit?.();
+    const payload = omitBy(formData, (value: any) => !value) as Todo;
+    const fn = todo?.id ? handleEdit : handleCreate;
+
+    fn(payload);
   };
 
   return (

@@ -1,30 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import AddIcon from "@mui/icons-material/Add";
 import { Fab, useTheme } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import UserCard from "src/components/AppComponents/user/UserCard";
-import UserForm from "src/components/AppComponents/user/UserForm";
+import UserModalForm from "src/components/AppComponents/user/UserModalForm";
 import UserRow from "src/components/AppComponents/user/UserRow";
 import GridPagination from "src/components/GridPagination";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
-import Modal from "src/components/Modal";
 import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
 import useToggle from "src/hooks/useToggle";
-import { RoutePath } from "src/router/routesMap";
-import { updaterFunctionCreate } from "src/server/api/helpers";
-import { User, useUser, useUsers } from "src/server/api/users";
-import { usersHttpUrls } from "src/server/api/users/types";
+import { User, useUsers } from "src/server/api/users";
 
 const UsersPage = () => {
   const { isAuthenticated } = useAuthContext();
 
   const theme = useTheme();
-  const navigate = useNavigate();
   const { handleLoading } = useLoading();
 
-  const [isOpenCreateUserModal, toggleCreateUserModal] = useToggle();
+  const [isOpenedUserModal, toggleIsOpenedUserModal] = useToggle();
 
   const {
     data: usersData,
@@ -40,23 +32,6 @@ const UsersPage = () => {
       enabled: isAuthenticated,
     },
   });
-
-  const { create, isLoadingCreate, updateOne, updateMany } = useUser();
-
-  const handleCreateUser = (userData: User) => {
-    create(userData, {
-      onSuccess: (response) => {
-        updateOne(response, response?.data?.data?.id as number);
-        updateMany(
-          usersHttpUrls.useUsers,
-          updaterFunctionCreate<User>(response)
-        );
-        toggleCreateUserModal();
-        navigate(RoutePath.user, { state: { id: response.data.data.id } });
-        toast.success("User successfully added");
-      },
-    });
-  };
 
   handleLoading("users_page", !usersData && !isError);
 
@@ -78,19 +53,15 @@ const UsersPage = () => {
         useSwitch
       />
 
-      <Modal
-        title="Create User"
-        open={isOpenCreateUserModal}
-        onClose={toggleCreateUserModal}
-        persistent={isLoadingCreate}
-      >
-        <UserForm onSubmit={handleCreateUser} isLoading={isLoadingCreate} />
-      </Modal>
+      <UserModalForm
+        open={isOpenedUserModal}
+        onClose={toggleIsOpenedUserModal}
+      />
 
       <Fab
         color="primary"
         sx={theme.mixins.floatButtonPosition}
-        onClick={toggleCreateUserModal}
+        onClick={toggleIsOpenedUserModal}
         aria-label="Add new user"
       >
         <AddIcon />

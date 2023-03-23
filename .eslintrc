@@ -36,6 +36,7 @@
       {
         "ignoreRestSiblings": true,
         "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
     ]

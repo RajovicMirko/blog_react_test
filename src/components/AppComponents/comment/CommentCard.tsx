@@ -2,43 +2,24 @@ import { Grid, Typography, useTheme } from "@mui/material";
 
 import { Comment, useComment } from "src/server/api/comments";
 
-import { toast } from "react-toastify";
-import Modal from "src/components/Modal";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
 import ConfirmModal from "../../Modal/ConfirmModal";
-import CommentForm from "./CommentForm";
+import CommentModalForm from "./CommentModalForm";
 
 type CommentCardProps = {
   comment: Comment;
-  onEditSuccess: (id: Comment["id"]) => void;
-  onDeleteSuccess: (id: Comment["id"]) => void;
-  isLoadingDelete?: boolean;
-  isLoading?: boolean;
 };
 
-const CommentCard = ({
-  comment,
-  isLoading,
-  onEditSuccess,
-  onDeleteSuccess,
-}: CommentCardProps) => {
+const CommentCard = ({ comment }: CommentCardProps) => {
   const theme = useTheme();
   const [isCommentModalOpen, toggleEditCommentModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove } = useComment({});
+  const { remove, isLoadingRemove } = useComment({});
 
-  const handleEditModal = (formData: Comment) => {
-    update(formData, {
-      onSuccess: () => {
-        onEditSuccess(comment?.id);
-        toggleEditCommentModal();
-        toast.success("Comment is updated");
-      },
-    });
-  };
+  const isLoading = isLoadingRemove;
 
   const handleRemoveComment = () => {
     remove(
@@ -46,7 +27,6 @@ const CommentCard = ({
       {
         onSuccess: () => {
           toggleDeleteConfirmation();
-          onDeleteSuccess(comment.id);
         },
       }
     );
@@ -65,34 +45,25 @@ const CommentCard = ({
         </Grid>
       </Grid>
 
-      {!!onDeleteSuccess && (
-        <Card.Actions>
-          <ButtonLoading
-            label="Edit"
-            color="info"
-            onClick={toggleEditCommentModal}
-          />
-          <ButtonLoading
-            label="Delete"
-            color="error"
-            onClick={toggleDeleteConfirmation}
-          />
-        </Card.Actions>
-      )}
+      <Card.Actions>
+        <ButtonLoading
+          label="Edit"
+          color="info"
+          onClick={toggleEditCommentModal}
+        />
+        <ButtonLoading
+          label="Delete"
+          color="error"
+          onClick={toggleDeleteConfirmation}
+        />
+      </Card.Actions>
 
-      <Modal
-        title="Edit comment"
+      <CommentModalForm
+        comment={comment}
+        postId={comment?.post_id}
         open={isCommentModalOpen}
         onClose={toggleEditCommentModal}
-        persistent={isLoadingUpdate}
-      >
-        <CommentForm
-          comment={comment}
-          postId={comment?.post_id}
-          onSubmit={handleEditModal}
-          isLoading={isLoadingUpdate}
-        />
-      </Modal>
+      />
 
       <ConfirmModal
         title="Delete Comment"

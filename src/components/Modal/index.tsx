@@ -1,10 +1,10 @@
 import {
-  Modal as MuiModal,
   DialogProps,
+  Modal as MuiModal,
   Paper,
   PaperProps,
-  Typography,
   styled,
+  Typography,
 } from "@mui/material";
 import { MouseEventHandler } from "react";
 
@@ -21,7 +21,8 @@ const PaperStyled = styled(Paper)(() => ({
 }));
 
 export type ModalProps = PaperProps &
-  Pick<DialogProps, "open" | "onClose"> & {
+  Pick<DialogProps, "open"> & {
+    onClose: () => void;
     title?: string;
     persistent?: boolean;
   };
@@ -38,12 +39,8 @@ const Modal = ({
     event.stopPropagation();
   };
 
-  const handleClose = (
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    event: {},
-    reason: "backdropClick" | "escapeKeyDown"
-  ) => {
-    if (!persistent) onClose?.(event, reason);
+  const handleClose = () => {
+    if (!persistent) onClose?.();
   };
 
   return (

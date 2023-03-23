@@ -1,21 +1,45 @@
 import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
-import { Post } from "src/server/api/posts";
+import { toast } from "react-toastify";
+import {
+  updaterFunctionCreate,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
+import { Post, usePost } from "src/server/api/posts";
 import { User } from "src/server/api/users";
+import { usersHttpUrls } from "src/server/api/users/types";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import AppForm from "../../../Form/AppForm";
 import TextFieldInput from "../../../Form/components/TextFieldInput";
 import { isRequired, minLen, validation } from "../../../Form/validations";
 
-type PostFormProps = {
-  onSubmit: (formData: Post) => void;
-  isLoading: boolean;
+export type PostFormProps = {
+  onSuccess: (formData: Post) => void;
+  onPreSubmit?: () => void;
+  onPostSubmit?: () => void;
   userId?: User["id"];
   post?: Post;
 };
 
-const PostForm = ({ post, userId, onSubmit, isLoading }: PostFormProps) => {
+const PostForm = ({
+  post,
+  userId,
+  onSuccess,
+  onPreSubmit,
+  onPostSubmit,
+}: PostFormProps) => {
+  const {
+    create,
+    isLoadingCreate,
+    update,
+    isLoadingUpdate,
+    updateOne,
+    updateMany,
+  } = usePost();
+
+  const isLoading = isLoadingCreate || isLoadingUpdate;
+
   const methods = useForm<Post>({
     mode: "onChange",
     defaultValues: {
@@ -26,9 +50,41 @@ const PostForm = ({ post, userId, onSubmit, isLoading }: PostFormProps) => {
     },
   });
 
+  const handleEdit = (formData: Post) => {
+    update(formData, {
+      onSuccess: (response) => {
+        updateOne(response, post?.id as number);
+        updateMany(
+          usersHttpUrls.useUserPosts,
+          updaterFunctionUpdate<Post>(response)
+        );
+        onSuccess(formData);
+        toast.success("Post successfully updated");
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
+  const handleCreate = (formData: Post) => {
+    create(formData, {
+      onSuccess: (response) => {
+        updateMany(
+          usersHttpUrls.useUserPosts,
+          updaterFunctionCreate<Post>(response)
+        );
+        onSuccess(formData);
+        toast.success("Post successfully added");
+      },
+      onSettled: () => onPostSubmit?.(),
+    });
+  };
+
   const handleOnSubmit = (formData: Post) => {
-    const payload = omitBy(formData, (value: any) => !value);
-    onSubmit(payload as Post);
+    onPreSubmit?.();
+    const payload = omitBy(formData, (value: any) => !value) as Post;
+    const fn = post?.id ? handleEdit : handleCreate;
+
+    fn(payload);
   };
 
   return (

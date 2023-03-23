@@ -1,17 +1,13 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import UserForm from "src/components/AppComponents/user/UserForm";
+import UserModalForm from "src/components/AppComponents/user/UserModalForm";
 import ButtonLoading from "src/components/Button/ButtonLoading";
 import Card from "src/components/Card";
-import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
-import {
-  updaterFunctionRemove,
-  updaterFunctionUpdate,
-} from "src/server/api/helpers";
+import { updaterFunctionRemove } from "src/server/api/helpers";
 import { User, useUser } from "src/server/api/users";
 import { usersHttpUrls } from "src/server/api/users/types";
 
@@ -23,36 +19,16 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [isOpenEditUserModal, toggleEditUserModal] = useToggle();
+  const [isOpenedUserModal, toggleIsOpenedUserModal] = useToggle();
+
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
-  const {
-    update,
-    isLoadingUpdate,
-    remove,
-    isLoadingRemove,
-    updateOne,
-    updateMany,
-  } = useUser({
+  const { remove, isLoadingRemove, updateMany } = useUser({
     id: user?.id,
     options: {
       enabled: !!user?.id,
     },
   });
-
-  const handleSubmitEditUser = (formUser: User) => {
-    update(formUser, {
-      onSuccess: (response) => {
-        updateOne(response, user?.id as number);
-        updateMany(
-          usersHttpUrls.useUsers,
-          updaterFunctionUpdate<User>(response)
-        );
-        toast.success("User successfully updated");
-        toggleEditUserModal();
-      },
-    });
-  };
 
   const handleSubmitDeleteUser = () => {
     remove(
@@ -109,7 +85,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
             variant="contained"
             label="Edit"
             color="info"
-            onClick={toggleEditUserModal}
+            onClick={toggleIsOpenedUserModal}
           />
         </Grid>
         <Grid item xs={12} md={3}>
@@ -123,18 +99,11 @@ const UserDetails = ({ user }: UserDetailsProps) => {
         </Grid>
       </Grid>
 
-      <Modal
-        title="Edit User"
-        open={isOpenEditUserModal}
-        onClose={toggleEditUserModal}
-        persistent={isLoadingUpdate}
-      >
-        <UserForm
-          user={user}
-          onSubmit={handleSubmitEditUser}
-          isLoading={isLoadingUpdate}
-        />
-      </Modal>
+      <UserModalForm
+        user={user}
+        open={isOpenedUserModal}
+        onClose={toggleIsOpenedUserModal}
+      />
 
       <ConfirmModal
         title="Delete User"
