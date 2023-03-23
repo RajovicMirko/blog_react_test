@@ -23,8 +23,6 @@ const PostCard = ({ post }: PostCardProps) => {
 
   const { remove, isLoadingRemove, updateMany } = usePost({});
 
-  const isLoading = isLoadingRemove;
-
   const handleDetailsClick = () =>
     navigate(RoutePath.post, {
       state: {
@@ -50,7 +48,7 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   return (
-    <Card isLoading={isLoading} sx={{ minHeight: "250px" }}>
+    <Card sx={{ minHeight: "250px" }}>
       <Grid container rowGap="10px">
         <Card.Title title={post.title} sx={theme.mixins.textEllipsis} />
 

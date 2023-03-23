@@ -27,8 +27,6 @@ const TodoCard = ({ todo }: TodoCardProps) => {
 
   const { remove, isLoadingRemove, updateMany } = useTodo({});
 
-  const isLoading = isLoadingRemove;
-
   const handleRemoveTodo = () => {
     remove(
       { id: todo?.id },
@@ -47,7 +45,7 @@ const TodoCard = ({ todo }: TodoCardProps) => {
   };
 
   return (
-    <Card isLoading={isLoading} sx={{ minHeight: "190px" }}>
+    <Card sx={{ minHeight: "190px" }}>
       <Grid container rowGap="10px">
         <Card.Title title={todo.title} sx={theme.mixins.textEllipsis} />
 

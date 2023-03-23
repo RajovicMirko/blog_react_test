@@ -19,8 +19,6 @@ const CommentCard = ({ comment }: CommentCardProps) => {
 
   const { remove, isLoadingRemove } = useComment({});
 
-  const isLoading = isLoadingRemove;
-
   const handleRemoveComment = () => {
     remove(
       { id: comment?.id },
@@ -33,7 +31,7 @@ const CommentCard = ({ comment }: CommentCardProps) => {
   };
 
   return (
-    <Card isLoading={isLoading} sx={{ minHeight: "150px" }}>
+    <Card sx={{ minHeight: "150px" }}>
       <Grid container rowGap="10px">
         <Card.Title title={comment.name} sx={theme.mixins.textEllipsis} />
 
