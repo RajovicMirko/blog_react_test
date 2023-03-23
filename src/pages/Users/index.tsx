@@ -13,7 +13,9 @@ import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
+import { updaterFunctionCreate } from "src/server/api/helpers";
 import { User, useUser, useUsers } from "src/server/api/users";
+import { usersHttpUrls } from "src/server/api/users/types";
 
 const UsersPage = () => {
   const { isAuthenticated } = useAuthContext();
@@ -39,13 +41,16 @@ const UsersPage = () => {
     },
   });
 
-  const { create, isLoadingCreate, updateQuery, invalidateMany } = useUser();
+  const { create, isLoadingCreate, updateOne, updateMany } = useUser();
 
   const handleCreateUser = (userData: User) => {
     create(userData, {
       onSuccess: (response) => {
-        updateQuery(response);
-        invalidateMany();
+        updateOne(response, response?.data?.data?.id as number);
+        updateMany(
+          usersHttpUrls.useUsers,
+          updaterFunctionCreate<User>(response)
+        );
         toggleCreateUserModal();
         navigate(RoutePath.user, { state: { id: response.data.data.id } });
         toast.success("User successfully added");

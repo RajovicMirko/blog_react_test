@@ -8,7 +8,12 @@ import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
+import {
+  updaterFunctionRemove,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
 import { User, useUser } from "src/server/api/users";
+import { usersHttpUrls } from "src/server/api/users/types";
 
 type UserDetailsProps = {
   user?: User;
@@ -26,8 +31,8 @@ const UserDetails = ({ user }: UserDetailsProps) => {
     isLoadingUpdate,
     remove,
     isLoadingRemove,
-    updateQuery,
-    invalidateMany,
+    updateOne,
+    updateMany,
   } = useUser({
     id: user?.id,
     options: {
@@ -38,8 +43,11 @@ const UserDetails = ({ user }: UserDetailsProps) => {
   const handleSubmitEditUser = (formUser: User) => {
     update(formUser, {
       onSuccess: (response) => {
-        updateQuery(response);
-        invalidateMany();
+        updateOne(response, user?.id as number);
+        updateMany(
+          usersHttpUrls.useUsers,
+          updaterFunctionUpdate<User>(response)
+        );
         toast.success("User successfully updated");
         toggleEditUserModal();
       },
@@ -51,7 +59,10 @@ const UserDetails = ({ user }: UserDetailsProps) => {
       { id: user?.id },
       {
         onSuccess: () => {
-          invalidateMany();
+          updateMany(
+            usersHttpUrls.useUsers,
+            updaterFunctionRemove<User>(user?.id as number)
+          );
           toast.success("User successfully deleted");
           navigate(RoutePath.users);
         },
@@ -116,6 +127,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
         title="Edit User"
         open={isOpenEditUserModal}
         onClose={toggleEditUserModal}
+        persistent={isLoadingUpdate}
       >
         <UserForm
           user={user}

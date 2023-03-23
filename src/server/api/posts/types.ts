@@ -1,4 +1,4 @@
-export const BASE_URL = "posts";
+import { generateUrlParamPattern } from "src/server/base/helpers";
 
 export enum Entity {
   comments = "comments",
@@ -19,4 +19,14 @@ export type Post = {
   user_id: number;
   title: string;
   body: string;
+};
+
+export const BASE_URL = "posts";
+
+const postIdPattern = generateUrlParamPattern(EntityHttpPropsKeys.postId);
+
+export const postsHttpUrls = {
+  usePosts: BASE_URL,
+  usePost: BASE_URL,
+  usePostComments: `${BASE_URL}/${postIdPattern}/${Entity.comments}`,
 };

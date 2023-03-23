@@ -11,10 +11,11 @@ import {
 } from "../types";
 
 function generateMany<Response extends object, Props = object>(url: string) {
-  return (
-    props: BasePropsHookParams<BaseResponse<Response>, Partial<Props>> = {}
-  ) => {
-    const { options, pagination, ...restProps } = props ?? {};
+  return ({
+    options,
+    pagination,
+    ...restProps
+  }: BasePropsHookParams<BaseResponse<Response>, Partial<Props>> = {}) => {
     const { enabled, ...restOptions } = options ?? {};
 
     const {

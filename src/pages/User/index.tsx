@@ -23,6 +23,8 @@ import SpeedDialTooltip from "src/components/SpeedDialTooltip";
 import TabSwitcher from "src/components/TabSwitcher";
 import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
+import { updaterFunctionCreate } from "src/server/api/helpers";
+import { usersHttpUrls } from "src/server/api/users/types";
 import UserDetails from "./UserDetails";
 
 const UserPage = () => {
@@ -43,13 +45,17 @@ const UserPage = () => {
     },
   });
 
-  const { create: createPost, isLoadingCreate: isLoadingCreatePost } = usePost(
-    {}
-  );
+  const {
+    create: createPost,
+    isLoadingCreate: isLoadingCreatePost,
+    updateMany: updateManyPost,
+  } = usePost({});
 
-  const { create: createTodo, isLoadingCreate: isLoadingCreateTodo } = useTodo(
-    {}
-  );
+  const {
+    create: createTodo,
+    isLoadingCreate: isLoadingCreateTodo,
+    updateMany: updateManyTodo,
+  } = useTodo({});
 
   const {
     data: userPosts,
@@ -58,7 +64,6 @@ const UserPage = () => {
     isError: isErrorPosts,
     pagination: paginationPosts,
     isDataEmpty: isDataEmptyPosts,
-    refetch: refetchPosts,
   } = useUserPosts({
     userId: id,
     options: {
@@ -73,7 +78,6 @@ const UserPage = () => {
     isError: isErrorTodos,
     pagination: paginationTodos,
     isDataEmpty: isDataEmptyTodos,
-    refetch: refetchTodos,
   } = useUserTodos({
     userId: id,
     options: {
@@ -85,60 +89,40 @@ const UserPage = () => {
   const handleSpeedDialActionClick = (id: UserEntity) => setDisplayModalKey(id);
   const handleModalClose = () => setDisplayModalKey("");
 
-  // POST HANDLERS
   const handleCreatePost = (formData: Post) => {
     createPost(formData, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         if (entity !== UserEntity.posts) {
           handleTabChange(UserEntity.posts);
         }
-        refetchPosts();
+        updateManyPost(
+          usersHttpUrls.useUserPosts,
+          updaterFunctionCreate<Post>(response)
+        );
         handleModalClose();
         toast.success("Post successfully added");
       },
     });
   };
 
-  const handleDeletePost = () => {
-    refetchPosts();
-    toast.success("Post successfully deleted");
-  };
-
-  // TODO HANDLERS
   const handleCreateTodo = (formData: Todo) => {
     createTodo(formData, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         if (entity !== UserEntity.todos) {
           handleTabChange(UserEntity.todos);
         }
-        refetchTodos();
+        updateManyTodo(
+          usersHttpUrls.useUserTodos,
+          updaterFunctionCreate<Todo>(response)
+        );
         handleModalClose();
         toast.success("Todo successfully added");
       },
     });
   };
 
-  const handleEditTodo = () => {
-    refetchTodos();
-    toast.success("Todo successfully updated");
-  };
-
-  const handleDeleteTodo = () => {
-    refetchTodos();
-    toast.success("Todo successfully deleted");
-  };
-
-  const CardPost = (data: Post) => (
-    <PostCard post={data} onDeleteSuccess={handleDeletePost} />
-  );
-
-  const CardTodo = (data: Todo) => (
-    <TodoCard
-      todo={data}
-      onEditSuccess={handleEditTodo}
-      onDeleteSuccess={handleDeleteTodo}
-    />
-  );
+  const CardPost = (data: Post) => <PostCard post={data} />;
+  const CardTodo = (data: Todo) => <TodoCard todo={data} />;
 
   handleLoading(
     "user-page",

@@ -28,7 +28,7 @@ export type MetaResponse = {
   pagination: PaginationResponse;
 };
 
-export type BaseResponse<DataResponse = object> = AxiosResponse<{
+export type BaseResponse<DataResponse = object | Array<any>> = AxiosResponse<{
   code: number;
   data: DataResponse;
   meta: MetaResponse;

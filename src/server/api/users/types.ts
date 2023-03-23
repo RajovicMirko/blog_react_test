@@ -1,4 +1,4 @@
-export const BASE_URL = "users";
+import { generateUrlParamPattern } from "src/server/base/helpers";
 
 export enum UserStatus {
   active = "active",
@@ -24,4 +24,15 @@ export type User = {
   email: string;
   gender: string;
   status: UserStatus;
+};
+
+export const BASE_URL = "users";
+
+const userIdPattern = generateUrlParamPattern(EntityHttpPropsKeys.userId);
+
+export const usersHttpUrls = {
+  useUsers: BASE_URL,
+  useUser: BASE_URL,
+  useUserPosts: `${BASE_URL}/${userIdPattern}/${Entity.posts}`,
+  useUserTodos: `${BASE_URL}/${userIdPattern}/${Entity.todos}`,
 };

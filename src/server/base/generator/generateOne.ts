@@ -42,24 +42,20 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       BaseOneProps
     >(fetchers.deleteOne(url));
 
-    const updateQuery = (axiosResponse: BaseResponse<Response>) => {
-      queryClient.setQueryData(
-        queryKeys.one(url, { id: axiosResponse?.data?.data?.id }),
-        axiosResponse
-      );
+    const updateOne = (
+      axiosResponse: BaseResponse<Response>,
+      id: string | number
+    ) => {
+      queryClient.setQueryData(queryKeys.one(url, { id }), axiosResponse);
     };
 
-    const invalidateOne = () => {
-      queryClient.invalidateQueries(queryKeys.one(url, restProps));
-    };
-
-    const invalidateMany = () => {
-      queryClient.invalidateQueries(queryKeys.many(url, {}));
-    };
-
-    const invalidateAll = () => {
-      invalidateOne();
-      invalidateMany();
+    const updateMany = (
+      tmpUrl: string,
+      updaterFn: (
+        prevState?: BaseResponse<Response[]>
+      ) => BaseResponse<Response[]>
+    ) => {
+      queryClient.setQueriesData(queryKeys.many(tmpUrl, {}), updaterFn);
     };
 
     return {
@@ -71,10 +67,8 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       isLoadingUpdate,
       remove,
       isLoadingRemove,
-      updateQuery,
-      invalidateOne,
-      invalidateMany,
-      invalidateAll,
+      updateOne,
+      updateMany,
     };
   };
 }

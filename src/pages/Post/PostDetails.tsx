@@ -8,7 +8,12 @@ import Modal from "src/components/Modal";
 import ConfirmModal from "src/components/Modal/ConfirmModal";
 import useToggle from "src/hooks/useToggle";
 import { RoutePath } from "src/router/routesMap";
+import {
+  updaterFunctionRemove,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
 import { Post, usePost } from "src/server/api/posts";
+import { usersHttpUrls } from "src/server/api/users/types";
 
 type PostDetailsProps = {
   post?: Post;
@@ -21,19 +26,29 @@ const PostDetails = ({ post }: PostDetailsProps) => {
   const [isOpenEditModal, toggleEditModal] = useToggle();
   const [isOpenDeleteConfirmation, toggleDeleteConfirmation] = useToggle();
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove, updateQuery } =
-    usePost({
-      id: post?.id,
-      options: {
-        enabled: !!post?.id,
-      },
-    });
+  const {
+    update,
+    isLoadingUpdate,
+    remove,
+    isLoadingRemove,
+    updateOne,
+    updateMany,
+  } = usePost({
+    id: post?.id,
+    options: {
+      enabled: !!post?.id,
+    },
+  });
 
   const handleSubmitEdit = (formData: Post) => {
     update(formData, {
       onSuccess: (response) => {
         toggleEditModal();
-        updateQuery(response);
+        updateOne(response, post?.id as number);
+        updateMany(
+          usersHttpUrls.useUserPosts,
+          updaterFunctionUpdate<Post>(response)
+        );
         toast.success("Post successfully updated");
       },
     });
@@ -45,6 +60,10 @@ const PostDetails = ({ post }: PostDetailsProps) => {
       {
         onSuccess: () => {
           toast.success("Post successfully deleted");
+          updateMany(
+            usersHttpUrls.useUserPosts,
+            updaterFunctionRemove<Post>(post?.id as number)
+          );
           navigate(RoutePath.user, { state: { id: post?.user_id } });
         },
       }

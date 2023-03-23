@@ -1,10 +1,16 @@
 import { Grid, Typography, useTheme } from "@mui/material";
+import { toast } from "react-toastify";
+import {
+  updaterFunctionRemove,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
 import {
   getTodoColorByStatus,
   Todo,
   TodoStatus,
   useTodo,
 } from "src/server/api/todos";
+import { usersHttpUrls } from "src/server/api/users/types";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
@@ -14,31 +20,30 @@ import TodoForm from "./TodoForm";
 
 type TodoCardProps = {
   todo: Todo;
-  onEditSuccess: (response?: any) => void;
-  onDeleteSuccess: (id: Todo["id"]) => void;
   isLoadingDelete?: boolean;
   isLoading?: boolean;
 };
 
-const TodoCard = ({
-  todo,
-  isLoading,
-  onEditSuccess,
-  onDeleteSuccess,
-}: TodoCardProps) => {
+const TodoCard = ({ todo, isLoading }: TodoCardProps) => {
   const theme = useTheme();
   const [isEditModalOpen, toggleEditModal] = useToggle();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
   const isPending = todo.status === TodoStatus.pending;
   const isCompleted = todo.status === TodoStatus.completed;
 
-  const { update, isLoadingUpdate, remove, isLoadingRemove } = useTodo({});
+  const { update, isLoadingUpdate, remove, isLoadingRemove, updateMany } =
+    useTodo({});
 
   const handleEditTodo = (formData: Todo) => {
     update(formData, {
       onSuccess: (response) => {
+        updateMany(
+          usersHttpUrls.useUserTodos,
+          updaterFunctionUpdate<Todo>(response)
+        );
+
         toggleEditModal();
-        onEditSuccess(response);
+        toast.success("Todo successfully updated");
       },
     });
   };
@@ -48,8 +53,13 @@ const TodoCard = ({
       { id: todo?.id },
       {
         onSuccess: () => {
+          updateMany(
+            usersHttpUrls.useUserTodos,
+            updaterFunctionRemove<Todo>(todo?.id as number)
+          );
+
           toggleDeleteConfirmation();
-          onDeleteSuccess(todo.id);
+          toast.success("Todo successfully deleted");
         },
       }
     );
@@ -81,19 +91,17 @@ const TodoCard = ({
         </Grid>
       </Grid>
 
-      {!!onDeleteSuccess && (
-        <Card.Actions>
-          <ButtonLoading label="Edit" color="info" onClick={toggleEditModal} />
+      <Card.Actions>
+        <ButtonLoading label="Edit" color="info" onClick={toggleEditModal} />
 
-          {isCompleted && (
-            <ButtonLoading
-              label="Delete"
-              color="error"
-              onClick={toggleDeleteConfirmation}
-            />
-          )}
-        </Card.Actions>
-      )}
+        {isCompleted && (
+          <ButtonLoading
+            label="Delete"
+            color="error"
+            onClick={toggleDeleteConfirmation}
+          />
+        )}
+      </Card.Actions>
 
       <Modal
         title="Edit todo"

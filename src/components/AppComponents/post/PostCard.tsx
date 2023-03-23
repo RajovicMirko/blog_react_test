@@ -3,7 +3,10 @@ import { Grid, Typography, useTheme } from "@mui/material";
 import { Post, usePost } from "src/server/api/posts";
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { RoutePath } from "src/router/routesMap";
+import { updaterFunctionRemove } from "src/server/api/helpers";
+import { usersHttpUrls } from "src/server/api/users/types";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
@@ -11,17 +14,16 @@ import ConfirmModal from "../../Modal/ConfirmModal";
 
 type PostCardProps = {
   post: Post;
-  onDeleteSuccess: (id: Post["id"]) => void;
   isLoadingDelete?: boolean;
   isLoading?: boolean;
 };
 
-const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
+const PostCard = ({ post, isLoading }: PostCardProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [isConfirmDeleteOpen, toggleDeleteConfirmation] = useToggle();
 
-  const { remove, isLoadingRemove } = usePost({});
+  const { remove, isLoadingRemove, updateMany } = usePost({});
 
   const handleDetailsClick = () =>
     navigate(RoutePath.post, {
@@ -35,8 +37,13 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
       { id: post?.id },
       {
         onSuccess: () => {
+          updateMany(
+            usersHttpUrls.useUserPosts,
+            updaterFunctionRemove<Post>(post?.id as number)
+          );
+
           toggleDeleteConfirmation();
-          onDeleteSuccess(post.id);
+          toast.success("Post successfully deleted");
         },
       }
     );
@@ -52,20 +59,18 @@ const PostCard = ({ post, isLoading, onDeleteSuccess }: PostCardProps) => {
         </Grid>
       </Grid>
 
-      {!!onDeleteSuccess && (
-        <Card.Actions>
-          <ButtonLoading
-            label="Details"
-            color="info"
-            onClick={handleDetailsClick}
-          />
-          <ButtonLoading
-            label="Delete"
-            color="error"
-            onClick={toggleDeleteConfirmation}
-          />
-        </Card.Actions>
-      )}
+      <Card.Actions>
+        <ButtonLoading
+          label="Details"
+          color="info"
+          onClick={handleDetailsClick}
+        />
+        <ButtonLoading
+          label="Delete"
+          color="error"
+          onClick={toggleDeleteConfirmation}
+        />
+      </Card.Actions>
 
       <ConfirmModal
         title="Delete Post"

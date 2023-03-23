@@ -15,9 +15,9 @@ const queryClient = new QueryClient({});
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ErrorBoundary>
+    <BrowserRouter>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
           <MaterialUiProvider>
             <NotificationProvider>
               <LoadingProvider component={<PageLoading />}>
@@ -29,9 +29,9 @@ function App() {
               </LoadingProvider>
             </NotificationProvider>
           </MaterialUiProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </QueryClientProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 }
 

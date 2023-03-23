@@ -1,29 +1,25 @@
 import { generateMany, generateOne } from "src/server/base/generator";
-import { generateUrlParamPattern } from "src/server/base/helpers";
 import { Post } from "../posts";
 import { Todo } from "../todos";
 import { getUserColorByStatus } from "./helpers";
 import {
-  BASE_URL,
   Entity,
   EntityHttpProps,
-  EntityHttpPropsKeys,
   User,
+  usersHttpUrls,
   UserStatus,
 } from "./types";
 
-const userIdPattern = generateUrlParamPattern(EntityHttpPropsKeys.userId);
+const useUsers = generateMany<User[]>(usersHttpUrls.useUsers);
 
-const useUsers = generateMany<User[]>(BASE_URL);
-
-const useUser = generateOne<User>(BASE_URL);
+const useUser = generateOne<User>(usersHttpUrls.useUsers);
 
 const useUserPosts = generateMany<Post[], EntityHttpProps>(
-  `${BASE_URL}/${userIdPattern}/${Entity.posts}`
+  usersHttpUrls.useUserPosts
 );
 
 const useUserTodos = generateMany<Todo[], EntityHttpProps>(
-  `${BASE_URL}/${userIdPattern}/${Entity.todos}`
+  usersHttpUrls.useUserTodos
 );
 
 export type { User };
