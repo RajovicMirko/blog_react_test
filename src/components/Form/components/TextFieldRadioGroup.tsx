@@ -14,15 +14,11 @@ import { Options } from "../types";
 import TextFieldMessage from "./TextFieldMessage";
 
 type RadioCustomProps = Options & {
-  disabled: boolean;
   hasError: boolean;
 };
 
 const RadioCustom = forwardRef(
-  (
-    { id, label, disabled, hasError, ...registrationProps }: RadioCustomProps,
-    ref
-  ) => {
+  ({ id, label, hasError, ...registrationProps }: RadioCustomProps, ref) => {
     const theme = useTheme();
 
     return (
@@ -48,6 +44,7 @@ export type TextFieldRadioGroupProps = RadioGroupProps & {
   validate: any;
   label?: string;
   helperText?: string;
+  disabled?: boolean;
 };
 
 const TextFieldRadioGroup = ({
@@ -56,6 +53,7 @@ const TextFieldRadioGroup = ({
   validate,
   label,
   helperText,
+  disabled,
   ...rest
 }: TextFieldRadioGroupProps) => {
   const wrapperRef = useRef<HTMLDivElement>();
@@ -72,7 +70,7 @@ const TextFieldRadioGroup = ({
 
   return (
     <Box ref={wrapperRef}>
-      <FormControl error={hasErrors}>
+      <FormControl error={hasErrors} disabled={disabled || isLoading}>
         {label && <FormLabel id={`${name}-label`}>{label}</FormLabel>}
         <RadioGroup
           aria-labelledby={`${name}-label`}
@@ -82,7 +80,6 @@ const TextFieldRadioGroup = ({
           {options.map((option) => (
             <RadioCustom
               key={option.id}
-              disabled={isLoading}
               hasError={hasErrors}
               {...option}
               {...register(name, { validate })}

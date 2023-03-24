@@ -15,6 +15,7 @@ const TextFieldInput = ({
   name,
   validate,
   helperText,
+  disabled,
   ...rest
 }: TextFieldInputProps) => {
   const {
@@ -32,7 +33,7 @@ const TextFieldInput = ({
       <TextField
         {...register(name, { validate })}
         error={hasErrors}
-        disabled={isLoading}
+        disabled={disabled || isLoading}
         {...rest}
       />
       <TextFieldMessage color={messageColor} sx={{ width: inputOffsetWidth }}>
