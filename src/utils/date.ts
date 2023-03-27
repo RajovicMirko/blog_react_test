@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 const DATE_PATTERN = "DD.MM.YYYY";
-const TIME_PATTERN = "hh:mm";
+const TIME_PATTERN = "HH:mm";
 const DATE_REQUEST_PATTERN = "YYYY-MM-DDThh:mm:ss";
 
 export const DateFormats = {
