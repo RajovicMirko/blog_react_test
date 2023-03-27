@@ -100,7 +100,7 @@ const InputDateTime = ({
       },
     },
     label: {
-      color: hasError ? theme.palette.error.main : "inherit",
+      color: hasError ? theme.palette.error.main : "secondary",
     },
   };
 
