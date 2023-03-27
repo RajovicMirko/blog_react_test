@@ -2,6 +2,8 @@ import RouterView from "./router";
 
 import Layout from "./components/Layout";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { PageLoading } from "src/components/Loading/PageLoading";
@@ -15,23 +17,25 @@ const queryClient = new QueryClient({});
 
 function App() {
   return (
-    <BrowserRouter>
-      <ErrorBoundary>
-        <QueryClientProvider client={queryClient}>
-          <MaterialUiProvider>
-            <NotificationProvider>
-              <LoadingProvider component={<PageLoading />}>
-                <AuthProvider>
-                  <Layout>
-                    <RouterView />
-                  </Layout>
-                </AuthProvider>
-              </LoadingProvider>
-            </NotificationProvider>
-          </MaterialUiProvider>
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </BrowserRouter>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <BrowserRouter>
+        <ErrorBoundary>
+          <QueryClientProvider client={queryClient}>
+            <MaterialUiProvider>
+              <NotificationProvider>
+                <LoadingProvider component={<PageLoading />}>
+                  <AuthProvider>
+                    <Layout>
+                      <RouterView />
+                    </Layout>
+                  </AuthProvider>
+                </LoadingProvider>
+              </NotificationProvider>
+            </MaterialUiProvider>
+          </QueryClientProvider>
+        </ErrorBoundary>
+      </BrowserRouter>
+    </LocalizationProvider>
   );
 }
 

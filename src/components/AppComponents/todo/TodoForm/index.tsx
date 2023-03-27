@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import InputDateTime from "src/components/Form/components/InputDateTime";
 import {
   updaterFunctionCreate,
   updaterFunctionUpdate,
@@ -108,13 +109,15 @@ const TodoForm = ({
           />
         </Grid>
         <Grid item>
-          <InputText
+          <InputDateTime
             name="due_on"
             label="Time"
             fullWidth
             defaultValue={todo?.due_on}
-            // validate={validation([isRequired("Time is required field")])}
+            validate={validation([isRequired("Time is required field")])}
           />
+        </Grid>
+        <Grid item>
           <InputRadioGroup
             row
             name="status"
