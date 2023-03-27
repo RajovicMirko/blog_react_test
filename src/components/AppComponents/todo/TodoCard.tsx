@@ -8,6 +8,7 @@ import {
   useTodo,
 } from "src/server/api/todos";
 import { usersHttpUrls } from "src/server/api/users/types";
+import { formatDateToString } from "src/utils/date";
 import useToggle from "../../../hooks/useToggle";
 import ButtonLoading from "../../Button/ButtonLoading";
 import Card from "../../Card";
@@ -52,7 +53,7 @@ const TodoCard = ({ todo }: TodoCardProps) => {
         {isPending && (
           <Grid container columnGap="14px" flexDirection="row">
             <Card.Description inline label="Due time">
-              date
+              {formatDateToString(todo.due_on, "dateTime")}
             </Card.Description>
           </Grid>
         )}

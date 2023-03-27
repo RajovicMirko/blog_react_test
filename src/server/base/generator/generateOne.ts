@@ -53,7 +53,7 @@ function generateOne<Response extends BaseOneProps>(url: string) {
       tmpUrl: string,
       updaterFn: (
         prevState?: BaseResponse<Response[]>
-      ) => BaseResponse<Response[]>
+      ) => BaseResponse<Response[]> | undefined
     ) => {
       queryClient.setQueriesData(queryKeys.many(tmpUrl, {}), updaterFn);
     };

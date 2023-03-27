@@ -16,4 +16,4 @@ export const stringToDate = (date?: string) => (date ? dayjs(date) : null);
 export const formatDateToString = (
   date: string | dayjs.Dayjs | null,
   format: keyof typeof DateFormats
-) => dayjs(date).format(format);
+) => dayjs(date).format(DateFormats[format]);
