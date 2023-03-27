@@ -12,7 +12,7 @@ import { User } from "src/server/api/users";
 import { usersHttpUrls } from "src/server/api/users/types";
 
 import ButtonLoading from "../../../Button/ButtonLoading";
-import AppForm, { TextFieldInput, TextFieldRadioGroup } from "../../../Form";
+import AppForm, { InputRadioGroup, InputText } from "../../../Form";
 import { isRequired, minLen, validation } from "../../../Form/validations";
 import { statusOptions } from "./constants";
 
@@ -95,7 +95,7 @@ const TodoForm = ({
     <AppForm {...methods} onSubmit={handleOnSubmit} isLoading={isLoading}>
       <Grid container flexDirection="column" rowGap="30px">
         <Grid item>
-          <TextFieldInput
+          <InputText
             autoFocus
             name="title"
             label="Title"
@@ -108,14 +108,14 @@ const TodoForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldInput
+          <InputText
             name="due_on"
             label="Time"
             fullWidth
             defaultValue={todo?.due_on}
             // validate={validation([isRequired("Time is required field")])}
           />
-          <TextFieldRadioGroup
+          <InputRadioGroup
             row
             name="status"
             label="Status"

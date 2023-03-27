@@ -10,10 +10,10 @@ const MessageStyled = styled(Typography)(({ theme }) => {
   };
 });
 
-type TextFieldMessageProps = TypographyProps;
+type HelperMessageProps = TypographyProps;
 
-const TextFieldMessage = ({ children, ...rest }: TextFieldMessageProps) => {
+const HelperMessage = ({ children, ...rest }: HelperMessageProps) => {
   return <MessageStyled {...rest}>{children}</MessageStyled>;
 };
 
-export default TextFieldMessage;
+export default HelperMessage;

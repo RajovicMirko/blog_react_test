@@ -1,8 +1,8 @@
 import { Box, styled, TextField, TextFieldProps } from "@mui/material";
 import { useFormContext } from "../AppForm";
-import TextFieldMessage from "./TextFieldMessage";
+import TextFieldMessage from "./HelperMessage";
 
-export type TextFieldInputProps = TextFieldProps & {
+export type InputTextProps = TextFieldProps & {
   name: string;
   validate?: any;
 };
@@ -11,13 +11,13 @@ const TextFieldWrapperStyled = styled(Box)(() => ({
   paddingBottom: "8px",
 }));
 
-const TextFieldInput = ({
+const InputText = ({
   name,
   validate,
   helperText,
   disabled,
   ...rest
-}: TextFieldInputProps) => {
+}: InputTextProps) => {
   const {
     register,
     formState: { errors },
@@ -43,4 +43,4 @@ const TextFieldInput = ({
   );
 };
 
-export default TextFieldInput;
+export default InputText;

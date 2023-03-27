@@ -1,5 +1,5 @@
-import { TextFieldInputProps } from "./components/TextFieldInput";
-import { TextFieldSelectProps } from "./components/TextFieldSelect";
+import { TextFieldSelectProps } from "./components/InputSelect";
+import { TextFieldInputProps } from "./components/InputText";
 
 export type Options = {
   id: string | number;

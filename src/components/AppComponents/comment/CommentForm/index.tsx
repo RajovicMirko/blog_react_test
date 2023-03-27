@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { omitBy } from "lodash";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { InputText } from "src/components/Form";
 import { Comment, useComment } from "src/server/api/comments";
 import {
   updaterFunctionCreate,
@@ -11,7 +12,6 @@ import { Post } from "src/server/api/posts";
 import { postsHttpUrls } from "src/server/api/posts/types";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import AppForm from "../../../Form/AppForm";
-import TextFieldInput from "../../../Form/components/TextFieldInput";
 import {
   email,
   isRequired,
@@ -97,7 +97,7 @@ const CommentForm = ({
     <AppForm {...methods} onSubmit={handleOnSubmit} isLoading={isLoading}>
       <Grid container flexDirection="column" rowGap="30px">
         <Grid item>
-          <TextFieldInput
+          <InputText
             autoFocus
             name="name"
             label="Name"
@@ -110,7 +110,7 @@ const CommentForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldInput
+          <InputText
             name="email"
             label="Email"
             fullWidth
@@ -122,7 +122,7 @@ const CommentForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldInput
+          <InputText
             name="body"
             label="Description"
             fullWidth

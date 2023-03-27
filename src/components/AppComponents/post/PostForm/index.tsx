@@ -10,8 +10,8 @@ import { Post, usePost } from "src/server/api/posts";
 import { User } from "src/server/api/users";
 import { usersHttpUrls } from "src/server/api/users/types";
 import ButtonLoading from "../../../Button/ButtonLoading";
+import { InputText } from "../../../Form";
 import AppForm from "../../../Form/AppForm";
-import TextFieldInput from "../../../Form/components/TextFieldInput";
 import { isRequired, minLen, validation } from "../../../Form/validations";
 
 export type PostFormProps = {
@@ -91,7 +91,7 @@ const PostForm = ({
     <AppForm {...methods} onSubmit={handleOnSubmit} isLoading={isLoading}>
       <Grid container flexDirection="column" rowGap="30px">
         <Grid item>
-          <TextFieldInput
+          <InputText
             autoFocus
             name="title"
             label="Title"
@@ -104,7 +104,7 @@ const PostForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldInput
+          <InputText
             name="body"
             label="Description"
             fullWidth

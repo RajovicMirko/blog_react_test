@@ -11,7 +11,7 @@ import {
 import { forwardRef, useRef } from "react";
 import { useFormContext } from "../AppForm";
 import { Options } from "../types";
-import TextFieldMessage from "./TextFieldMessage";
+import TextFieldMessage from "./HelperMessage";
 
 type RadioCustomProps = Options & {
   hasError: boolean;
@@ -38,7 +38,7 @@ const RadioCustom = forwardRef(
   }
 );
 
-export type TextFieldRadioGroupProps = RadioGroupProps & {
+export type InputRadioGroupProps = RadioGroupProps & {
   name: string;
   options: Options[];
   validate: any;
@@ -47,7 +47,7 @@ export type TextFieldRadioGroupProps = RadioGroupProps & {
   disabled?: boolean;
 };
 
-const TextFieldRadioGroup = ({
+const InputRadioGroup = ({
   name = "radio-group",
   options,
   validate,
@@ -55,7 +55,7 @@ const TextFieldRadioGroup = ({
   helperText,
   disabled,
   ...rest
-}: TextFieldRadioGroupProps) => {
+}: InputRadioGroupProps) => {
   const wrapperRef = useRef<HTMLDivElement>();
 
   const {
@@ -98,4 +98,4 @@ const TextFieldRadioGroup = ({
   );
 };
 
-export default TextFieldRadioGroup;
+export default InputRadioGroup;

@@ -12,9 +12,9 @@ import { User, useUser } from "src/server/api/users";
 import { usersHttpUrls } from "src/server/api/users/types";
 import ButtonLoading from "../../../Button/ButtonLoading";
 import AppForm, {
-  TextFieldInput,
-  TextFieldRadioGroup,
-  TextFieldSelect,
+  InputRadioGroup,
+  InputSelect,
+  InputText,
 } from "../../../Form";
 import {
   email,
@@ -103,7 +103,7 @@ const UserForm = ({
     <AppForm {...methods} onSubmit={handleOnSubmit} isLoading={isLoading}>
       <Grid container flexDirection="column" rowGap="30px">
         <Grid item>
-          <TextFieldInput
+          <InputText
             autoFocus
             name="name"
             label="Name"
@@ -116,7 +116,7 @@ const UserForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldInput
+          <InputText
             name="email"
             label="Email"
             fullWidth
@@ -128,7 +128,7 @@ const UserForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldSelect
+          <InputSelect
             name="status"
             label="Status"
             fullWidth
@@ -138,7 +138,7 @@ const UserForm = ({
           />
         </Grid>
         <Grid item>
-          <TextFieldRadioGroup
+          <InputRadioGroup
             name="gender"
             label="Gender"
             defaultValue={user?.gender}

@@ -1,8 +1,8 @@
 import AppForm from "./AppForm";
-import TextFieldInput from "./components/TextFieldInput";
-import TextFieldRadioGroup from "./components/TextFieldRadioGroup";
-import TextFieldSelect from "./components/TextFieldSelect";
+import InputRadioGroup from "./components/InputRadioGroup";
+import InputSelect from "./components/InputSelect";
+import InputText from "./components/InputText";
 
-export { TextFieldInput, TextFieldSelect, TextFieldRadioGroup };
+export { InputSelect, InputText, InputRadioGroup };
 
 export default AppForm;
