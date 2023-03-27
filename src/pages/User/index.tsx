@@ -34,7 +34,11 @@ const UserPage = () => {
   const [entity, setEntity] = useState(UserEntity.posts);
   const [displayModalKey, setDisplayModalKey] = useState("");
 
-  const { data: user, isError: isErrorUser } = useUser({
+  const {
+    data: user,
+    isSuccess: isSuccessUser,
+    isError: isErrorUser,
+  } = useUser({
     id: Number(id),
     options: {
       enabled: isAuthenticated,
@@ -88,10 +92,7 @@ const UserPage = () => {
   const CardPost = (data: Post) => <PostCard post={data} />;
   const CardTodo = (data: Todo) => <TodoCard todo={data} />;
 
-  handleLoading(
-    "user-page",
-    (!user && !isErrorUser) || (!userPosts && !userPosts)
-  );
+  handleLoading("user-page", !user && !isErrorUser && !isSuccessUser);
 
   if (isAppLoading) return null;
 
