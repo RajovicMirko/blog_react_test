@@ -3,7 +3,6 @@ import { TextFieldProps } from "@mui/material";
 import {
   DateTimeValidationError,
   MobileDateTimePicker,
-  PickersActionBarAction,
 } from "@mui/x-date-pickers";
 import { PickerChangeHandler } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue";
 import dayjs from "dayjs";
@@ -54,9 +53,6 @@ const InputDateTime = ({
     } as InputTextProps,
     toolbar: {
       hidden: true,
-    },
-    actionBar: {
-      actions: ["cancel"] as PickersActionBarAction[],
     },
   };
 
