@@ -58,11 +58,8 @@ const InputRadioGroup = ({
 }: InputRadioGroupProps) => {
   const wrapperRef = useRef<HTMLDivElement>();
 
-  const {
-    register,
-    formState: { errors },
-    isLoading,
-  } = useFormContext();
+  const { register, formState, isLoading } = useFormContext();
+  const { errors } = formState ?? {};
 
   const hasErrors = !!errors[name];
   const inputOffsetWidth = (wrapperRef.current as any)?.offsetWidth ?? "auto";

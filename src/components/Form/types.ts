@@ -1,15 +1,12 @@
-import { TextFieldSelectProps } from "./components/InputSelect";
-import { TextFieldInputProps } from "./components/InputText";
+import { InputSelectProps } from "./components/InputSelect";
+import { InputTextProps } from "./components/InputText";
 
 export type Options = {
   id: string | number;
   label: string;
 };
 
-type FormFieldsConfigFunctionResult =
-  | any
-  | TextFieldInputProps
-  | TextFieldSelectProps;
+type FormFieldsConfigFunctionResult = any | InputTextProps | InputSelectProps;
 
 type FormFieldsConfigFunction<DataType> = (
   props?: DataType

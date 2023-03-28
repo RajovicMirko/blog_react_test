@@ -7,6 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import { MouseEventHandler } from "react";
+import useBreakpoints from "src/hooks/useBreakpoints";
+import {
+  getModalMinWidthByBreakpoints,
+  getModalPaddingByBreakpoints,
+} from "./helpers";
 
 const ModalStyled = styled(MuiModal)(() => ({
   display: "flex",
@@ -15,10 +20,14 @@ const ModalStyled = styled(MuiModal)(() => ({
   alignItems: "center",
 }));
 
-const PaperStyled = styled(Paper)(() => ({
-  padding: "30px 50px",
-  minWidth: "500px",
-}));
+const PaperStyled = styled(Paper)(() => {
+  const breakpoints = useBreakpoints();
+
+  return {
+    padding: getModalPaddingByBreakpoints(breakpoints),
+    minWidth: getModalMinWidthByBreakpoints(breakpoints),
+  };
+});
 
 export type ModalProps = PaperProps &
   Pick<DialogProps, "open"> & {

@@ -132,7 +132,7 @@ const TodoForm = ({
             type="submit"
             label="Save"
             isLoading={isLoading}
-            disabled={!methods.formState.isValid}
+            // disabled={!methods.formState.isValid}
           />
         </Grid>
       </Grid>

@@ -31,7 +31,7 @@ const UserPage = () => {
   const { isAuthenticated } = useAuthContext();
   const { isAppLoading, handleLoading } = useLoading();
 
-  const [entity, setEntity] = useState(UserEntity.posts);
+  const [entity, setEntity] = useState(UserEntity.todos);
   const [displayModalKey, setDisplayModalKey] = useState("");
 
   const {

@@ -4,8 +4,24 @@ const INPUT_PADDING = 12;
 
 const MuiFormControl: Components["MuiFormControl"] = {
   styleOverrides: {
-    root: {
-      borderRadius: "8px",
+    root: ({ theme, ownerState }) => {
+      const tmpTheme = theme as Theme;
+
+      const DatePickerStyle = ownerState.error
+        ? {
+            "& > *": {
+              color: tmpTheme.palette.error.main,
+              "& svg": {
+                fill: tmpTheme.palette.error.main,
+              },
+            },
+          }
+        : {};
+
+      return {
+        borderRadius: "8px",
+        ...DatePickerStyle,
+      };
     },
   },
 };

@@ -1,8 +1,13 @@
-import { ButtonProps, TextFieldProps, useTheme } from "@mui/material";
-import { DateTimePicker, DateTimeValidationError } from "@mui/x-date-pickers";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { TextFieldProps } from "@mui/material";
+import {
+  DateTimeValidationError,
+  MobileDateTimePicker,
+  PickersActionBarAction,
+} from "@mui/x-date-pickers";
 import { PickerChangeHandler } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue";
 import dayjs from "dayjs";
-import useToggle from "src/hooks/useToggle";
+import { ComponentType } from "react";
 import { DateFormats, formatDateToString, stringToDate } from "src/utils/date";
 import { useFormContext } from "../AppForm";
 import InputText, { InputTextProps } from "./InputText";
@@ -21,21 +26,10 @@ const InputDateTime = ({
   defaultValue,
   ...rest
 }: InputDateTimeProps) => {
-  const theme = useTheme();
+  const { isLoading, setValue, trigger, formState } = useFormContext();
+  const { errors } = formState ?? {};
 
-  const {
-    isLoading,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const [isOpened, toggleIsOpened, setIsOpened] = useToggle();
-
-  const hasError = errors[name];
-
-  const handleClose = () => {
-    setIsOpened(false);
-  };
+  const hasErrors = !!errors[name];
 
   const handleChange: PickerChangeHandler<
     dayjs.Dayjs | null,
@@ -45,78 +39,38 @@ const InputDateTime = ({
     trigger(name);
   };
 
-  const slots = {
-    textField: InputText,
-  };
-
   const slotProps = {
     textField: {
       name,
       validate,
       disabled: isLoading,
       fullWidth,
-      ...rest,
+      error: hasErrors,
+      icon: <CalendarMonthIcon color="disabled" />,
       inputProps: {
         disabled: true,
       },
-      onClick: toggleIsOpened,
+      ...rest,
     } as InputTextProps,
-    openPickerButton: {
-      disabled: isLoading,
-      color: hasError ? "error" : isOpened ? "primary" : "secondary",
-    } as Pick<ButtonProps, "disabled" | "color">,
-  };
-
-  const getFieldsetBorderStyle = () => {
-    const borderSx = {
-      borderWidth: isOpened ? "2px" : "1px",
-      borderColor: "secondary",
-    };
-
-    if (hasError) {
-      return {
-        ...borderSx,
-        borderColor: theme.palette.error.main,
-      };
-    }
-
-    if (isOpened) {
-      return {
-        ...borderSx,
-        borderColor: theme.palette.primary.main,
-      };
-    }
-
-    return borderSx;
-  };
-
-  const sxCustom = {
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        ...getFieldsetBorderStyle(),
-      },
-      "&:hover fieldset": {
-        ...getFieldsetBorderStyle(),
-      },
+    toolbar: {
+      hidden: true,
     },
-    label: {
-      color: hasError ? theme.palette.error.main : "secondary",
+    actionBar: {
+      actions: ["cancel"] as PickersActionBarAction[],
     },
   };
 
   return (
-    <DateTimePicker
-      open={isOpened}
-      onClose={handleClose}
-      onOpen={toggleIsOpened}
-      closeOnSelect={true}
+    <MobileDateTimePicker
       ampm={false}
+      closeOnSelect={true}
       format={DateFormats.dateTime}
       defaultValue={stringToDate(defaultValue as string)}
       onChange={handleChange}
-      slots={slots}
+      slots={{
+        textField: InputText as ComponentType<TextFieldProps>,
+      }}
       slotProps={slotProps}
-      sx={sxCustom}
     />
   );
 };
