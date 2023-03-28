@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@mui/material";
-import Circular from "../Loading/Circular";
+import { LinearLoading } from "../Loading/LinearLoading";
 
 type ButtonLoadingProps = Pick<
   ButtonProps,
@@ -24,7 +24,14 @@ const ButtonLoading = ({
       disabled={disabled || isLoading}
       {...rest}
     >
-      {isLoading ? <Circular size={20} sx={{ margin: "2.5px 0" }} /> : label}
+      {label}
+      {isLoading && (
+        <LinearLoading
+          isLoading={isLoading}
+          sx={{ bottom: 0 }}
+          color={rest.color}
+        />
+      )}
     </Button>
   );
 };

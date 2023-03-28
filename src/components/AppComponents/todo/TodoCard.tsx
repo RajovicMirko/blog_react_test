@@ -1,6 +1,9 @@
 import { Grid, Typography, useTheme } from "@mui/material";
 import { toast } from "react-toastify";
-import { updaterFunctionRemove } from "src/server/api/helpers";
+import {
+  updaterFunctionRemove,
+  updaterFunctionUpdate,
+} from "src/server/api/helpers";
 import {
   getTodoColorByStatus,
   Todo,
@@ -26,7 +29,30 @@ const TodoCard = ({ todo }: TodoCardProps) => {
   const isPending = todo.status === TodoStatus.pending;
   const isCompleted = todo.status === TodoStatus.completed;
 
-  const { remove, isLoadingRemove, updateMany } = useTodo({});
+  const {
+    update,
+    isLoadingUpdate,
+    remove,
+    isLoadingRemove,
+    updateOne,
+    updateMany,
+  } = useTodo({});
+
+  const handleEdit = () => {
+    update(
+      { ...todo, status: TodoStatus.completed },
+      {
+        onSuccess: (response) => {
+          updateOne(response, todo?.id as number);
+          updateMany(
+            usersHttpUrls.useUserTodos,
+            updaterFunctionUpdate<Todo>(response)
+          );
+          toast.success("Todo successfully updated");
+        },
+      }
+    );
+  };
 
   const handleRemoveTodo = () => {
     remove(
@@ -72,13 +98,30 @@ const TodoCard = ({ todo }: TodoCardProps) => {
       </Grid>
 
       <Card.Actions>
-        <ButtonLoading label="Edit" color="info" onClick={toggleEditModal} />
+        <ButtonLoading
+          label="Edit"
+          color="info"
+          onClick={toggleEditModal}
+          disabled={isLoadingUpdate || isLoadingRemove}
+        />
+
+        {isPending && (
+          <ButtonLoading
+            label="Complete Task"
+            color="success"
+            onClick={handleEdit}
+            disabled={isLoadingUpdate || isLoadingRemove}
+            isLoading={isLoadingUpdate}
+          />
+        )}
 
         {isCompleted && (
           <ButtonLoading
             label="Delete"
             color="error"
             onClick={toggleDeleteConfirmation}
+            disabled={isLoadingUpdate || isLoadingRemove}
+            isLoading={isLoadingRemove}
           />
         )}
       </Card.Actions>
