@@ -8,7 +8,10 @@ export type ValidationFunction = (
   props?: any
 ) => ResultFunction;
 
-export type Validation = (fns: ResultFunction[]) => ResultFunction;
+export type Validation = (
+  fns: ResultFunction[],
+  turnValidationOff?: boolean
+) => ResultFunction;
 //#endregion
 
 //#region Result functions
@@ -39,8 +42,10 @@ export const isEqualValue: ValidationFunction =
 //#endregion
 
 //#region Validation function
-export const validation: Validation = (fns) => (value) => {
+export const validation: Validation = (fns, turnValidationOff) => (value) => {
   let message = undefined as ValidateResult;
+
+  if (turnValidationOff) return undefined;
 
   for (const fn of fns) {
     const tmpMessage = fn(value);
