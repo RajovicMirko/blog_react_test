@@ -9,7 +9,7 @@ import useLoading from "src/context/LoadingContext";
 import useToggle from "src/hooks/useToggle";
 import { Comment } from "src/server/api/comments";
 import { PostEntity, usePost, usePostComments } from "src/server/api/posts";
-import PostDetails from "../../components/AppComponents/post/PostDetails";
+import PostDetails from "../components/AppComponents/post/PostDetails";
 
 const PostPage = () => {
   const {

@@ -9,7 +9,7 @@ type UpdateAxiosConfig = {
   token: string;
 };
 
-export const axiosAddAuthToConfig = ({
+export const axiosInterceptorsSetup = ({
   token,
 }: UpdateAxiosConfig): Promise<void> => {
   return new Promise((res) => {

@@ -21,8 +21,8 @@ import {
 import {
   actions,
   TAB_VIEW_OPTIONS,
-} from "../../components/AppComponents/user/constants";
-import UserDetails from "../../components/AppComponents/user/UserDetails";
+} from "../components/AppComponents/user/constants";
+import UserDetails from "../components/AppComponents/user/UserDetails";
 
 const UserPage = () => {
   const {

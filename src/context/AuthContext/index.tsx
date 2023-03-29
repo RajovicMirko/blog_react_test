@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { useComments } from "src/server/api/comments";
-import { axiosAddAuthToConfig } from "../../utils/axios";
+import { axiosInterceptorsSetup } from "../../utils/axios";
 import useLoading from "../LoadingContext";
 import usePrepareInfo from "./usePrepareInfo";
 import usePreparePermissions from "./usePreparePermissions";
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<ReactNode>) => {
     options: {
       onSuccess: async () => {
         const tmpToken = import.meta.env.VITE_TOKEN;
-        await axiosAddAuthToConfig({ token: tmpToken });
+        await axiosInterceptorsSetup({ token: tmpToken });
         setToken(tmpToken);
       },
     },
@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<ReactNode>) => {
     info,
     permissions,
   };
+
   return (
     <AuthContext.Provider value={provide}>
       {authDone && children}

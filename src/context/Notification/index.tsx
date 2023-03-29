@@ -8,8 +8,9 @@ import generateCssStyle from "./generateCssStyle";
 
 type ToastStyledProps = { muiTheme: Theme };
 
+const skipKeys = ["muiTheme"];
 const styledOptions = {
-  shouldForwardProp: (prop: string) => !["muiTheme"].includes(prop),
+  shouldForwardProp: (prop: string) => !skipKeys.includes(prop),
 };
 
 const ToastStyled = styled(
