@@ -7,6 +7,7 @@ Test app for pagination exercise
 - Check auth context and hooks
 - Check loading context
 - Check Form logic
+- Improve error handling
 
 ## ERRORS
 
