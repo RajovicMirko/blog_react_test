@@ -30,6 +30,12 @@ export const email: ValidationFunction = (message) => (value) => {
   return isError ? message : undefined;
 };
 
+export const isEqualValue: ValidationFunction =
+  (message, baseValue) => (value) => {
+    const isError = baseValue !== value;
+    return isError ? message : undefined;
+  };
+
 //#endregion
 
 //#region Validation function
