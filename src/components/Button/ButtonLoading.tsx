@@ -22,6 +22,7 @@ const ButtonLoading = ({
       type={type}
       variant={variant}
       disabled={disabled || isLoading}
+      disableRipple
       {...rest}
     >
       {label}
