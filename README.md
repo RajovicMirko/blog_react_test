@@ -4,10 +4,10 @@ Test app for pagination exercise
 
 ## TODO
 
-- Check auth context and hooks
-- Check loading context
-- Check Form logic
-- Improve error handling
+- Check server folder - solution idea
+- Check loading context - solution idea
+- Check Form logic - solution idea
+- Improve error handling - how to do it properly
 
 ## ERRORS
 
