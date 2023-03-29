@@ -34,7 +34,7 @@ const InputDateTime = ({
     dayjs.Dayjs | null,
     DateTimeValidationError
   > = (newValue) => {
-    setValue(name, formatDateToString(newValue, "dateRequest"));
+    setValue(name, formatDateToString(newValue, DateFormats.dateRequest));
     trigger(name);
   };
 
