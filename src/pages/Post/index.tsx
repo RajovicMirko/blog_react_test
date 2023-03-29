@@ -1,17 +1,15 @@
 import AddIcon from "@mui/icons-material/Add";
-import { useLocation } from "react-router-dom";
-
-import { Comment } from "src/server/api/comments";
-import { PostEntity, usePost, usePostComments } from "src/server/api/posts";
-
 import { Fab, useTheme } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import CommentCard from "src/components/AppComponents/comment/CommentCard";
 import CommentModalForm from "src/components/AppComponents/comment/CommentModalForm";
 import GridPagination from "src/components/GridPagination";
 import ScrollWrapperPage from "src/components/Layout/PageWrapper/ScrollWrapperPage";
 import useLoading from "src/context/LoadingContext";
 import useToggle from "src/hooks/useToggle";
-import PostDetails from "./PostDetails";
+import { Comment } from "src/server/api/comments";
+import { PostEntity, usePost, usePostComments } from "src/server/api/posts";
+import PostDetails from "../../components/AppComponents/post/PostDetails";
 
 const PostPage = () => {
   const {

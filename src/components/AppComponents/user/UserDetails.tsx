@@ -30,7 +30,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
     },
   });
 
-  const handleSubmitDeleteUser = () => {
+  const handleDelete = () => {
     remove(
       { id: user?.id },
       {
@@ -40,6 +40,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
             updaterFunctionRemove<User>(user?.id as number)
           );
           toast.success("User successfully deleted");
+          // setTimeout(() => navigate(RoutePath.users), 10);
           navigate(RoutePath.users);
         },
       }
@@ -111,7 +112,7 @@ const UserDetails = ({ user }: UserDetailsProps) => {
         open={isOpenDeleteConfirmation}
         onClose={toggleDeleteConfirmation}
         okText="Yes, delete user"
-        onOk={handleSubmitDeleteUser}
+        onOk={handleDelete}
         isLoading={isLoadingRemove}
       />
     </Grid>

@@ -1,16 +1,5 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-
-import { Post } from "src/server/api/posts";
-import { Todo } from "src/server/api/todos";
-import {
-  UserEntity,
-  useUser,
-  useUserPosts,
-  useUserTodos,
-} from "src/server/api/users";
-import { actions, TAB_VIEW_OPTIONS } from "./constants";
-
 import PostCard from "src/components/AppComponents/post/PostCard";
 import PostModalForm from "src/components/AppComponents/post/PostModalForm";
 import TodoCard from "src/components/AppComponents/todo/TodoCard";
@@ -21,7 +10,19 @@ import SpeedDialTooltip from "src/components/SpeedDialTooltip";
 import TabSwitcher from "src/components/TabSwitcher";
 import useAuthContext from "src/context/AuthContext";
 import useLoading from "src/context/LoadingContext";
-import UserDetails from "./UserDetails";
+import { Post } from "src/server/api/posts";
+import { Todo } from "src/server/api/todos";
+import {
+  UserEntity,
+  useUser,
+  useUserPosts,
+  useUserTodos,
+} from "src/server/api/users";
+import {
+  actions,
+  TAB_VIEW_OPTIONS,
+} from "../../components/AppComponents/user/constants";
+import UserDetails from "../../components/AppComponents/user/UserDetails";
 
 const UserPage = () => {
   const {
