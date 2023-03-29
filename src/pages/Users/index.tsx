@@ -25,9 +25,6 @@ const UsersPage = () => {
     pagination,
     isDataEmpty,
   } = useUsers({
-    pagination: {
-      useBreakpoints: true,
-    },
     options: {
       enabled: isAuthenticated,
     },
