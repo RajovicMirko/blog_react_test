@@ -62,11 +62,40 @@ const MuiSelect: Components["MuiSelect"] = {
   },
 };
 
+const MuiTabs: Components["MuiTabs"] = {
+  styleOverrides: {
+    root: ({ theme }) => {
+      const tmpTheme = theme as Theme;
+      const isDark = tmpTheme.palette.mode === "dark";
+
+      const color = isDark
+        ? tmpTheme.palette.grey["500"]
+        : tmpTheme.palette.grey["300"];
+      const selectedColor = isDark
+        ? tmpTheme.palette.primary.main
+        : tmpTheme.palette.common.white;
+
+      return {
+        button: {
+          color,
+          "&.Mui-selected": {
+            color: selectedColor,
+          },
+        },
+        "& .MuiTabs-indicator": {
+          backgroundColor: selectedColor,
+        },
+      };
+    },
+  },
+};
+
 const components: ThemeOptions["components"] = {
   MuiFormControl,
   MuiInputBase,
   MuiInputLabel,
   MuiSelect,
+  MuiTabs,
 };
 
 export default components;

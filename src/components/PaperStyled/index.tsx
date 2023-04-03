@@ -2,9 +2,10 @@ import { Paper, styled } from "@mui/material";
 
 const PaperStyled = styled(Paper)(({ theme }) => {
   const isDark = theme.palette.mode === "dark";
+
   const backgroundColor = isDark
     ? theme.palette.action.disabledBackground
-    : theme.palette.secondary.dark;
+    : theme.palette.primary.light;
 
   return {
     backgroundColor,
