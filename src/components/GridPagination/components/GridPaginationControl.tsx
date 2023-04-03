@@ -12,15 +12,23 @@ HalfSide.defaultProps = {
   alignItems: "center",
 };
 
-const ViewButton = styled(Button)(({ theme }) => ({
-  width: "34px",
-  minWidth: "34px",
-  height: "34px",
-  color: theme.palette.action.disabled,
-  "&:disabled": {
-    color: theme.palette.primary.main,
-  },
-}));
+const ViewButton = styled(Button)(({ theme }) => {
+  const isDark = theme.palette.mode === "dark";
+
+  const colorDisabled = isDark
+    ? theme.palette.primary.main
+    : theme.palette.common.white;
+
+  return {
+    width: "34px",
+    minWidth: "34px",
+    height: "34px",
+    color: theme.palette.action.disabled,
+    "&:disabled": {
+      color: colorDisabled,
+    },
+  };
+});
 ViewButton.defaultProps = {
   variant: "text",
 };
